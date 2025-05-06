@@ -1,4 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import Lottie from "lottie-react";
+import dotaAnimation from "~/assets/dota.json";
 import { BackButton } from "~/components/BackButton";
 import { useBuyCrystals } from "~/components/hooks/useBuyCrystals";
 import { Logo } from "~/components/icons/logo";
@@ -16,7 +18,9 @@ function RouteComponent() {
     <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-14 pb-14">
       <BackButton onClick={() => navigate({ to: "/" })} />
       <div className="item mb-4 flex flex-col items-center">
-        <Logo width="88px" height="88px" />
+        <div className="h-[88px] w-[88px]">
+          <Lottie animationData={dotaAnimation} loop={true} />
+        </div>
         <div className="mb-2 text-4xl font-bold">Купить кристаллы</div>
         <div className="text-sm">Выбери нужное количество кристаллов</div>
       </div>
