@@ -5,13 +5,7 @@ import {
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
-import {
-  backButton,
-  init,
-  mockTelegramEnv,
-  swipeBehavior,
-  viewport,
-} from "@telegram-apps/sdk";
+import { backButton, init, mockTelegramEnv, swipeBehavior } from "@telegram-apps/sdk";
 import { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
@@ -98,32 +92,6 @@ function RootComponent() {
       swipeBehavior.isMounted();
       swipeBehavior.disableVertical();
       swipeBehavior.isVerticalEnabled();
-    }
-
-    if (viewport.expand.isAvailable()) {
-      viewport.expand();
-    }
-
-    if (typeof window !== "undefined" && window.Telegram && window.Telegram.WebApp) {
-      try {
-        window.Telegram.WebApp.expand();
-        const telegramVersion = Number(window.Telegram.WebApp.version);
-
-        const isMobile =
-          window.Telegram.WebApp.platform === "ios" ||
-          window.Telegram.WebApp.platform === "android" ||
-          window.Telegram.WebApp.platform === "android_x";
-
-        if (telegramVersion >= 8 && isMobile) {
-          window.Telegram.WebApp.requestFullscreen();
-          window.Telegram.WebApp.lockOrientation();
-        }
-
-        // Enable closing confirmation
-        window.Telegram.WebApp.enableClosingConfirmation();
-      } catch (e) {
-        console.warn("Error configuring Telegram WebApp:", e);
-      }
     }
   }, []);
 
