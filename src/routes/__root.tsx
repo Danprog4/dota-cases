@@ -9,6 +9,7 @@ import {
   backButton,
   init,
   mockTelegramEnv,
+  requestFullscreen,
   swipeBehavior,
   viewport,
 } from "@telegram-apps/sdk";
@@ -22,7 +23,7 @@ import { TRPCRouter } from "~/trpc/init/router";
 declare global {
   interface Window {
     Telegram?: {
-      WebApp: {
+      WebApp?: {
         enableClosingConfirmation: () => void;
         expand: () => void;
         disableVerticalSwipes: () => void;
@@ -104,26 +105,8 @@ function RootComponent() {
       viewport.expand();
     }
 
-    if (typeof window !== "undefined" && window.Telegram && window.Telegram.WebApp) {
-      try {
-        window.Telegram.WebApp.expand();
-        const telegramVersion = Number(window.Telegram.WebApp.version);
-
-        const isMobile =
-          window.Telegram.WebApp.platform === "ios" ||
-          window.Telegram.WebApp.platform === "android" ||
-          window.Telegram.WebApp.platform === "android_x";
-
-        if (telegramVersion >= 8 && isMobile) {
-          window.Telegram.WebApp.requestFullscreen();
-          window.Telegram.WebApp.lockOrientation();
-        }
-
-        // Enable closing confirmation
-        window.Telegram.WebApp.enableClosingConfirmation();
-      } catch (e) {
-        console.warn("Error configuring Telegram WebApp:", e);
-      }
+    if (requestFullscreen.isAvailable()) {
+      requestFullscreen();
     }
   }, []);
 
