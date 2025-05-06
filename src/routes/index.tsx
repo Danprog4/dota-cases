@@ -16,7 +16,7 @@ function Home() {
         <Logo width="88px" height="88px" />
         <h1 className="text-4xl font-bold">Dota Crystals</h1>
         <p className="text-md w-[68vw] text-center">
-          Зарабатывай криссталы и меняй их на кейсы, стикеры и скины для Dota 2
+          Зарабатывай кристаллы и меняй их на кейсы, стикеры и скины для Dota 2
         </p>
       </div>
       <div className="mb-2 flex w-full flex-col items-center justify-center rounded-2xl bg-neutral-800 p-4">
