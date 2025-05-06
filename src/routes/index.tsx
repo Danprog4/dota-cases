@@ -11,7 +11,7 @@ function Home() {
   const { user } = useUser();
 
   return (
-    <div className="mt-4 flex h-screen w-full flex-col items-center overflow-y-auto p-4">
+    <div className="mt-4 flex h-screen w-full flex-col items-center overflow-y-auto p-4 pb-20">
       <div className="flex flex-col items-center gap-2 pb-4">
         <Logo width="88px" height="88px" />
         <h1 className="text-4xl font-bold">Dota Crystals</h1>
@@ -33,13 +33,13 @@ function Home() {
       </div>
       <div className="mb-4 flex w-full flex-col gap-2">
         <div className="opacity-50">Задания</div>
-        <div className="flex h-16 w-full items-center justify-start bg-neutral-800 p-2">
+        <div className="flex h-16 w-full items-center justify-start rounded-xl bg-neutral-800 p-2">
           <div>Заданий пока нет</div>
         </div>
       </div>
       <div className="flex w-full flex-col gap-2">
         <div className="opacity-50">Выполненные задания</div>
-        <div className="flex h-16 w-full items-center justify-start bg-neutral-800 p-2">
+        <div className="flex h-16 w-full items-center justify-start rounded-xl bg-neutral-800 p-2">
           <div>Заданий пока нет</div>
         </div>
       </div>

@@ -120,7 +120,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
           position="top-center"
           toastOptions={{
             style: {
-              backgroundColor: "#",
+              backgroundColor: "#000000",
               color: "#fff",
               borderRadius: "16px",
               border: "1px solid #76AD10",
