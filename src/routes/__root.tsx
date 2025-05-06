@@ -104,44 +104,30 @@ function RootComponent() {
     if (viewport.expand.isAvailable()) {
       viewport.expand();
     }
-  }, []);
 
-  if (window.Telegram && window.Telegram.WebApp) {
-    try {
-      window.Telegram.WebApp.expand();
-      const telegramVersion = Number(window.Telegram.WebApp.version);
+    // Move Telegram WebApp configuration inside useEffect to ensure window is defined
+    if (typeof window !== "undefined" && window.Telegram && window.Telegram.WebApp) {
+      try {
+        window.Telegram.WebApp.expand();
+        const telegramVersion = Number(window.Telegram.WebApp.version);
 
-      const isMobile =
-        window.Telegram.WebApp.platform === "ios" ||
-        window.Telegram.WebApp.platform === "android" ||
-        window.Telegram.WebApp.platform === "android_x";
+        const isMobile =
+          window.Telegram.WebApp.platform === "ios" ||
+          window.Telegram.WebApp.platform === "android" ||
+          window.Telegram.WebApp.platform === "android_x";
 
-      // Enable proper scrolling for mobile devices
-      // if (isMobile) {
-      //   // Add a class to the body element to indicate we're on mobile
-      //   document.body.classList.add("telegram-mobile");
+        if (telegramVersion >= 8 && isMobile) {
+          window.Telegram.WebApp.requestFullscreen();
+          window.Telegram.WebApp.lockOrientation();
+        }
 
-      //   // Set up the app container for scrolling
-      //   const rootElement = document.getElementById("root");
-      //   if (rootElement) {
-      //     rootElement.classList.add("telegram-app-container");
-      //     rootElement.style.overflowY = "auto";
-      //     rootElement.style.height = "100%";
-      //     (rootElement.style as any)["-webkit-overflow-scrolling"] = "touch";
-      //   }
-      // }
-
-      if (telegramVersion >= 8 && isMobile) {
-        window.Telegram.WebApp.requestFullscreen();
-        window.Telegram.WebApp.lockOrientation();
+        // Enable closing confirmation
+        window.Telegram.WebApp.enableClosingConfirmation();
+      } catch (e) {
+        console.warn("Error configuring Telegram WebApp:", e);
       }
-
-      // Enable closing confirmation
-      window.Telegram.WebApp.enableClosingConfirmation();
-    } catch (e) {
-      console.warn("Error configuring Telegram WebApp:", e);
     }
-  }
+  }, []);
 
   return (
     <RootDocument>
