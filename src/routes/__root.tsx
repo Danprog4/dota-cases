@@ -19,6 +19,24 @@ import { AuthProvider } from "~/components/AuthProvider";
 import appCss from "~/lib/styles/app.css?url";
 import { TRPCRouter } from "~/trpc/init/router";
 
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp: {
+        enableClosingConfirmation: () => void;
+        expand: () => void;
+        disableVerticalSwipes: () => void;
+        requestFullscreen: () => void;
+        lockOrientation: () => void;
+        platform: string;
+        version: string;
+
+        // Add other Telegram WebApp properties you might use here
+      };
+    };
+  }
+}
+
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   trpc: TRPCOptionsProxy<TRPCRouter>;
@@ -87,6 +105,44 @@ function RootComponent() {
       viewport.expand();
     }
   }, []);
+
+  if (window.Telegram && window.Telegram.WebApp) {
+    try {
+      window.Telegram.WebApp.expand();
+      const telegramVersion = Number(window.Telegram.WebApp.version);
+
+      const isMobile =
+        window.Telegram.WebApp.platform === "ios" ||
+        window.Telegram.WebApp.platform === "android" ||
+        window.Telegram.WebApp.platform === "android_x";
+
+      // Enable proper scrolling for mobile devices
+      // if (isMobile) {
+      //   // Add a class to the body element to indicate we're on mobile
+      //   document.body.classList.add("telegram-mobile");
+
+      //   // Set up the app container for scrolling
+      //   const rootElement = document.getElementById("root");
+      //   if (rootElement) {
+      //     rootElement.classList.add("telegram-app-container");
+      //     rootElement.style.overflowY = "auto";
+      //     rootElement.style.height = "100%";
+      //     (rootElement.style as any)["-webkit-overflow-scrolling"] = "touch";
+      //   }
+      // }
+
+      if (telegramVersion >= 8 && isMobile) {
+        window.Telegram.WebApp.requestFullscreen();
+        window.Telegram.WebApp.lockOrientation();
+      }
+
+      // Enable closing confirmation
+      window.Telegram.WebApp.enableClosingConfirmation();
+    } catch (e) {
+      console.warn("Error configuring Telegram WebApp:", e);
+    }
+  }
+
   return (
     <RootDocument>
       <AuthProvider>
@@ -123,7 +179,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
               backgroundColor: "#000000",
               color: "#fff",
               borderRadius: "16px",
-              border: "1px solid #76AD10",
+              border: "1px solid red",
             },
           }}
         />
