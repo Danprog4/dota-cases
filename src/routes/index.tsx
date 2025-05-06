@@ -11,7 +11,7 @@ function Home() {
   const { user } = useUser();
 
   return (
-    <div className="mt-4 flex h-screen w-full flex-col items-center overflow-y-auto p-4 pb-20">
+    <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-14 pb-14">
       <div className="flex flex-col items-center gap-2 pb-4">
         <Logo width="88px" height="88px" />
         <h1 className="text-4xl font-bold">Dota Crystals</h1>

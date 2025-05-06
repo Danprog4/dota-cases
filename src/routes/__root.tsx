@@ -30,7 +30,6 @@ declare global {
         lockOrientation: () => void;
         platform: string;
         version: string;
-
         // Add other Telegram WebApp properties you might use here
       };
     };
@@ -105,7 +104,6 @@ function RootComponent() {
       viewport.expand();
     }
 
-    // Move Telegram WebApp configuration inside useEffect to ensure window is defined
     if (typeof window !== "undefined" && window.Telegram && window.Telegram.WebApp) {
       try {
         window.Telegram.WebApp.expand();
