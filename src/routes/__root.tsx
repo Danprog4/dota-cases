@@ -5,7 +5,13 @@ import {
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
-import { backButton, init, mockTelegramEnv, swipeBehavior } from "@telegram-apps/sdk";
+import {
+  backButton,
+  init,
+  mockTelegramEnv,
+  swipeBehavior,
+  viewport,
+} from "@telegram-apps/sdk";
 import { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
@@ -45,55 +51,13 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1, maximum-scale=1",
       },
       {
-        title: "Dota Crystals",
+        title: "React TanStarter",
       },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
   }),
   component: RootComponent,
 });
-
-if (window.Telegram && window.Telegram.WebApp) {
-  try {
-    window.Telegram.WebApp.expand();
-    const telegramVersion = Number(window.Telegram.WebApp.version);
-
-    if (telegramVersion >= 7.7) {
-      // We're handling scrolling ourselves, so prevent Telegram's swipe gestures
-      window.Telegram.WebApp.disableVerticalSwipes();
-    }
-
-    const isMobile =
-      window.Telegram.WebApp.platform === "ios" ||
-      window.Telegram.WebApp.platform === "android" ||
-      window.Telegram.WebApp.platform === "android_x";
-
-    // Enable proper scrolling for mobile devices
-    if (isMobile) {
-      // Add a class to the body element to indicate we're on mobile
-      document.body.classList.add("telegram-mobile");
-
-      // Set up the app container for scrolling
-      const rootElement = document.getElementById("root");
-      if (rootElement) {
-        rootElement.classList.add("telegram-app-container");
-        rootElement.style.overflowY = "auto";
-        rootElement.style.height = "100%";
-        (rootElement.style as any)["-webkit-overflow-scrolling"] = "touch";
-      }
-    }
-
-    if (telegramVersion >= 8 && isMobile) {
-      window.Telegram.WebApp.requestFullscreen();
-      window.Telegram.WebApp.lockOrientation();
-    }
-
-    // Enable closing confirmation
-    window.Telegram.WebApp.enableClosingConfirmation();
-  } catch (e) {
-    console.warn("Error configuring Telegram WebApp:", e);
-  }
-}
 
 function RootComponent() {
   useEffect(() => {
@@ -134,6 +98,32 @@ function RootComponent() {
       swipeBehavior.isMounted();
       swipeBehavior.disableVertical();
       swipeBehavior.isVerticalEnabled();
+    }
+
+    if (viewport.expand.isAvailable()) {
+      viewport.expand();
+    }
+
+    if (typeof window !== "undefined" && window.Telegram && window.Telegram.WebApp) {
+      try {
+        window.Telegram.WebApp.expand();
+        const telegramVersion = Number(window.Telegram.WebApp.version);
+
+        const isMobile =
+          window.Telegram.WebApp.platform === "ios" ||
+          window.Telegram.WebApp.platform === "android" ||
+          window.Telegram.WebApp.platform === "android_x";
+
+        if (telegramVersion >= 8 && isMobile) {
+          window.Telegram.WebApp.requestFullscreen();
+          window.Telegram.WebApp.lockOrientation();
+        }
+
+        // Enable closing confirmation
+        window.Telegram.WebApp.enableClosingConfirmation();
+      } catch (e) {
+        console.warn("Error configuring Telegram WebApp:", e);
+      }
     }
   }, []);
 
