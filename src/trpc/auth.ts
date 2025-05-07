@@ -92,7 +92,6 @@ export const authRouter = {
         }
 
         return newUser[0];
-        return newUser[0];
       }
       return existingUser;
     }),
