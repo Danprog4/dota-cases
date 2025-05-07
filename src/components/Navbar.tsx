@@ -1,33 +1,53 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Diamond, ShoppingBag, User, Users } from "lucide-react";
-import { useUser } from "./hooks/useUser";
-
+import { useState } from "react";
+import { toast } from "sonner";
+import { useUser } from "../hooks/useUser";
 export const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useUser();
+  const [activeButton, setActiveButton] = useState("balance");
   const userBalance = user?.crystalBalance;
 
   return (
-    <div className="fixed right-0 bottom-0 left-0 flex w-full justify-around bg-neutral-900/80 py-2 backdrop-blur-lg">
+    <div className="fixed right-0 bottom-0 left-0 flex w-full justify-around bg-neutral-900/80 py-5 backdrop-blur-lg">
       <NavButton
         icon={<Diamond className="h-6 w-6" />}
         label={`${userBalance}`}
-        onClick={() => navigate({ to: "/" })}
+        onClick={() => {
+          navigate({ to: "/" });
+          setActiveButton("balance");
+        }}
+        isActive={activeButton === "balance"}
       />
       <NavButton
         icon={<ShoppingBag className="h-6 w-6" />}
         label="Кейсы"
-        onClick={() => navigate({ to: "/" })}
+        onClick={() => {
+          //   navigate({ to: "/" });
+          //   setActiveButton("cases");
+          toast.error("В разработке");
+        }}
+        isActive={activeButton === "cases"}
       />
       <NavButton
         icon={<Users className="h-6 w-6" />}
         label="Друзья"
-        onClick={() => navigate({ to: "/friends" })}
+        onClick={() => {
+          navigate({ to: "/friends" });
+          setActiveButton("friends");
+        }}
+        isActive={activeButton === "friends"}
       />
       <NavButton
         icon={<User className="h-6 w-6" />}
         label="Профиль"
-        onClick={() => navigate({ to: "/" })}
+        onClick={() => {
+          //   navigate({ to: "/" });
+          //   setActiveButton("profile");
+          toast.error("В разработке");
+        }}
+        isActive={activeButton === "profile"}
       />
     </div>
   );
@@ -37,11 +57,14 @@ interface NavButtonProps {
   icon: React.ReactNode;
   label: string;
   onClick: () => void;
+  isActive: boolean;
 }
-const NavButton = ({ icon, label, onClick }: NavButtonProps) => {
+const NavButton = ({ icon, label, onClick, isActive }: NavButtonProps) => {
   return (
     <button
-      className="flex flex-col items-center justify-center px-2 text-neutral-400"
+      className={`flex flex-col items-center justify-center px-2 text-neutral-400 ${
+        isActive && "text-white"
+      }`}
       onClick={onClick}
     >
       <div>{icon}</div>

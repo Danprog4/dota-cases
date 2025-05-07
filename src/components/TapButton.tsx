@@ -19,7 +19,9 @@ export const TapButton = () => {
 
   const handlePress = async () => {
     if (remaining === undefined || remaining.remaining <= 0) {
-      toast.error("Вернись завтра!");
+      toast.error(
+        "На сегодня все! Приходи завтра тапать на кристаллы, а также приглашай друзей.",
+      );
       return;
     }
     queryClient.setQueryData(trpc.main.getUser.queryKey(), (old: User | undefined) => {

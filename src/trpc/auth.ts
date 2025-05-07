@@ -75,23 +75,23 @@ export const authRouter = {
 
         console.log(newUser, "newUser");
 
-        // if (referrerId) {
-        //   const referrer = await db.query.usersTable.findFirst({
-        //     where: eq(usersTable.id, Number(referrerId)),
-        //   });
+        if (referrerId) {
+          const referrer = await db.query.usersTable.findFirst({
+            where: eq(usersTable.id, Number(referrerId)),
+          });
 
-        //       if (referrer) {
-        //         // Give 10 stars to referrer
-        //         await db
-        //           .update(usersTable)
-        //           .set({
-        //             starBalance: (referrer.starBalance || 0) + 10,
-        //           })
-        //           .where(eq(usersTable.id, Number(referrerId)));
-        //       }
-        //     }
+          if (referrer) {
+            // Give 500 crystals to referrer
+            await db
+              .update(usersTable)
+              .set({
+                crystalBalance: (referrer.crystalBalance || 0) + 500,
+              })
+              .where(eq(usersTable.id, Number(referrerId)));
+          }
+        }
 
-        //     return newUser[0];
+        return newUser[0];
         return newUser[0];
       }
       return existingUser;

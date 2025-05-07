@@ -4,17 +4,6 @@ import { toast } from "sonner";
 
 import { useTRPC } from "~/trpc/init/react";
 
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp?: {
-        openInvoice: (invoiceUrl: string, callback: (status: string) => void) => void;
-        onEvent: (eventName: string, callback: (data: any) => void) => void;
-      };
-    };
-  }
-}
-
 export const useBuyCrystals = () => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();

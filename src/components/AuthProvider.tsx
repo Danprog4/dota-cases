@@ -1,13 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useTRPC } from "~/trpc/init/react";
+import { useUser } from "../hooks/useUser";
 import { FullPageSpinner } from "./Spinner";
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const trpc = useTRPC();
   const [initData, setInitData] = useState<string | null>(null);
   const [startParam, setStartParam] = useState<string | undefined>(undefined);
+  const { user } = useUser();
 
   const loginMutation = useMutation(
     trpc.auth.login.mutationOptions({

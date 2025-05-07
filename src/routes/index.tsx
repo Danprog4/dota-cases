@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useUser } from "~/components/hooks/useUser";
 import { Logo } from "~/components/icons/logo";
 import { TapButton } from "~/components/TapButton";
+import { useUser } from "~/hooks/useUser";
 
 export const Route = createFileRoute("/")({
   component: Home,

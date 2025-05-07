@@ -2,8 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import Lottie from "lottie-react";
 import dotaAnimation from "~/assets/dota.json";
 import { BackButton } from "~/components/BackButton";
-import { useBuyCrystals } from "~/components/hooks/useBuyCrystals";
 import { Logo } from "~/components/icons/logo";
+import { useBuyCrystals } from "~/hooks/useBuyCrystals";
 import { CRYSTAL_PRICE } from "~/lib/configs/crys.price";
 
 export const Route = createFileRoute("/crystals")({
