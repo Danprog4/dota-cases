@@ -109,11 +109,7 @@ function RootComponent() {
       requestFullscreen();
     }
 
-    viewport.mount();
-    viewport.isMounted(); // true
-
-    viewport.requestFullscreen();
-    viewport.isFullscreen(); // true
+    viewport.mount().then(() => viewport.requestFullscreen());
   }, []);
 
   return (
