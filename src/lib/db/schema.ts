@@ -18,7 +18,7 @@ export const usersTable = pgTable("users", {
 
 export const tapBatches = pgTable("tap_batches", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").notNull(),
+  userId: bigint("user_id", { mode: "number" }).notNull(),
   count: integer("count").notNull(),
   date: timestamp("date", { withTimezone: true }).notNull().defaultNow(),
 });
