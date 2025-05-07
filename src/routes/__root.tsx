@@ -101,23 +101,19 @@ function RootComponent() {
       swipeBehavior.isVerticalEnabled();
     }
 
-    if (viewport.expand.isAvailable()) {
-      viewport.expand();
-    }
+    // if (viewport.expand.isAvailable()) {
+    //   viewport.expand();
+    // }
 
     if (requestFullscreen.isAvailable()) {
       requestFullscreen();
     }
 
-    if (viewport.mount.isAvailable()) {
-      viewport.mount();
-      viewport.isMounted(); // true
-    }
+    viewport.mount();
+    viewport.isMounted(); // true
 
-    if (viewport.requestFullscreen.isAvailable()) {
-      viewport.requestFullscreen();
-      viewport.isFullscreen(); // true
-    }
+    viewport.requestFullscreen();
+    viewport.isFullscreen(); // true
   }, []);
 
   return (
