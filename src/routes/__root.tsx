@@ -17,9 +17,9 @@ import { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
 import { AuthProvider } from "~/components/AuthProvider";
+import { Navbar } from "~/components/Navbar";
 import appCss from "~/lib/styles/app.css?url";
 import { TRPCRouter } from "~/trpc/init/router";
-
 declare global {
   interface Window {
     Telegram?: {
@@ -116,6 +116,7 @@ function RootComponent() {
     <RootDocument>
       <AuthProvider>
         <Outlet />
+        <Navbar />
       </AuthProvider>
     </RootDocument>
   );

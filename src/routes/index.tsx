@@ -12,7 +12,7 @@ function Home() {
   const { user } = useUser();
 
   return (
-    <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-20 pb-14">
+    <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-24 pb-18">
       <div className="flex flex-col items-center gap-2 pb-4">
         <TapButton />
         <h1 className="text-4xl font-bold">Dota Crystals</h1>

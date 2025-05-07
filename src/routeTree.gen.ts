@@ -11,10 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as FriendsImport } from './routes/friends'
 import { Route as CrystalsImport } from './routes/crystals'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const FriendsRoute = FriendsImport.update({
+  id: '/friends',
+  path: '/friends',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const CrystalsRoute = CrystalsImport.update({
   id: '/crystals',
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CrystalsImport
       parentRoute: typeof rootRoute
     }
+    '/friends': {
+      id: '/friends'
+      path: '/friends'
+      fullPath: '/friends'
+      preLoaderRoute: typeof FriendsImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +68,41 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/crystals': typeof CrystalsRoute
+  '/friends': typeof FriendsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/crystals': typeof CrystalsRoute
+  '/friends': typeof FriendsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/crystals': typeof CrystalsRoute
+  '/friends': typeof FriendsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/crystals'
+  fullPaths: '/' | '/crystals' | '/friends'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/crystals'
-  id: '__root__' | '/' | '/crystals'
+  to: '/' | '/crystals' | '/friends'
+  id: '__root__' | '/' | '/crystals' | '/friends'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CrystalsRoute: typeof CrystalsRoute
+  FriendsRoute: typeof FriendsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CrystalsRoute: CrystalsRoute,
+  FriendsRoute: FriendsRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +116,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/crystals"
+        "/crystals",
+        "/friends"
       ]
     },
     "/": {
@@ -105,6 +125,9 @@ export const routeTree = rootRoute
     },
     "/crystals": {
       "filePath": "crystals.tsx"
+    },
+    "/friends": {
+      "filePath": "friends.tsx"
     }
   }
 }
