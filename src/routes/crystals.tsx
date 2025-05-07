@@ -15,7 +15,7 @@ function RouteComponent() {
   const { buyCrystals } = useBuyCrystals();
 
   return (
-    <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-14 pb-14">
+    <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-24 pb-14">
       <BackButton onClick={() => navigate({ to: "/" })} />
       <div className="item mb-4 flex flex-col items-center">
         <div className="h-[88px] w-[88px]">
