@@ -18,7 +18,7 @@ export const TapButton = () => {
   const isPressed = useRef(false);
 
   const handlePress = async () => {
-    if (remaining === undefined || remaining.remaining <= 0) {
+    if (!remaining || remaining.remaining <= 0) {
       toast.error(
         "На сегодня все! Приходи завтра тапать на кристаллы, а пока приглашай друзей.",
       );
