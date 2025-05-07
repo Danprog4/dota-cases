@@ -108,6 +108,16 @@ function RootComponent() {
     if (requestFullscreen.isAvailable()) {
       requestFullscreen();
     }
+
+    if (viewport.mount.isAvailable()) {
+      viewport.mount();
+      viewport.isMounted(); // true
+    }
+
+    if (viewport.requestFullscreen.isAvailable()) {
+      viewport.requestFullscreen();
+      viewport.isFullscreen(); // true
+    }
   }, []);
 
   return (
