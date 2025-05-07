@@ -21,17 +21,44 @@ export const router = {
     return user;
   }),
   getRemaining: procedure.query(async ({ ctx }) => {
-    const userId = ctx.userId;
-    const [row] = await db
-      .select({
-        total: sql<number>`COALESCE(SUM(${tapBatches.count}), 0)`,
-      })
-      .from(tapBatches)
-      .where(
-        and(eq(tapBatches.userId, userId), sql`DATE(${tapBatches.date}) = CURRENT_DATE`),
+    try {
+      const userId = ctx.userId;
+      console.log(`Getting remaining taps for user: ${userId}`);
+      console.log(`Current MAX_TAPS value: ${MAX_TAPS}`);
+
+      console.log(`Executing database query for user ${userId} to get tap count`);
+      const [row] = await db
+        .select({
+          total: sql<number>`COALESCE(SUM(${tapBatches.count}), 0)`,
+        })
+        .from(tapBatches)
+        .where(
+          and(
+            eq(tapBatches.userId, userId),
+            sql`DATE(${tapBatches.date}) = CURRENT_DATE`,
+          ),
+        );
+
+      const total = row.total;
+      console.log(`Query result for user ${userId}: ${JSON.stringify(row)}`);
+      console.log(`Raw total value: ${total}, type: ${typeof total}`);
+      console.log(
+        `User ${userId} has used ${total} taps today. Remaining: ${Number(MAX_TAPS) - Number(total)}`,
       );
-    const total = row.total;
-    return { remaining: Number(MAX_TAPS) - Number(total) };
+
+      const remaining = Number(MAX_TAPS) - Number(total);
+      console.log(`Final remaining value: ${remaining}, type: ${typeof remaining}`);
+
+      return { remaining };
+    } catch (error) {
+      console.error("Error in getRemaining:", error);
+      console.error(
+        "Error stack:",
+        error instanceof Error ? error.stack : "No stack trace available",
+      );
+      console.error("Context:", { userId: ctx.userId });
+      throw error;
+    }
   }),
   addBatch: procedure
     .input(z.object({ count: z.number().min(1) }))
