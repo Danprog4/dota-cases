@@ -1,9 +1,8 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { shareURL } from "@telegram-apps/sdk";
 import Lottie from "lottie-react";
 import { useMemo } from "react";
 import duckAnimation from "~/assets/duck.json";
-import { BackButton } from "~/components/BackButton";
 import { Logo } from "~/components/icons/logo";
 import { useUser } from "~/hooks/useUser";
 export const Route = createFileRoute("/friends")({
@@ -11,7 +10,6 @@ export const Route = createFileRoute("/friends")({
 });
 
 function RouteComponent() {
-  const navigate = useNavigate();
   const { user } = useUser();
   const text = "Приглашаю тебя в игру Dota Cases!";
   const link = useMemo((): string => {
@@ -19,7 +17,6 @@ function RouteComponent() {
   }, [user?.id]);
   return (
     <div className="flex flex-col items-center gap-2 p-4 pt-14">
-      <BackButton onClick={() => navigate({ to: "/" })} />
       <div className="flex flex-col items-center gap-2">
         <div className="h-[150px] w-[150px]">
           <Lottie animationData={duckAnimation} loop={true} />

@@ -43,9 +43,8 @@ export const Navbar = () => {
         icon={<User className="h-6 w-6" />}
         label="Профиль"
         onClick={() => {
-          //   navigate({ to: "/" });
-          //   setActiveButton("profile");
-          toast.error("В разработке");
+          navigate({ to: "/profile" });
+          setActiveButton("profile");
         }}
         isActive={activeButton === "profile"}
       />
