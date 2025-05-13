@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Logo } from "~/components/icons/logo";
 import { TapButton } from "~/components/TapButton";
 import { useUser } from "~/hooks/useUser";
-
+import clickMe from "../../public/click-me.png";
 export const Route = createFileRoute("/")({
   component: Home,
 });
@@ -14,10 +14,18 @@ function Home() {
   return (
     <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-24 pb-18">
       <div className="flex flex-col items-center gap-2 pb-4">
-        <TapButton />
-        <h1 className="text-4xl font-bold">Dota Crystals</h1>
+        <div className="relative flex w-full items-center justify-center">
+          <TapButton />
+          <img
+            src={clickMe}
+            alt=""
+            className="absolute right-[-50px] bottom-0 object-contain"
+          />
+        </div>
+        <h1 className="text-4xl font-bold">Dota Coins</h1>
+
         <p className="text-md w-[68vw] text-center">
-          Зарабатывай кристаллы и меняй их на кейсы, стикеры и скины для Dota 2
+          Зарабатывай монеты и меняй их на кейсы, стикеры и скины для Dota 2
         </p>
       </div>
       <div className="mb-2 flex w-full flex-col items-center justify-center rounded-2xl bg-neutral-800 p-4">
@@ -26,10 +34,10 @@ function Home() {
         </div>
         <div className="text-muted-foreground mb-3 text-sm">твой баланс</div>
         <div
-          className="flex w-full cursor-pointer items-center justify-center rounded-2xl bg-blue-600 py-4 text-white"
+          className="flex w-full cursor-pointer items-center justify-center rounded-2xl bg-red-500 py-4 text-white"
           onClick={() => navigate({ to: "/crystals" })}
         >
-          Купить кристаллы
+          Купить монеты
         </div>
       </div>
       <div className="mb-4 flex w-full flex-col gap-2">

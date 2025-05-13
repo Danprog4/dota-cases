@@ -10,7 +10,11 @@ import { useTRPC } from "~/trpc/init/react";
 export const TapButton = () => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const { data: remaining } = useQuery(trpc.main.getRemaining.queryOptions());
+  const {
+    data: remaining,
+    isLoading,
+    isPending,
+  } = useQuery(trpc.main.getRemaining.queryOptions());
   const { mutateAsync: addBatch } = useMutation(trpc.main.addBatch.mutationOptions());
   const [taps, setTaps] = useState(0);
 
@@ -58,6 +62,7 @@ export const TapButton = () => {
 
   return (
     <button
+      disabled={isLoading || isPending}
       ref={buttonRef}
       className="h-[88px] w-[88px] cursor-pointer transition-transform"
       onMouseDown={handlePressStart}

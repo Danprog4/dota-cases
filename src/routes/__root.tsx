@@ -1,4 +1,4 @@
-import type { QueryClient } from "@tanstack/react-query";
+import { useQueryClient, type QueryClient } from "@tanstack/react-query";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -19,6 +19,7 @@ import { Toaster } from "sonner";
 import { AuthProvider } from "~/components/AuthProvider";
 import { Navbar } from "~/components/Navbar";
 import appCss from "~/lib/styles/app.css?url";
+import { useTRPC } from "~/trpc/init/react";
 import { TRPCRouter } from "~/trpc/init/router";
 declare global {
   interface Window {
@@ -126,12 +127,22 @@ const isDev = import.meta.env.DEV;
 const isErudaEnabled = import.meta.env.VITE_ERUDA_ENABLED === "true";
 
 function RootDocument({ children }: { readonly children: React.ReactNode }) {
+  const queryClient = useQueryClient();
+  const trpc = useTRPC();
+  const prefetch = async () => {
+    await queryClient.prefetchQuery(trpc.main.getUser.queryOptions());
+    await queryClient.prefetchQuery(trpc.main.getRemaining.queryOptions());
+  };
   useEffect(() => {
     if (isDev && isErudaEnabled) {
       import("eruda").then((eruda) => {
         eruda.default.init();
       });
     }
+  }, []);
+
+  useEffect(() => {
+    prefetch();
   }, []);
 
   return (

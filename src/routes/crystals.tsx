@@ -3,6 +3,7 @@ import Lottie from "lottie-react";
 import dotaAnimation from "~/assets/dota.json";
 import { BackButton } from "~/components/BackButton";
 import { Logo } from "~/components/icons/logo";
+import { TelegramStar } from "~/components/TelegramStar";
 import { useBuyCrystals } from "~/hooks/useBuyCrystals";
 import { CRYSTAL_PRICE } from "~/lib/configs/crys.price";
 
@@ -15,14 +16,14 @@ function RouteComponent() {
   const { buyCrystals } = useBuyCrystals();
 
   return (
-    <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-24 pb-18">
+    <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-24 pb-24">
       <BackButton onClick={() => navigate({ to: "/" })} />
       <div className="item mb-4 flex flex-col items-center">
         <div className="h-[88px] w-[88px]">
           <Lottie animationData={dotaAnimation} loop={true} />
         </div>
-        <div className="mb-2 text-4xl font-bold">Купить кристаллы</div>
-        <div className="text-sm">Выбери нужное количество кристаллов</div>
+        <div className="mb-2 text-4xl font-bold">Купить монеты</div>
+        <div className="text-sm">Выбери нужное количество монет</div>
       </div>
       <div className="flex w-full flex-col gap-3">
         {CRYSTAL_PRICE.map((crystal) => (
@@ -39,8 +40,11 @@ function RouteComponent() {
             </div>
             <div className="flex items-center gap-10">
               <div className="text-neutral-400">≈ {crystal.price} ₽</div>
-              <div className="px- flex items-center justify-center rounded-lg font-medium">
-                {crystal.stars}
+              <div className="flex items-center justify-center gap-2">
+                <div className="px- flex items-center justify-center rounded-lg font-medium">
+                  {crystal.stars}
+                </div>
+                <TelegramStar />
               </div>
             </div>
           </div>
