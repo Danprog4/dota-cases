@@ -25,7 +25,10 @@ function RouteComponent() {
           <Lottie animationData={duckAnimation} loop={true} />
         </div>
         <div className="text-center text-4xl font-bold">
-          Приглашай друзей <br />и получай кристаллы
+          Приглашай друзей и получай{" "}
+          <span className="flex items-center justify-center gap-2">
+            500 монет <Logo width="40px" height="40px" />
+          </span>
         </div>
       </div>
       <div
@@ -34,9 +37,9 @@ function RouteComponent() {
             shareURL(link, text);
           }
         }}
-        className="fixed right-0 bottom-20 left-0 mx-4 mb-4 flex w-auto cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 py-4 text-white"
+        className="fixed right-0 bottom-20 left-0 mx-4 mb-4 flex w-auto cursor-pointer items-center justify-center gap-2 rounded-2xl bg-red-500 py-4 text-white"
       >
-        Пригласить друга 500 <Logo width="20px" height="20px" />
+        Пригласить друга
       </div>
     </div>
   );

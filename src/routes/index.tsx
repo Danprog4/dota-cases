@@ -12,7 +12,7 @@ function Home() {
   const { user } = useUser();
 
   return (
-    <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-24 pb-18">
+    <div className="flex h-screen w-full flex-col items-center overflow-y-auto p-4 pt-24 pb-24">
       <div className="flex flex-col items-center gap-2 pb-4">
         <div className="relative flex w-full items-center justify-center">
           <TapButton />
