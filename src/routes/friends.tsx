@@ -21,10 +21,10 @@ function RouteComponent() {
         <div className="h-[150px] w-[150px]">
           <Lottie animationData={duckAnimation} loop={true} />
         </div>
-        <div className="text-center text-4xl font-bold">
+        <div className="max-w-[342px] text-center text-4xl font-bold">
           Приглашай друзей и получай{" "}
           <span className="flex items-center justify-center gap-2">
-            500 монет <Logo width="40px" height="40px" />
+            500 DOTA COINS <Logo width="40px" height="40px" />
           </span>
         </div>
       </div>

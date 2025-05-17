@@ -29,6 +29,7 @@
     "@trpc/server": "^11.0.2",
     "@trpc/tanstack-react-query": "^11.0.2",
     "@vitejs/plugin-react": "^4.3.4",
+    "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.5.0",

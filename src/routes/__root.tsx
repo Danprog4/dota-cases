@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { Toaster } from "sonner";
 import { AuthProvider } from "~/components/AuthProvider";
 import { Navbar } from "~/components/Navbar";
+import { useTaskStatusPolling } from "~/hooks/useTasks";
 import appCss from "~/lib/styles/app.css?url";
 import { useTRPC } from "~/trpc/init/react";
 import { TRPCRouter } from "~/trpc/init/router";
@@ -112,6 +113,8 @@ function RootComponent() {
 
     viewport.mount().then(() => viewport.requestFullscreen());
   }, []);
+
+  useTaskStatusPolling();
 
   return (
     <RootDocument>

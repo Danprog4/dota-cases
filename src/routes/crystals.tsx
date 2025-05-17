@@ -22,8 +22,8 @@ function RouteComponent() {
         <div className="h-[88px] w-[88px]">
           <Lottie animationData={dotaAnimation} loop={true} />
         </div>
-        <div className="mb-2 text-4xl font-bold">Купить монеты</div>
-        <div className="text-sm">Выбери нужное количество монет</div>
+        <div className="mb-2 text-4xl font-bold">Купить DOTA COINS</div>
+        <div className="text-sm">Выбери нужное количество DOTA COINS</div>
       </div>
       <div className="flex w-full flex-col gap-3">
         {CRYSTAL_PRICE.map((crystal) => (
