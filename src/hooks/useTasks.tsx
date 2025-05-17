@@ -58,7 +58,7 @@ export function useTaskStatusPolling() {
         tasksIds: checkingTaskIds ?? [],
       },
       {
-        refetchInterval: 1000,
+        refetchInterval: 5000,
       },
     ),
   );
