@@ -12,18 +12,22 @@ import { checkMembership } from "~/lib/tasks/check-tasks";
 import { procedure } from "./init";
 export const tasksRouter = {
   getTasks: procedure.query<FrontendTask[]>(async ({ ctx }) => {
+    console.log("getTasks called for userId:", ctx.userId);
     const tasks = await db.select().from(tasksTable);
+    console.log("Retrieved tasks:", tasks.length);
 
     const userTasks = await db
       .select()
       .from(userTasksTable)
       .where(eq(userTasksTable.userId, ctx.userId));
+    console.log("Retrieved userTasks:", userTasks.length);
 
     const userTaskMap = new Map<number, TaskStatus>(
       userTasks.map((ut) => [ut.taskId, ut.status as TaskStatus]),
     );
+    console.log("User task map created with entries:", userTaskMap.size);
 
-    return tasks.map(
+    const frontendTasks = tasks.map(
       (task) =>
         ({
           id: task.id,
@@ -33,6 +37,8 @@ export const tasksRouter = {
           taskData: task.data as TaskData,
         }) satisfies FrontendTask,
     );
+    console.log("Returning frontend tasks:", frontendTasks.length);
+    return frontendTasks;
   }),
 
   getTasksStatuses: procedure
@@ -42,6 +48,9 @@ export const tasksRouter = {
       }),
     )
     .query(async ({ ctx, input }) => {
+      console.log("getTasksStatuses called with userId:", ctx.userId);
+      console.log("Requested task IDs:", input.tasksIds);
+
       // Get all tasks statuses for the given task IDs
       const userTasks = await db
         .select()
@@ -57,15 +66,24 @@ export const tasksRouter = {
       console.log("userTasks", userTasks);
 
       // Map tasks to required format
-      return userTasks.map((task) => ({
+      const result = userTasks.map((task) => ({
         taskId: task.taskId,
         status: task.status,
       }));
+      console.log("Returning task statuses:", result);
+      return result;
     }),
 
   startVerification: procedure
     .input(z.object({ taskId: z.number() }))
     .mutation(async ({ ctx, input }) => {
+      console.log(
+        "startVerification called for userId:",
+        ctx.userId,
+        "taskId:",
+        input.taskId,
+      );
+
       const task = await db
         .select()
         .from(tasksTable)
@@ -73,8 +91,10 @@ export const tasksRouter = {
         .then((rows) => rows[0]);
 
       if (!task) {
+        console.error("Task not found for taskId:", input.taskId);
         throw new Error("Task not found");
       }
+      console.log("Found task:", task);
 
       //   const existingTask = await db
       //     .select()
@@ -111,15 +131,24 @@ export const tasksRouter = {
       //       );
       //   }
 
+      console.log(
+        "Calling checkMembership for userId:",
+        ctx.userId,
+        "taskId:",
+        input.taskId,
+      );
       await checkMembership({
         userId: ctx.userId,
         taskId: input.taskId,
       });
+      console.log("checkMembership completed");
     }),
 
   startTask: procedure
     .input(z.object({ taskId: z.number() }))
     .mutation(async ({ ctx, input }) => {
+      console.log("startTask called for userId:", ctx.userId, "taskId:", input.taskId);
+
       const task = await db
         .select()
         .from(tasksTable)
@@ -127,8 +156,10 @@ export const tasksRouter = {
         .then((rows) => rows[0]);
 
       if (!task) {
+        console.error("Task not found for taskId:", input.taskId);
         throw new Error("Task not found");
       }
+      console.log("Found task:", task);
 
       const userTask = await db
         .select()
@@ -139,8 +170,10 @@ export const tasksRouter = {
             eq(userTasksTable.taskId, input.taskId),
           ),
         );
+      console.log("Existing userTask:", userTask);
 
       if (userTask.length !== 0) {
+        console.log("Updating existing user task to 'started'");
         await db
           .update(userTasksTable)
           .set({
@@ -155,10 +188,12 @@ export const tasksRouter = {
         return;
       }
 
+      console.log("Creating new user task with 'started' status");
       await db.insert(userTasksTable).values({
         userId: ctx.userId,
         taskId: input.taskId,
         status: "started",
       });
+      console.log("Task started successfully");
     }),
 };

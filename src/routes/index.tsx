@@ -5,7 +5,6 @@ import { Logo } from "~/components/icons/logo";
 import { TapButton } from "~/components/TapButton";
 import { TasksList } from "~/components/Tasks";
 import { useUser } from "~/hooks/useUser";
-import clickMe from "../../public/click-me.png";
 export const Route = createFileRoute("/")({
   component: Home,
 });
@@ -23,11 +22,6 @@ function Home() {
       <div className="flex flex-col items-center gap-2 pb-4">
         <div className="relative flex w-full items-center justify-center">
           <TapButton />
-          <img
-            src={clickMe}
-            alt=""
-            className="absolute right-[-50px] bottom-0 object-contain"
-          />
         </div>
         <h1 className="text-4xl font-bold">DOTA COINS</h1>
 
