@@ -4,7 +4,7 @@ import { db } from "../db";
 import { tasksTable } from "../db/schema";
 import { makeTaskCompleted, makeTaskFailed } from "./db-repo";
 
-async function checkTelegramMembership(args: {
+export async function checkTelegramMembership(args: {
   userId: number;
   chatId: string;
 }): Promise<boolean> {

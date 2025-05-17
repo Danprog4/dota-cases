@@ -11,12 +11,19 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TradeImport } from './routes/trade'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as FriendsImport } from './routes/friends'
 import { Route as CrystalsImport } from './routes/crystals'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const TradeRoute = TradeImport.update({
+  id: '/trade',
+  path: '/trade',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ProfileRoute = ProfileImport.update({
   id: '/profile',
@@ -74,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
+    '/trade': {
+      id: '/trade'
+      path: '/trade'
+      fullPath: '/trade'
+      preLoaderRoute: typeof TradeImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -84,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/crystals': typeof CrystalsRoute
   '/friends': typeof FriendsRoute
   '/profile': typeof ProfileRoute
+  '/trade': typeof TradeRoute
 }
 
 export interface FileRoutesByTo {
@@ -91,6 +106,7 @@ export interface FileRoutesByTo {
   '/crystals': typeof CrystalsRoute
   '/friends': typeof FriendsRoute
   '/profile': typeof ProfileRoute
+  '/trade': typeof TradeRoute
 }
 
 export interface FileRoutesById {
@@ -99,14 +115,15 @@ export interface FileRoutesById {
   '/crystals': typeof CrystalsRoute
   '/friends': typeof FriendsRoute
   '/profile': typeof ProfileRoute
+  '/trade': typeof TradeRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/crystals' | '/friends' | '/profile'
+  fullPaths: '/' | '/crystals' | '/friends' | '/profile' | '/trade'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/crystals' | '/friends' | '/profile'
-  id: '__root__' | '/' | '/crystals' | '/friends' | '/profile'
+  to: '/' | '/crystals' | '/friends' | '/profile' | '/trade'
+  id: '__root__' | '/' | '/crystals' | '/friends' | '/profile' | '/trade'
   fileRoutesById: FileRoutesById
 }
 
@@ -115,6 +132,7 @@ export interface RootRouteChildren {
   CrystalsRoute: typeof CrystalsRoute
   FriendsRoute: typeof FriendsRoute
   ProfileRoute: typeof ProfileRoute
+  TradeRoute: typeof TradeRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -122,6 +140,7 @@ const rootRouteChildren: RootRouteChildren = {
   CrystalsRoute: CrystalsRoute,
   FriendsRoute: FriendsRoute,
   ProfileRoute: ProfileRoute,
+  TradeRoute: TradeRoute,
 }
 
 export const routeTree = rootRoute
@@ -137,7 +156,8 @@ export const routeTree = rootRoute
         "/",
         "/crystals",
         "/friends",
-        "/profile"
+        "/profile",
+        "/trade"
       ]
     },
     "/": {
@@ -151,6 +171,9 @@ export const routeTree = rootRoute
     },
     "/profile": {
       "filePath": "profile.tsx"
+    },
+    "/trade": {
+      "filePath": "trade.tsx"
     }
   }
 }

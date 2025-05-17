@@ -97,6 +97,22 @@ export const router = {
         .where(eq(usersTable.id, userId));
       return { remaining: Number(MAX_TAPS) - (Number(total) + Number(count)) };
     }),
+
+  setTradeLink: procedure
+    .input(z.object({ link: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      if (input.link.length === 0) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Пожалуйста, введите ссылку на обмен",
+        });
+      }
+      const userId = ctx.userId;
+      await db
+        .update(usersTable)
+        .set({ tradeLink: input.link })
+        .where(eq(usersTable.id, userId));
+    }),
 } satisfies TRPCRouterRecord;
 
 export type Router = typeof router;

@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useTasks } from "~/hooks/useTasks";
 import { FrontendTask, TaskStatus } from "~/lib/db/schema";
 import { useTRPC } from "~/trpc/init/react";
+import { Logo } from "./icons/logo";
 
 export const TasksList = () => {
   const trpc = useTRPC();
@@ -42,27 +43,42 @@ export const TasksList = () => {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         {tasks?.map((task) => (
-          <button
-            key={task.id}
-            className="flex h-20 w-full items-center justify-between rounded-full border border-[#575757] bg-[#2A2A2A] px-4"
-          >
-            <div className="flex items-center gap-4">
-              <div className="size-12 rounded-full border border-white/10">
-                <div className="size-full rounded-full bg-white/10" />
-              </div>
+          //   <button
+          //     key={task.id}
+          //     className="flex h-20 w-full items-center justify-between rounded-full border border-[#575757] bg-[#2A2A2A] px-4"
+          //   >
+          //     <div className="flex items-center gap-4">
+          //       <div className="size-12 rounded-full border border-white/10">
+          //         <div className="size-full rounded-full bg-white/10" />
+          //       </div>
 
-              <div className="flex flex-col items-start gap-2 text-xs *:leading-none">
-                <div>{task.name}</div>
-                <div>{task.reward} FRU</div>
+          //       <div className="flex flex-col items-start gap-2 text-xs *:leading-none">
+          //         <div>{task.name}</div>
+          //         <div>{task.name} FRU</div>
+          //       </div>
+          //     </div>
+
+          //     {task.status === "notStarted" ? (
+          //       <StartTaskButton onGo={() => onGo(task)} />
+          //     ) : (
+          //       <TaskStatusBlock id={task.id} status={task.status} />
+          //     )}
+          //   </button>
+          <div className="flex h-fit w-full items-center justify-start rounded-xl bg-neutral-800 px-4 py-2">
+            <div className="flex w-full items-center justify-between">
+              <div className="flex flex-col">
+                <div className="max-w-50">Подписка на DOTA CHANNEL</div>
+                <div className="flex items-center gap-2">
+                  + {task.reward} <Logo width="20px" height="20px" />
+                </div>
               </div>
+              {task.status === "notStarted" ? (
+                <StartTaskButton onGo={() => onGo(task)} />
+              ) : (
+                <TaskStatusBlock id={task.id} status={task.status} />
+              )}
             </div>
-
-            {task.status === "notStarted" ? (
-              <StartTaskButton onGo={() => onGo(task)} />
-            ) : (
-              <TaskStatusBlock id={task.id} status={task.status} />
-            )}
-          </button>
+          </div>
         ))}
 
         {tasks?.length === 0 && (
@@ -82,12 +98,9 @@ const StartTaskButton = ({ onGo }: { onGo: () => void }) => {
   };
 
   return (
-    <button
-      onClick={onClick}
-      className="flex h-[30px] w-[90px] items-center justify-center rounded-full bg-[#76AD10] text-xs text-white"
-    >
-      Перейти
-    </button>
+    <div className="rounded-full bg-red-500 px-4 py-2 text-white" onClick={onClick}>
+      Подписаться
+    </div>
   );
 };
 
@@ -122,21 +135,18 @@ const CheckButton = ({ id }: { id: number }) => {
 
   return (
     <div className="flex items-center gap-2">
-      <button
-        onClick={onClick}
-        className="flex h-[30px] w-[90px] items-center justify-center rounded-full bg-[#76AD10] text-xs text-white"
-      >
+      <div className="rounded-full bg-red-500 px-4 py-2 text-white" onClick={onClick}>
         Проверить
-      </button>
+      </div>
     </div>
   );
 };
 
 const CompletedTask = () => {
   return (
-    <button className="flex aspect-square items-center justify-center rounded-full bg-[#76AD10] p-2 text-white">
+    <div className="flex aspect-square items-center justify-center rounded-full bg-green-600 p-2 text-white">
       <CheckIcon className="size-4" />
-    </button>
+    </div>
   );
 };
 
@@ -147,7 +157,7 @@ const TaskStatusBlock = ({ id, status }: { id: number; status: TaskStatus }) => 
 
   if (status === "checking") {
     return (
-      <button className="flex aspect-square items-center justify-center rounded-full bg-[#76AD10] p-2 text-white">
+      <button className="flex aspect-square items-center justify-center rounded-full bg-red-500 p-2 text-white">
         <Spinner className="size-4 animate-spin" />
       </button>
     );

@@ -18,6 +18,8 @@ export const usersTable = pgTable("users", {
   name: varchar("name", { length: 255 }),
   crystalBalance: bigint("crystalBalance", { mode: "number" }).default(0).notNull(),
   lastMining: timestamp("lastMining", { withTimezone: true }),
+  tradeLink: varchar("tradeLink", { length: 255 }),
+  isSub: boolean("isSub").notNull().default(false),
 });
 
 export const tapBatches = pgTable("tap_batches", {

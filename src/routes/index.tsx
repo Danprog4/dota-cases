@@ -69,19 +69,7 @@ function Home() {
             </div>
           </div>
         </div>
-        <div className="flex h-fit w-full items-center justify-start rounded-xl bg-neutral-800 px-4 py-2">
-          <div className="flex w-full items-center justify-between">
-            <div className="flex flex-col">
-              <div className="max-w-50">Подписка на DOTA CHANNEL</div>
-              <div className="flex items-center gap-2">
-                + 500 <Logo width="20px" height="20px" />
-              </div>
-            </div>
-            <div className="rounded-full bg-red-500 px-4 py-2 text-white">
-              Подписаться
-            </div>
-          </div>
-        </div>
+
         <TasksList />
       </div>
       <div className="flex w-full flex-col gap-2">

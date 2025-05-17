@@ -15,10 +15,13 @@ export const makeTaskCompleted = async (userId: number, taskId: number) => {
     .set({ completed: task.completed + 1 })
     .where(eq(tasksTable.id, taskId));
 
+  const isTgTask = task.data?.type === "telegram";
+
   await db
     .update(usersTable)
     .set({
       crystalBalance: sql`${usersTable.crystalBalance} + ${task.reward}`,
+      isSub: isTgTask && true,
     })
     .where(eq(usersTable.id, userId));
 };

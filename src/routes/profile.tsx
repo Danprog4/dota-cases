@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { openTelegramLink } from "@telegram-apps/sdk-react";
 import { ChevronRight } from "lucide-react";
 import { useUser } from "~/hooks/useUser";
 
@@ -9,6 +10,12 @@ export const Route = createFileRoute("/profile")({
 function RouteComponent() {
   const { user } = useUser();
   const navigate = useNavigate();
+
+  const handleOpenTelegramLink = (link: string) => {
+    if (openTelegramLink.isAvailable()) {
+      openTelegramLink(link);
+    }
+  };
   return (
     <div className="flex flex-col items-center gap-2 p-4 pt-14">
       <div className="flex flex-col items-center gap-2">
@@ -21,9 +28,23 @@ function RouteComponent() {
         </div>
         <div className="text-2xl font-bold">{user?.name}</div>
       </div>
-      <div className="mt-8 flex w-full flex-col items-start rounded-xl bg-neutral-800">
+      <div
+        onClick={() => navigate({ to: "/trade" })}
+        className="mt-8 flex w-full flex-col items-start rounded-xl bg-neutral-800"
+      >
         <div className="flex w-full items-center justify-between p-4">
           <div>Ссылка обмена</div>
+          <div>
+            <ChevronRight />
+          </div>
+        </div>
+      </div>
+      <div
+        onClick={() => handleOpenTelegramLink("https://t.me/dota_cases_community")}
+        className="flex w-full flex-col items-start rounded-xl bg-neutral-800"
+      >
+        <div className="flex w-full items-center justify-between p-4">
+          <div>Сообщество DOTA CASES</div>
           <div>
             <ChevronRight />
           </div>

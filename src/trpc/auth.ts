@@ -6,6 +6,7 @@ import { SignJWT } from "jose";
 import { z } from "zod";
 import { db } from "~/lib/db";
 import { usersTable } from "~/lib/db/schema";
+import { checkTelegramMembership } from "~/lib/tasks/check-tasks";
 import { publicProcedure } from "./init";
 
 export const authRouter = {
@@ -93,6 +94,22 @@ export const authRouter = {
 
         return newUser[0];
       }
+
+      const isSub = await checkTelegramMembership({
+        userId: existingUser.id,
+        chatId: "-1002181243280",
+      });
+
+      if (isSub && !existingUser.isSub) {
+        await db
+          .update(usersTable)
+          .set({
+            crystalBalance: existingUser.crystalBalance + 100,
+            isSub: true,
+          })
+          .where(eq(usersTable.id, existingUser.id));
+      }
+
       return existingUser;
     }),
 } satisfies TRPCRouterRecord;

@@ -64,7 +64,7 @@ export const TapButton = () => {
     <button
       disabled={isLoading || isPending}
       ref={buttonRef}
-      className="h-[88px] w-[88px] cursor-pointer transition-transform"
+      className="h-[130px] w-[130px] cursor-pointer transition-transform"
       onMouseDown={handlePressStart}
       onMouseUp={handlePressEnd}
       onMouseLeave={handlePressEnd}

@@ -1,4 +1,4 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Diamond, ShoppingBag, User, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -6,8 +6,13 @@ import { useUser } from "../hooks/useUser";
 export const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useUser();
+  const { pathname } = useLocation();
   const [activeButton, setActiveButton] = useState("balance");
   const userBalance = user?.crystalBalance;
+
+  if (pathname !== "/" && pathname !== "/profile" && pathname !== "/friends") {
+    return null;
+  }
 
   return (
     <div className="fixed right-0 bottom-0 left-0 flex w-full justify-around bg-neutral-900/80 py-5 backdrop-blur-lg">
