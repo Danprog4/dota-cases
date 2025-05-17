@@ -56,6 +56,7 @@ export const TasksList = () => {
                 <div>{task.reward} FRU</div>
               </div>
             </div>
+
             {task.status === "notStarted" ? (
               <StartTaskButton onGo={() => onGo(task)} />
             ) : (
