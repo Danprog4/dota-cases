@@ -40,7 +40,7 @@ function RouteComponent() {
         </div>
       </div>
       <div
-        onClick={() => handleOpenTelegramLink("https://t.me/dota_cases_community")}
+        onClick={() => handleOpenTelegramLink("https://t.me/dota_cases")}
         className="flex w-full flex-col items-start rounded-xl bg-neutral-800"
       >
         <div className="flex w-full items-center justify-between p-4">
