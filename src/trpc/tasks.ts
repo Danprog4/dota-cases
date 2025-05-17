@@ -76,40 +76,40 @@ export const tasksRouter = {
         throw new Error("Task not found");
       }
 
-      const existingTask = await db
-        .select()
-        .from(userTasksTable)
-        .where(
-          and(
-            eq(userTasksTable.userId, ctx.userId),
-            eq(userTasksTable.taskId, input.taskId),
-          ),
-        );
+      //   const existingTask = await db
+      //     .select()
+      //     .from(userTasksTable)
+      //     .where(
+      //       and(
+      //         eq(userTasksTable.userId, ctx.userId),
+      //         eq(userTasksTable.taskId, input.taskId),
+      //       ),
+      //     );
 
-      console.log("existingTask", existingTask);
+      //   console.log("existingTask", existingTask);
 
-      if (existingTask.length === 0) {
-        // create new task as checking in users table
-        await db.insert(userTasksTable).values({
-          userId: ctx.userId,
-          taskId: input.taskId,
-          status: "checking",
-        });
+      //   if (existingTask.length === 0) {
+      //     // create new task as checking in users table
+      //     await db.insert(userTasksTable).values({
+      //       userId: ctx.userId,
+      //       taskId: input.taskId,
+      //       status: "checking",
+      //     });
 
-        console.log("new task created");
-      } else {
-        await db
-          .update(userTasksTable)
-          .set({
-            status: "checking",
-          })
-          .where(
-            and(
-              eq(userTasksTable.userId, ctx.userId),
-              eq(userTasksTable.taskId, input.taskId),
-            ),
-          );
-      }
+      //     console.log("new task created");
+      //   } else {
+      //     await db
+      //       .update(userTasksTable)
+      //       .set({
+      //         status: "checking",
+      //       })
+      //       .where(
+      //         and(
+      //           eq(userTasksTable.userId, ctx.userId),
+      //           eq(userTasksTable.taskId, input.taskId),
+      //         ),
+      //       );
+      //   }
 
       await checkMembership({
         userId: ctx.userId,

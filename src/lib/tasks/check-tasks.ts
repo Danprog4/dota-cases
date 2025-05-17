@@ -43,20 +43,17 @@ export async function checkMembership({
     .where(eq(tasksTable.id, taskId))
     .then((rows) => rows[0]);
 
-  const chatIdentifier =
-    task.data?.type === "telegram"
-      ? (task.data.data.chatId ?? task.data.data.channelName)
-      : null;
+  const chatId = task.data?.type === "telegram" ? task.data.data.chatId : null;
 
-  if (!chatIdentifier) {
-    console.error("No chat identifier found for task", taskId);
+  if (!chatId) {
+    console.error("No chatId or channelName found", taskId);
     return;
   }
 
   try {
     const isMember = await checkTelegramMembership({
       userId,
-      chatId: chatIdentifier,
+      chatId,
     });
 
     console.log("isMember", isMember);

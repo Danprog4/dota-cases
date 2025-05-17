@@ -46,7 +46,9 @@ export function useTaskStatusPolling() {
   const { data: tasks } = useQuery(trpc.tasks.getTasks.queryOptions());
   const queryClient = useQueryClient();
 
-  const checkingTaskIds = tasks?.filter((t) => t.status === "checking").map((t) => t.id);
+  const checkingTaskIds = tasks
+    ?.filter((t) => t.status !== "notStarted" && t.status !== "completed")
+    .map((t) => t.id);
 
   console.log("checkingTaskIds", checkingTaskIds);
 
