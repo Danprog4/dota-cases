@@ -17,17 +17,7 @@ export const useTasks = () => {
   const queryClient = useQueryClient();
 
   const { mutateAsync: startVerification } = useMutation(
-    trpc.tasks.startVerification.mutationOptions({
-      onSuccess: (_, { taskId }) => {
-        queryClient.setQueryData(trpc.tasks.getTasks.queryKey(), (oldTasks) => {
-          if (!oldTasks) return oldTasks;
-
-          return oldTasks.map((t) =>
-            t.id === taskId ? { ...t, status: "checking" as TaskStatus } : t,
-          );
-        });
-      },
-    }),
+    trpc.tasks.startVerification.mutationOptions({}),
   );
 
   const startTask = useMutation(

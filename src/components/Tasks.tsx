@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { openTelegramLink } from "@telegram-apps/sdk-react";
 import { CircleCheck as CheckIcon, Loader2 as Spinner } from "lucide-react";
+import { toast } from "sonner";
 import { useTasks } from "~/hooks/useTasks";
 import { FrontendTask, TaskStatus } from "~/lib/db/schema";
 import { useTRPC } from "~/trpc/init/react";
@@ -42,7 +43,6 @@ export const TasksList = () => {
       <div className="flex flex-col gap-2">
         {tasks?.map((task) => (
           <button
-            onClick={() => onGo(task)}
             key={task.id}
             className="flex h-20 w-full items-center justify-between rounded-full border border-[#575757] bg-[#2A2A2A] px-4"
           >
@@ -101,6 +101,11 @@ const CheckButton = ({ id }: { id: number }) => {
 
     const old = queryClient.getQueryData(trpc.tasks.getTasks.queryKey());
 
+    if (old?.find((t) => t.id === id)?.status === "checking") {
+      toast.error("Task is already being checked");
+      return;
+    }
+
     try {
       startVerification({ taskId: id });
       queryClient.setQueryData(trpc.tasks.getTasks.queryKey(), (oldTasks) => {
@@ -111,7 +116,7 @@ const CheckButton = ({ id }: { id: number }) => {
         );
       });
     } catch {
-      queryClient.setQueryData(trpc.tasks.getTasks.queryKey(), old);
+      toast.error("Failed to check task");
     }
   };
 

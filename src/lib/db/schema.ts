@@ -71,7 +71,7 @@ export const userTasksTable = pgTable(
   {
     userId: bigint("user_id", { mode: "number" }).notNull(),
     taskId: integer("task_id").notNull(),
-    status: varchar("task_status", { length: 32 }).notNull().default("checking"),
+    status: varchar("task_status", { length: 32 }).notNull().default("notStarted"),
   },
   (table) => {
     return [
