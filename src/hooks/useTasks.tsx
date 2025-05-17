@@ -82,10 +82,10 @@ export function useTaskStatusPolling() {
       if (status === "completed") {
         updateTaskStatus(taskId, "completed");
         queryClient.invalidateQueries({ queryKey: trpc.tasks.getTasks.queryKey() });
-        toast.success(`Task is completed`, { id: "task-completed" });
+        toast.success(`Задание выполнено`, { id: "task-completed" });
       } else if (status === "failed") {
         updateTaskStatus(taskId, "notStarted");
-        toast.error(`Task is not completed, try again`, { id: "task-failed" });
+        toast.error(`Задание не выполнено, попробуйте снова`, { id: "task-failed" });
       }
     });
   }, [queryClient, statuses, trpc.tasks.getTasks, updateTaskStatus]);

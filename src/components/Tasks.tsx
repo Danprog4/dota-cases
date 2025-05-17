@@ -43,27 +43,6 @@ export const TasksList = () => {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         {tasks?.map((task) => (
-          //   <button
-          //     key={task.id}
-          //     className="flex h-20 w-full items-center justify-between rounded-full border border-[#575757] bg-[#2A2A2A] px-4"
-          //   >
-          //     <div className="flex items-center gap-4">
-          //       <div className="size-12 rounded-full border border-white/10">
-          //         <div className="size-full rounded-full bg-white/10" />
-          //       </div>
-
-          //       <div className="flex flex-col items-start gap-2 text-xs *:leading-none">
-          //         <div>{task.name}</div>
-          //         <div>{task.name} FRU</div>
-          //       </div>
-          //     </div>
-
-          //     {task.status === "notStarted" ? (
-          //       <StartTaskButton onGo={() => onGo(task)} />
-          //     ) : (
-          //       <TaskStatusBlock id={task.id} status={task.status} />
-          //     )}
-          //   </button>
           <div className="flex h-fit w-full items-center justify-start rounded-xl bg-neutral-800 px-4 py-2">
             <div className="flex w-full items-center justify-between">
               <div className="flex flex-col">
@@ -83,7 +62,7 @@ export const TasksList = () => {
 
         {tasks?.length === 0 && (
           <div className="text-muted-foreground flex h-16 items-center justify-center text-sm">
-            No tasks available
+            Нет доступных задач
           </div>
         )}
       </div>
@@ -115,7 +94,7 @@ const CheckButton = ({ id }: { id: number }) => {
     const old = queryClient.getQueryData(trpc.tasks.getTasks.queryKey());
 
     if (old?.find((t) => t.id === id)?.status === "checking") {
-      toast.error("Task is already being checked");
+      toast.error("Задание уже проверяется");
       return;
     }
 
@@ -129,7 +108,7 @@ const CheckButton = ({ id }: { id: number }) => {
         );
       });
     } catch {
-      toast.error("Failed to check task");
+      toast.error("Не удалось проверить задание");
     }
   };
 
