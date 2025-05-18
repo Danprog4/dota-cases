@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Diamond, ShoppingBag, User, Users } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 import { useUser } from "../hooks/useUser";
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -10,7 +9,12 @@ export const Navbar = () => {
   const [activeButton, setActiveButton] = useState("balance");
   const userBalance = user?.crystalBalance;
 
-  if (pathname !== "/" && pathname !== "/profile" && pathname !== "/friends") {
+  if (
+    pathname !== "/" &&
+    pathname !== "/profile" &&
+    pathname !== "/friends" &&
+    pathname !== "/cases"
+  ) {
     return null;
   }
 
@@ -29,9 +33,8 @@ export const Navbar = () => {
         icon={<ShoppingBag className="h-6 w-6" />}
         label="Кейсы"
         onClick={() => {
-          //   navigate({ to: "/" });
-          //   setActiveButton("cases");
-          toast.error("В разработке");
+          navigate({ to: "/" });
+          setActiveButton("cases");
         }}
         isActive={activeButton === "cases"}
       />
