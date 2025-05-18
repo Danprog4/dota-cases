@@ -33,7 +33,7 @@ export const Navbar = () => {
         icon={<ShoppingBag className="h-6 w-6" />}
         label="Кейсы"
         onClick={() => {
-          navigate({ to: "/" });
+          navigate({ to: "/cases" });
           setActiveButton("cases");
         }}
         isActive={activeButton === "cases"}
