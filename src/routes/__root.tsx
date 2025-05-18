@@ -146,7 +146,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 
   useEffect(() => {
     prefetch();
-  }, []);
+  }, [trpc.main.getUser.queryOptions(), trpc.main.getRemaining.queryOptions()]);
 
   return (
     // suppress since we're updating the "dark" class in a custom script below

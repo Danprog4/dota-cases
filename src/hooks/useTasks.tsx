@@ -47,7 +47,10 @@ export function useTaskStatusPolling() {
   const queryClient = useQueryClient();
 
   const checkingTaskIds = tasks
-    ?.filter((t) => t.status !== "notStarted" && t.status !== "completed")
+    ?.filter(
+      (t) =>
+        t.status !== "notStarted" && t.status !== "completed" && t.status !== "failed",
+    )
     .map((t) => t.id);
 
   console.log("checkingTaskIds", checkingTaskIds);
@@ -74,21 +77,25 @@ export function useTaskStatusPolling() {
   console.log("statuses polling", statuses);
 
   useEffect(() => {
-    if (!statuses) {
-      return;
-    }
+    if (!statuses) return;
 
     statuses.forEach(({ taskId, status }) => {
       if (status === "completed") {
         updateTaskStatus(taskId, "completed");
         queryClient.invalidateQueries({ queryKey: trpc.tasks.getTasks.queryKey() });
-        toast.success(`Задание выполнено`, { id: "task-completed" });
+        toast.success(`Задание выполнено`, { id: `task-completed-${taskId}` });
       } else if (status === "failed") {
-        updateTaskStatus(taskId, "notStarted");
-        toast.error(`Задание не выполнено, попробуйте снова`, { id: "task-failed" });
+        const prevTasks = queryClient.getQueryData(trpc.tasks.getTasks.queryKey());
+        const prevStatus = prevTasks?.find((t) => t.id === taskId)?.status;
+        if (prevStatus === "checking") {
+          updateTaskStatus(taskId, "notStarted");
+          toast.error(`Задание не выполнено, попробуйте снова`, {
+            id: `task-failed-${taskId}`,
+          });
+        }
       }
     });
-  }, [queryClient, statuses, trpc.tasks.getTasks, updateTaskStatus]);
+  }, [statuses]);
 
   return null;
 }

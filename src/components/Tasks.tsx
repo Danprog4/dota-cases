@@ -38,7 +38,7 @@ export const TasksList = () => {
       openTelegramLink(`https://t.me/${channelName}`);
     }
   };
-
+  console.log(tasks?.map((t) => t.status));
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -51,7 +51,7 @@ export const TasksList = () => {
                   + {task.reward} <Logo width="20px" height="20px" />
                 </div>
               </div>
-              {task.status === "notStarted" ? (
+              {task.status === "notStarted" || task.status === "failed" ? (
                 <StartTaskButton onGo={() => onGo(task)} />
               ) : (
                 <TaskStatusBlock id={task.id} status={task.status} />
@@ -140,10 +140,6 @@ const TaskStatusBlock = ({ id, status }: { id: number; status: TaskStatus }) => 
         <Spinner className="size-4 animate-spin" />
       </button>
     );
-  }
-
-  if (status === "failed") {
-    return <CheckButton id={id} />;
   }
 
   if (status === "completed") {
