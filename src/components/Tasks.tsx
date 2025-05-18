@@ -42,23 +42,28 @@ export const TasksList = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        {tasks?.map((task) => (
-          <div className="flex h-fit w-full items-center justify-start rounded-xl bg-neutral-800 px-4 py-2">
-            <div className="flex w-full items-center justify-between">
-              <div className="flex flex-col">
-                <div className="max-w-50">Подписка на DOTA CHANNEL</div>
-                <div className="flex items-center gap-2">
-                  + {task.reward} <Logo width="20px" height="20px" />
+        {tasks
+          ?.filter((t) => t.status !== "completed")
+          .map((task, index) => (
+            <div
+              key={index}
+              className="flex h-fit w-full items-center justify-start rounded-xl bg-neutral-800 px-4 py-2"
+            >
+              <div className="flex w-full items-center justify-between">
+                <div className="flex flex-col">
+                  <div className="max-w-50">Подписка на DOTA CHANNEL</div>
+                  <div className="flex items-center gap-2">
+                    + {task.reward} <Logo width="20px" height="20px" />
+                  </div>
                 </div>
+                {task.status === "notStarted" || task.status === "failed" ? (
+                  <StartTaskButton onGo={() => onGo(task)} />
+                ) : (
+                  <TaskStatusBlock id={task.id} status={task.status} />
+                )}
               </div>
-              {task.status === "notStarted" || task.status === "failed" ? (
-                <StartTaskButton onGo={() => onGo(task)} />
-              ) : (
-                <TaskStatusBlock id={task.id} status={task.status} />
-              )}
             </div>
-          </div>
-        ))}
+          ))}
 
         {tasks?.length === 0 && (
           <div className="text-muted-foreground flex h-16 items-center justify-center text-sm">
@@ -129,7 +134,7 @@ const CompletedTask = () => {
   );
 };
 
-const TaskStatusBlock = ({ id, status }: { id: number; status: TaskStatus }) => {
+export const TaskStatusBlock = ({ id, status }: { id: number; status: TaskStatus }) => {
   if (status === "started") {
     return <CheckButton id={id} />;
   }
