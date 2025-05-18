@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { shareURL } from "@telegram-apps/sdk";
 import { useMemo } from "react";
+import { ClickMe } from "~/components/ClickMe";
 import { CompletedTasks } from "~/components/CompletedTasks";
 import { Logo } from "~/components/icons/logo";
 import { TapButton } from "~/components/TapButton";
@@ -23,6 +24,9 @@ function Home() {
       <div className="flex flex-col items-center gap-2 pb-4">
         <div className="relative flex w-full items-center justify-center">
           <TapButton />
+          <div className="absolute top-4 right-0 bottom-0 left-50 flex h-34 w-34 items-center justify-center">
+            <ClickMe />
+          </div>
         </div>
         <h1 className="text-4xl font-bold">DOTA COINS</h1>
 
