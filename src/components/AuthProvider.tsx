@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useTRPC } from "~/trpc/init/react";
 import { useUser } from "../hooks/useUser";
@@ -9,12 +9,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [initData, setInitData] = useState<string | null>(null);
   const [startParam, setStartParam] = useState<string | undefined>(undefined);
   const { user } = useUser();
-
+  const queryClient = useQueryClient();
   const loginMutation = useMutation(
     trpc.auth.login.mutationOptions({
       onSuccess: () => setLoggedIn(true),
     }),
   );
+
+  const prefetch = async () => {
+    await queryClient.prefetchQuery(trpc.main.getUser.queryOptions());
+    await queryClient.prefetchQuery(trpc.main.getRemaining.queryOptions());
+    await queryClient.prefetchQuery(trpc.tasks.getTasks.queryOptions());
+  };
+
+  useEffect(() => {
+    prefetch();
+  }, []);
 
   useEffect(() => {
     const loadTelegramSDK = async () => {

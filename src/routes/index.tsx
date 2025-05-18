@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { shareURL } from "@telegram-apps/sdk";
 import { useMemo } from "react";
+import { CompletedTasks } from "~/components/CompletedTasks";
 import { Logo } from "~/components/icons/logo";
 import { TapButton } from "~/components/TapButton";
 import { TasksList } from "~/components/Tasks";
@@ -67,10 +68,7 @@ function Home() {
         <TasksList />
       </div>
       <div className="flex w-full flex-col gap-2">
-        <div className="opacity-50">Выполненные задания</div>
-        <div className="flex h-14 w-full items-center justify-start rounded-xl bg-neutral-800 p-4">
-          <div>Заданий пока нет</div>
-        </div>
+        <CompletedTasks />
       </div>
     </div>
   );

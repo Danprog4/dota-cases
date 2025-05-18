@@ -135,6 +135,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
   const prefetch = async () => {
     await queryClient.prefetchQuery(trpc.main.getUser.queryOptions());
     await queryClient.prefetchQuery(trpc.main.getRemaining.queryOptions());
+    await queryClient.prefetchQuery(trpc.tasks.getTasks.queryOptions());
   };
   useEffect(() => {
     if (isDev && isErudaEnabled) {
@@ -146,7 +147,11 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 
   useEffect(() => {
     prefetch();
-  }, [trpc.main.getUser.queryOptions(), trpc.main.getRemaining.queryOptions()]);
+  }, [
+    trpc.main.getUser.queryOptions(),
+    trpc.main.getRemaining.queryOptions(),
+    trpc.tasks.getTasks.queryOptions(),
+  ]);
 
   return (
     // suppress since we're updating the "dark" class in a custom script below
