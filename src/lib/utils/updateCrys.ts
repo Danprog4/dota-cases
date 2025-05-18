@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { CRYSTAL_PRICE } from "../configs/crys.price";
+import { CRYSTAL_PRICE } from "../configs/crystals.config";
 import { db } from "../db";
 import { usersTable } from "../db/schema";
 export const updateCrystalBalance = async (userId: number, amount: number) => {

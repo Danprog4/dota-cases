@@ -5,7 +5,7 @@ import { BackButton } from "~/components/BackButton";
 import { Logo } from "~/components/icons/logo";
 import { TelegramStar } from "~/components/TelegramStar";
 import { useBuyCrystals } from "~/hooks/useBuyCrystals";
-import { CRYSTAL_PRICE } from "~/lib/configs/crys.price";
+import { CRYSTAL_PRICE } from "~/lib/configs/crystals.config";
 
 export const Route = createFileRoute("/crystals")({
   component: RouteComponent,
