@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import duckAnimation from "~/assets/duck-think.json";
 import { BackButton } from "~/components/BackButton";
+import { useUser } from "~/hooks/useUser";
 import { useTRPC } from "~/trpc/init/react";
 export const Route = createFileRoute("/trade")({
   component: RouteComponent,
@@ -12,9 +13,11 @@ export const Route = createFileRoute("/trade")({
 
 function RouteComponent() {
   const trpc = useTRPC();
+  const { user } = useUser();
   const [link, setLink] = useState("");
   const navigate = useNavigate();
   const { mutate: setTradeLink } = useMutation(trpc.main.setTradeLink.mutationOptions());
+  const tradeLink = user?.tradeLink;
 
   const handleSave = () => {
     if (link.length === 0) {
@@ -46,7 +49,10 @@ function RouteComponent() {
       <div className="relative flex h-27 w-full rounded-2xl bg-neutral-800">
         <input
           type="text"
-          placeholder="https://steamcommunity.com/tradeoffer/new/?partner=1234567890&token=1234567890"
+          placeholder={
+            tradeLink ??
+            "https://steamcommunity.com/tradeoffer/new/?partner=1234567890&token=1234567890"
+          }
           style={{ outline: "none" }}
           className="absolute top-0 left-0 w-full rounded-2xl bg-neutral-800 p-4 text-wrap text-white placeholder:text-wrap"
           value={link}
@@ -54,7 +60,7 @@ function RouteComponent() {
         />
       </div>
       <button
-        className="fixed right-0 bottom-20 left-0 mx-4 mb-4 flex w-auto cursor-pointer items-center justify-center gap-2 rounded-2xl bg-red-500 py-4 text-white"
+        className="fixed right-0 bottom-4 left-0 mx-4 mb-4 flex w-auto cursor-pointer items-center justify-center gap-2 rounded-2xl bg-red-500 py-4 text-white"
         onClick={handleSave}
       >
         Сохранить

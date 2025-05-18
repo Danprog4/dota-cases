@@ -15,6 +15,7 @@ import { Route as TradeImport } from './routes/trade'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as FriendsImport } from './routes/friends'
 import { Route as CrystalsImport } from './routes/crystals'
+import { Route as CasesImport } from './routes/cases'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -43,6 +44,12 @@ const CrystalsRoute = CrystalsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CasesRoute = CasesImport.update({
+  id: '/cases',
+  path: '/cases',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -58,6 +65,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/cases': {
+      id: '/cases'
+      path: '/cases'
+      fullPath: '/cases'
+      preLoaderRoute: typeof CasesImport
       parentRoute: typeof rootRoute
     }
     '/crystals': {
@@ -95,6 +109,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cases': typeof CasesRoute
   '/crystals': typeof CrystalsRoute
   '/friends': typeof FriendsRoute
   '/profile': typeof ProfileRoute
@@ -103,6 +118,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cases': typeof CasesRoute
   '/crystals': typeof CrystalsRoute
   '/friends': typeof FriendsRoute
   '/profile': typeof ProfileRoute
@@ -112,6 +128,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/cases': typeof CasesRoute
   '/crystals': typeof CrystalsRoute
   '/friends': typeof FriendsRoute
   '/profile': typeof ProfileRoute
@@ -120,15 +137,23 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/crystals' | '/friends' | '/profile' | '/trade'
+  fullPaths: '/' | '/cases' | '/crystals' | '/friends' | '/profile' | '/trade'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/crystals' | '/friends' | '/profile' | '/trade'
-  id: '__root__' | '/' | '/crystals' | '/friends' | '/profile' | '/trade'
+  to: '/' | '/cases' | '/crystals' | '/friends' | '/profile' | '/trade'
+  id:
+    | '__root__'
+    | '/'
+    | '/cases'
+    | '/crystals'
+    | '/friends'
+    | '/profile'
+    | '/trade'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CasesRoute: typeof CasesRoute
   CrystalsRoute: typeof CrystalsRoute
   FriendsRoute: typeof FriendsRoute
   ProfileRoute: typeof ProfileRoute
@@ -137,6 +162,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CasesRoute: CasesRoute,
   CrystalsRoute: CrystalsRoute,
   FriendsRoute: FriendsRoute,
   ProfileRoute: ProfileRoute,
@@ -154,6 +180,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/cases",
         "/crystals",
         "/friends",
         "/profile",
@@ -162,6 +189,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/cases": {
+      "filePath": "cases.tsx"
     },
     "/crystals": {
       "filePath": "crystals.tsx"
