@@ -26,7 +26,7 @@ function RouteComponent() {
     }),
   );
   return (
-    <div className="flex w-full flex-col items-center overflow-x-hidden overflow-y-auto p-4 pt-24 pb-24">
+    <div className="flex w-full flex-col items-center overflow-x-hidden overflow-y-auto p-4 pt-24 pb-34">
       <BackButton onClick={() => navigate({ to: "/cases" })} />
       <div className="mb-4 flex flex-col items-center gap-2">
         <img src={caseItem?.img} alt={caseItem?.name} className="h-[150px] w-[150px]" />
