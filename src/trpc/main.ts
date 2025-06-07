@@ -1,6 +1,7 @@
 import { TRPCError, TRPCRouterRecord } from "@trpc/server";
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
+import { CASES_CONFIG } from "~/lib/configs/cases.config";
 import { db } from "~/lib/db";
 import { tapBatches, usersTable } from "~/lib/db/schema";
 import { procedure, publicProcedure } from "./init";
@@ -111,6 +112,43 @@ export const router = {
       await db
         .update(usersTable)
         .set({ tradeLink: input.link })
+        .where(eq(usersTable.id, userId));
+    }),
+
+  buyCase: procedure
+    .input(z.object({ caseId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.userId;
+      const user = await db.query.usersTable.findFirst({
+        where: eq(usersTable.id, userId),
+      });
+      if (!user) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Пользователь не найден",
+        });
+      }
+      const crystalBalance = user.crystalBalance;
+
+      const caseId = input.caseId;
+      const casePrice = CASES_CONFIG.find((caseItem) => caseItem.id === caseId)?.price;
+      if (!casePrice) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Кейс не найден",
+        });
+      }
+
+      if (crystalBalance < casePrice) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Недостаточно кристаллов",
+        });
+      }
+
+      await db
+        .update(usersTable)
+        .set({ crystalBalance: sql`${usersTable.crystalBalance} - ${casePrice}` })
         .where(eq(usersTable.id, userId));
     }),
 } satisfies TRPCRouterRecord;

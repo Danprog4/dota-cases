@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import Lottie from "lottie-react";
 import { Logo } from "~/components/icons/logo";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
@@ -21,8 +21,10 @@ function RouteComponent() {
       </div>
       <div className="mt-2 flex w-full flex-wrap gap-3">
         {CASES_CONFIG.map((caseItem) => (
-          <div
+          <Link
             key={caseItem.id}
+            to={"/case/$id"}
+            params={{ id: caseItem.id.toString() }}
             className="flex w-[30%] flex-1 flex-col items-center rounded-lg bg-neutral-800 p-3"
           >
             <img src={caseItem.img} alt={caseItem.name} />
@@ -30,7 +32,7 @@ function RouteComponent() {
             <div className="text-subtitle_text_color flex items-center gap-1">
               {caseItem.price} <Logo width={"20px"} height={"20px"} />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <div className="mt-4 flex w-full flex-wrap gap-3">
