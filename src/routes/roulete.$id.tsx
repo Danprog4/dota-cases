@@ -25,6 +25,7 @@ function RouteComponent() {
   const buyCase = useMutation(
     trpc.main.buyCase.mutationOptions({
       onSuccess: (data) => {
+        console.log(data, "[FJDSKFKLJDSJKFDKLJS]");
         setArrayWithWinningItem(data);
       },
       onError: (error) => {

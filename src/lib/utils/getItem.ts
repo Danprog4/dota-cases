@@ -31,14 +31,6 @@ export const getItem = async (caseId: number, userId: number) => {
     const idNow = Date.now();
     currentWeight += item.weight;
     if (random <= currentWeight) {
-      const newItems = [
-        ...(user.items || []),
-        { name: item.name, price: item.price, id: idNow },
-      ];
-      await db
-        .update(usersTable)
-        .set({ items: newItems })
-        .where(eq(usersTable.id, userId));
       return { name: item.name, price: item.price, id: idNow };
     }
   }

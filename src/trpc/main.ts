@@ -4,7 +4,7 @@ import { z } from "zod";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
 import { db } from "~/lib/db";
 import { tapBatches, usersTable } from "~/lib/db/schema";
-import { getArray } from "~/lib/utils/getArray";
+import { getItem } from "~/lib/utils/getItem";
 import { procedure, publicProcedure } from "./init";
 
 const MAX_TAPS = 100;
@@ -152,9 +152,37 @@ export const router = {
         .set({ crystalBalance: sql`${usersTable.crystalBalance} - ${casePrice}` })
         .where(eq(usersTable.id, userId));
 
-      const array = getArray(caseId, userId);
+      const item = await getItem(caseId, userId);
 
-      return array;
+      if (!item) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Не удалось получить предмет",
+        });
+      }
+
+      console.log(item, "[item] found");
+
+      const newItems = [
+        ...(user.items || []),
+        { name: item.name, price: item.price, id: Date.now() },
+      ];
+
+      if (!newItems) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Не удалось получить предмет из массива",
+        });
+      }
+
+      console.log(newItems, "new items");
+
+      await db
+        .update(usersTable)
+        .set({ items: newItems })
+        .where(eq(usersTable.id, userId));
+
+      return newItems;
     }),
 
   sellItem: procedure

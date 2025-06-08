@@ -50,6 +50,31 @@ function RouteComponent() {
           </div>
         </div>
       </div>
+      <div className="mt-6 flex flex-col gap-2">
+        <div className="text-md text-neutral-300">ТОП 3 ПРЕДМЕТА</div>
+        <div className="flex gap-2">
+          {user?.items
+            ?.sort((a, b) => b.price - a.price)
+            .slice(0, 3)
+            .map((item) => (
+              <div key={item.id} className="rounded-md border-2 border-neutral-700 p-2">
+                <div>{item.name}</div>
+                <div>{item.price}</div>
+              </div>
+            ))}
+        </div>
+      </div>
+      <div className="mt-6 flex flex-col gap-2">
+        <div className="text-md text-neutral-300">ТОП 3 ПРЕДМЕТА</div>
+        <div className="flex flex-wrap gap-2">
+          {user?.items?.map((item) => (
+            <div key={item.id} className="rounded-md border-2 border-neutral-700 p-2">
+              <div>{item.name}</div>
+              <div>{item.price}</div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
