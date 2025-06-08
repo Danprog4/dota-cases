@@ -20,6 +20,7 @@ export const usersTable = pgTable("users", {
   lastMining: timestamp("lastMining", { withTimezone: true }),
   tradeLink: varchar("tradeLink", { length: 255 }),
   isSub: boolean("isSub").notNull().default(false),
+  items: jsonb("items").$type<Item[]>().default([]),
 });
 
 export const tapBatches = pgTable("tap_batches", {
@@ -84,6 +85,13 @@ export const userTasksTable = pgTable(
     ];
   },
 );
+
+export type Item = {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl?: string;
+};
 
 export type UserTask = typeof userTasksTable.$inferSelect;
 

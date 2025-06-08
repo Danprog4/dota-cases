@@ -4,6 +4,7 @@ import { z } from "zod";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
 import { db } from "~/lib/db";
 import { tapBatches, usersTable } from "~/lib/db/schema";
+import { getArray } from "~/lib/utils/getArray";
 import { procedure, publicProcedure } from "./init";
 
 const MAX_TAPS = 100;
@@ -150,6 +151,56 @@ export const router = {
         .update(usersTable)
         .set({ crystalBalance: sql`${usersTable.crystalBalance} - ${casePrice}` })
         .where(eq(usersTable.id, userId));
+
+      const array = getArray(caseId, userId);
+
+      return array;
+    }),
+
+  sellItem: procedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.userId;
+      const itemId = input.id;
+
+      const user = await db.query.usersTable.findFirst({
+        where: eq(usersTable.id, userId),
+      });
+
+      if (!user) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Пользователь не найден",
+        });
+      }
+
+      const item = user.items?.find((item) => item.id === itemId);
+
+      if (!item) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Предмет не найден",
+        });
+      }
+
+      const userCrystalBalance = user.crystalBalance;
+
+      await db
+        .update(usersTable)
+        .set({ crystalBalance: userCrystalBalance + item.price })
+        .where(eq(usersTable.id, userId));
+
+      const newItems = user.items?.filter((item) => item.id !== itemId);
+
+      await db
+        .update(usersTable)
+        .set({ items: newItems })
+        .where(eq(usersTable.id, userId));
+
+      return {
+        crystalBalance: userCrystalBalance + item.price,
+        items: newItems,
+      };
     }),
 } satisfies TRPCRouterRecord;
 

@@ -1,6 +1,15 @@
+import { eq } from "drizzle-orm";
 import { CASES_CONFIG } from "../configs/cases.config";
+import { db } from "../db";
+import { usersTable } from "../db/schema";
 
-export const getItem = (caseId: number) => {
+export const getItem = async (caseId: number, userId: number) => {
+  const user = await db.query.usersTable.findFirst({ where: eq(usersTable.id, userId) });
+
+  if (!user) {
+    return;
+  }
+
   const caseItems = CASES_CONFIG.find((caseItem) => caseItem.id === caseId)?.items;
 
   if (!caseItems || caseItems.length === 0) {
@@ -19,9 +28,18 @@ export const getItem = (caseId: number) => {
 
   let currentWeight = 0;
   for (const item of itemsWithWeights) {
+    const idNow = Date.now();
     currentWeight += item.weight;
     if (random <= currentWeight) {
-      return { name: item.name, price: item.price };
+      const newItems = [
+        ...(user.items || []),
+        { name: item.name, price: item.price, id: idNow },
+      ];
+      await db
+        .update(usersTable)
+        .set({ items: newItems })
+        .where(eq(usersTable.id, userId));
+      return { name: item.name, price: item.price, id: idNow };
     }
   }
 

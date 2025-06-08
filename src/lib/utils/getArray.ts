@@ -1,10 +1,14 @@
 import { CASES_CONFIG } from "../configs/cases.config";
 import { getItem } from "./getItem";
 
-export const getArray = (caseId: number) => {
+export const getArray = async (caseId: number, userId: number) => {
   const caseItems = CASES_CONFIG.find((caseItem) => caseItem.id === caseId)?.items;
 
-  const randomItem = getItem(caseId);
+  const randomItem = await getItem(caseId, userId);
+
+  if (!randomItem) {
+    return [];
+  }
 
   console.log(randomItem, "real item");
 
@@ -21,6 +25,7 @@ export const getArray = (caseId: number) => {
     {
       name: randomItem?.name,
       price: randomItem?.price,
+      id: randomItem.id,
     },
   ];
 

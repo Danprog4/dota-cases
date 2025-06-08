@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { BackButton } from "~/components/BackButton";
+import { useUser } from "~/hooks/useUser";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
 
 import { useTRPC } from "~/trpc/init/react";
@@ -13,18 +13,17 @@ function RouteComponent() {
   const { id } = useParams({ from: "/case/$id" });
   const navigate = useNavigate();
   const trpc = useTRPC();
+  const { user } = useUser();
+
+  if (!user) {
+    return;
+  }
 
   const caseItem = CASES_CONFIG.find((caseItem) => caseItem.id === Number(id));
-  const buyCase = useMutation(
-    trpc.main.buyCase.mutationOptions({
-      onSuccess: () => {
-        navigate({ to: "/roulete/$id", params: { id: id } });
-      },
-      onError: () => {
-        toast.error("Не удалось купить кейс. У вас недостаточно DOTA COINS");
-      },
-    }),
-  );
+  if (!caseItem) {
+    return;
+  }
+
   return (
     <div className="flex w-full flex-col items-center overflow-x-hidden overflow-y-auto p-4 pt-24 pb-34">
       <BackButton onClick={() => navigate({ to: "/cases" })} />
@@ -34,9 +33,9 @@ function RouteComponent() {
         <div className="text-lg">{caseItem?.description}</div>
       </div>
       <div className="flex w-full flex-wrap justify-between gap-3">
-        {caseItem?.items.map((item) => (
+        {caseItem?.items.map((item, index) => (
           <div
-            key={item.name}
+            key={index}
             className="flex h-[172px] max-w-[30%] flex-col items-center justify-end rounded-lg bg-neutral-800 p-3"
           >
             {/* <img alt={item.name} /> */}
@@ -49,7 +48,10 @@ function RouteComponent() {
         <div className="flex items-center justify-center gap-2">
           <div
             onClick={() => {
-              buyCase.mutate({ caseId: Number(id) });
+              if (user?.crystalBalance < caseItem?.price) {
+                toast.error("Не удалось купить кейс. У вас недостаточно DOTA COINS");
+              }
+              navigate({ to: "/roulete/$id", params: { id: caseItem.id.toString() } });
             }}
           >
             Открыть кейс
