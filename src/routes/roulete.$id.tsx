@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useUser } from "~/hooks/useUser";
@@ -95,8 +96,9 @@ function RouteComponent() {
 
   if (buyCase.isPending || !arrayWithWinningItem.length) {
     return (
-      <div className="flex h-full items-center justify-center text-xl font-bold">
-        Открываем кейс...
+      <div className="flex h-full items-center justify-center gap-2 text-xl font-bold">
+        Открываем кейс
+        <Loader2 className="animate-spin" />
       </div>
     );
   }
