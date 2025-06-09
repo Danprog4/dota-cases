@@ -22,6 +22,22 @@ export const router = {
     });
     return user;
   }),
+  getFriends: procedure.query(async ({ ctx }) => {
+    const userId = ctx.userId;
+    const user = await db.query.usersTable.findFirst({
+      where: (users) => eq(users.id, userId),
+    });
+    if (!user) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Пользователь не найден",
+      });
+    }
+    const friends = await db.query.usersTable.findMany({
+      where: (users) => eq(users.referrerId, userId),
+    });
+    return friends;
+  }),
   getRemaining: procedure.query(async ({ ctx }) => {
     try {
       const userId = ctx.userId;

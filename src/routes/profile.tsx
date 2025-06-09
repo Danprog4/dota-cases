@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { openTelegramLink } from "@telegram-apps/sdk-react";
 import { ChevronRight } from "lucide-react";
+import { useMemo } from "react";
 import { toast } from "sonner";
 import { useUser } from "~/hooks/useUser";
 import { User } from "~/lib/db/schema";
@@ -56,6 +57,21 @@ function RouteComponent() {
     });
   };
 
+  const topItems = useMemo(() => {
+    return user?.items?.sort((a, b) => b.price - a.price).slice(0, 3);
+  }, [user?.items]);
+
+  const gotItems = useMemo(() => {
+    return user?.items?.filter((item) => !item.isSold);
+  }, [user?.items]);
+
+  const soldItems = useMemo(() => {
+    return user?.items?.filter((item) => item.isSold);
+  }, [user?.items]);
+
+  console.log(gotItems?.length !== 0);
+  console.log(gotItems);
+
   return (
     <div className="flex flex-col items-center gap-2 p-4 pt-14 pb-32">
       <div className="flex flex-col items-center gap-2">
@@ -90,77 +106,85 @@ function RouteComponent() {
           </div>
         </div>
       </div>
-      <div className="mt-6 flex w-full flex-col gap-2">
-        <div className="text-md text-neutral-300">ТОП 3 ПРЕДМЕТА</div>
+      <div className="mt-6 flex w-full flex-col items-start gap-2">
+        <div className="text-md text-left text-neutral-300">ТОП 3 ПРЕДМЕТА</div>
         <div className="grid w-full grid-cols-3 gap-2">
-          {user?.items && Array.isArray(user.items)
-            ? user.items
-                .sort((a, b) => b.price - a.price)
-                .slice(0, 3)
-                .map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex h-[180px] flex-col items-center justify-end gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
-                  >
-                    <div className="text-sm">{item.name}</div>
-                    <button
-                      disabled={sellItem.isPending}
-                      onClick={() => handleSellItem(item.id)}
-                      className="rounded-full border border-neutral-700 p-2 text-sm"
-                    >
-                      {item.price}
-                    </button>
-                  </div>
-                ))
-            : null}
+          {topItems && topItems?.length !== 0 ? (
+            topItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex h-[180px] flex-col items-center justify-end gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
+              >
+                <div className="text-sm">{item.name}</div>
+                <button
+                  disabled={sellItem.isPending}
+                  onClick={() => handleSellItem(item.id)}
+                  className="rounded-full border border-neutral-700 p-2 text-sm"
+                >
+                  {item.price}
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="flex w-full justify-start text-center text-sm text-neutral-500">
+              Нет предметов
+            </div>
+          )}
         </div>
       </div>
-      <div className="mt-6 flex flex-col gap-2">
-        <div className="text-md text-neutral-300">ПОЛУЧЕННЫЕ ПРЕДМЕТЫ</div>
+      <div className="mt-6 flex w-full flex-col items-start gap-2">
+        <div className="text-md flex items-start text-left text-neutral-300">
+          ПОЛУЧЕННЫЕ ПРЕДМЕТЫ
+        </div>
+
         <div className="grid w-full grid-cols-3 gap-2">
-          {user?.items && Array.isArray(user.items)
-            ? user.items
-                .filter((item) => !item.isSold)
-                .map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
-                  >
-                    <div className="text-sm">{item.name}</div>
-                    <button
-                      disabled={sellItem.isPending}
-                      onClick={() => handleSellItem(item.id)}
-                      className="rounded-full border border-neutral-700 p-2 text-sm"
-                    >
-                      {item.price}
-                    </button>
-                  </div>
-                ))
-            : null}
+          {gotItems && gotItems?.length !== 0 ? (
+            gotItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
+              >
+                <div className="text-sm">{item.name}</div>
+                <button
+                  disabled={sellItem.isPending}
+                  onClick={() => handleSellItem(item.id)}
+                  className="rounded-full border border-neutral-700 p-2 text-sm"
+                >
+                  {item.price}
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="flex w-full justify-start text-center text-sm text-neutral-500">
+              Нет предметов
+            </div>
+          )}
         </div>
       </div>
-      <div className="mt-6 flex flex-col gap-2">
-        <div className="text-md text-neutral-300">ПРОДАННЫЕ ПРЕДМЕТЫ</div>
+      <div className="mt-6 flex w-full flex-col items-start gap-2">
+        <div className="text-md text-left text-neutral-300">ПРОДАННЫЕ ПРЕДМЕТЫ</div>
         <div className="grid w-full grid-cols-3 gap-2">
-          {user?.items && Array.isArray(user.items)
-            ? user.items
-                .filter((item) => item.isSold)
-                .map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
-                  >
-                    <div className="text-sm">{item.name}</div>
-                    <button
-                      disabled={sellItem.isPending}
-                      onClick={() => handleSellItem(item.id)}
-                      className="rounded-full border border-neutral-700 p-2 text-sm"
-                    >
-                      {item.price}
-                    </button>
-                  </div>
-                ))
-            : null}
+          {soldItems && soldItems?.length !== 0 ? (
+            soldItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
+              >
+                <div className="text-sm">{item.name}</div>
+                <button
+                  disabled={sellItem.isPending}
+                  onClick={() => handleSellItem(item.id)}
+                  className="rounded-full border border-neutral-700 p-2 text-sm"
+                >
+                  {item.price}
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="flex w-full justify-start text-center text-sm text-neutral-500">
+              Нет предметов
+            </div>
+          )}
         </div>
       </div>
     </div>
