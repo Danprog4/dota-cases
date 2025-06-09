@@ -132,15 +132,15 @@ export const router = {
       const crystalBalance = user.crystalBalance;
 
       const caseId = input.caseId;
-      const casePrice = CASES_CONFIG.find((caseItem) => caseItem.id === caseId)?.price;
-      if (!casePrice) {
+      const caseItem = CASES_CONFIG.find((caseItem) => caseItem.id === caseId);
+      if (!caseItem) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Кейс не найден",
         });
       }
 
-      if (crystalBalance < casePrice) {
+      if (crystalBalance < caseItem.price) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Недостаточно кристаллов",
@@ -149,7 +149,7 @@ export const router = {
 
       await db
         .update(usersTable)
-        .set({ crystalBalance: sql`${usersTable.crystalBalance} - ${casePrice}` })
+        .set({ crystalBalance: sql`${usersTable.crystalBalance} - ${caseItem.price}` })
         .where(eq(usersTable.id, userId));
 
       const item = await getItem(caseId, userId);
@@ -163,26 +163,31 @@ export const router = {
 
       console.log(item, "[item] found");
 
-      const newItems = [
+      const newUserItems = [
         ...(user.items || []),
-        { name: item.name, price: item.price, id: Date.now() },
+        { name: item.name, price: item.price, id: item.id, isSold: false },
       ];
 
-      if (!newItems) {
+      if (!newUserItems) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Не удалось получить предмет из массива",
         });
       }
 
-      console.log(newItems, "new items");
+      console.log(newUserItems, "new user items");
 
       await db
         .update(usersTable)
-        .set({ items: newItems })
+        .set({ items: newUserItems })
         .where(eq(usersTable.id, userId));
 
-      return newItems;
+      const newCaseItems = [
+        ...caseItem.items,
+        { name: item.name, price: item.price, id: item.id, isSold: false },
+      ];
+
+      return newCaseItems;
     }),
 
   sellItem: procedure
@@ -202,7 +207,7 @@ export const router = {
         });
       }
 
-      const item = user.items?.find((item) => item.id === itemId);
+      const item = user.items?.find((item) => item.id === itemId && !item.isSold);
 
       if (!item) {
         throw new TRPCError({
@@ -218,16 +223,18 @@ export const router = {
         .set({ crystalBalance: userCrystalBalance + item.price })
         .where(eq(usersTable.id, userId));
 
-      const newItems = user.items?.filter((item) => item.id !== itemId);
+      const newUserItems = user.items?.map((item) =>
+        item.id === itemId ? { ...item, isSold: true } : item,
+      );
 
       await db
         .update(usersTable)
-        .set({ items: newItems })
+        .set({ items: newUserItems })
         .where(eq(usersTable.id, userId));
 
       return {
         crystalBalance: userCrystalBalance + item.price,
-        items: newItems,
+        items: newUserItems,
       };
     }),
 } satisfies TRPCRouterRecord;

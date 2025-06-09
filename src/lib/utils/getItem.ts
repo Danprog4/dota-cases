@@ -31,9 +31,7 @@ export const getItem = async (caseId: number, userId: number) => {
     const idNow = Date.now();
     currentWeight += item.weight;
     if (random <= currentWeight) {
-      return { name: item.name, price: item.price, id: idNow };
+      return { name: item.name, price: item.price, id: idNow, isSold: false };
     }
   }
-
-  return { name: caseItems[0].name, price: caseItems[0].price };
 };

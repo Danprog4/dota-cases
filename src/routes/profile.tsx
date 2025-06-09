@@ -1,23 +1,63 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { openTelegramLink } from "@telegram-apps/sdk-react";
 import { ChevronRight } from "lucide-react";
+import { toast } from "sonner";
 import { useUser } from "~/hooks/useUser";
+import { User } from "~/lib/db/schema";
+import { useTRPC } from "~/trpc/init/react";
 
 export const Route = createFileRoute("/profile")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { user } = useUser();
   const navigate = useNavigate();
+  const trpc = useTRPC();
+  const { user } = useUser();
+  const queryClient = useQueryClient();
+  const sellItem = useMutation(trpc.main.sellItem.mutationOptions({}));
 
   const handleOpenTelegramLink = (link: string) => {
     if (openTelegramLink.isAvailable()) {
       openTelegramLink(link);
     }
   };
+
+  const handleSellItem = (itemId: number) => {
+    const item = user?.items?.find((item) => item.id === itemId);
+    if (!item) {
+      toast.error("Предмет не найден");
+      return;
+    }
+
+    if (item.isSold) {
+      toast.error("Предмет уже продан");
+      return;
+    }
+
+    sellItem.mutate({
+      id: itemId,
+    });
+
+    toast.success("Предмет продан за " + item.price + " DOTA COINS");
+    queryClient.setQueryData(trpc.main.getUser.queryKey(), (user: User | undefined) => {
+      if (!user || !user.items) {
+        toast.error("Ошибка при продаже предмета");
+        return undefined;
+      }
+      return {
+        ...user,
+        items: user.items?.map((item) =>
+          item.id === itemId ? { ...item, isSold: true } : item,
+        ),
+        crystalBalance: user.crystalBalance + item.price,
+      };
+    });
+  };
+
   return (
-    <div className="flex flex-col items-center gap-2 p-4 pt-14">
+    <div className="flex flex-col items-center gap-2 p-4 pt-14 pb-32">
       <div className="flex flex-col items-center gap-2">
         <div className="aspect-square w-32 rounded-full bg-neutral-800">
           <img
@@ -50,29 +90,77 @@ function RouteComponent() {
           </div>
         </div>
       </div>
-      <div className="mt-6 flex flex-col gap-2">
+      <div className="mt-6 flex w-full flex-col gap-2">
         <div className="text-md text-neutral-300">ТОП 3 ПРЕДМЕТА</div>
-        <div className="flex gap-2">
-          {user?.items
-            ?.sort((a, b) => b.price - a.price)
-            .slice(0, 3)
-            .map((item) => (
-              <div key={item.id} className="rounded-md border-2 border-neutral-700 p-2">
-                <div>{item.name}</div>
-                <div>{item.price}</div>
-              </div>
-            ))}
+        <div className="grid w-full grid-cols-3 gap-2">
+          {user?.items && Array.isArray(user.items)
+            ? user.items
+                .sort((a, b) => b.price - a.price)
+                .slice(0, 3)
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex h-[180px] flex-col items-center justify-end gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
+                  >
+                    <div className="text-sm">{item.name}</div>
+                    <button
+                      disabled={sellItem.isPending}
+                      onClick={() => handleSellItem(item.id)}
+                      className="rounded-full border border-neutral-700 p-2 text-sm"
+                    >
+                      {item.price}
+                    </button>
+                  </div>
+                ))
+            : null}
         </div>
       </div>
       <div className="mt-6 flex flex-col gap-2">
-        <div className="text-md text-neutral-300">ТОП 3 ПРЕДМЕТА</div>
-        <div className="flex flex-wrap gap-2">
-          {user?.items?.map((item) => (
-            <div key={item.id} className="rounded-md border-2 border-neutral-700 p-2">
-              <div>{item.name}</div>
-              <div>{item.price}</div>
-            </div>
-          ))}
+        <div className="text-md text-neutral-300">ПОЛУЧЕННЫЕ ПРЕДМЕТЫ</div>
+        <div className="grid w-full grid-cols-3 gap-2">
+          {user?.items && Array.isArray(user.items)
+            ? user.items
+                .filter((item) => !item.isSold)
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
+                  >
+                    <div className="text-sm">{item.name}</div>
+                    <button
+                      disabled={sellItem.isPending}
+                      onClick={() => handleSellItem(item.id)}
+                      className="rounded-full border border-neutral-700 p-2 text-sm"
+                    >
+                      {item.price}
+                    </button>
+                  </div>
+                ))
+            : null}
+        </div>
+      </div>
+      <div className="mt-6 flex flex-col gap-2">
+        <div className="text-md text-neutral-300">ПРОДАННЫЕ ПРЕДМЕТЫ</div>
+        <div className="grid w-full grid-cols-3 gap-2">
+          {user?.items && Array.isArray(user.items)
+            ? user.items
+                .filter((item) => item.isSold)
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
+                  >
+                    <div className="text-sm">{item.name}</div>
+                    <button
+                      disabled={sellItem.isPending}
+                      onClick={() => handleSellItem(item.id)}
+                      className="rounded-full border border-neutral-700 p-2 text-sm"
+                    >
+                      {item.price}
+                    </button>
+                  </div>
+                ))
+            : null}
         </div>
       </div>
     </div>

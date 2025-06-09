@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { BackButton } from "~/components/BackButton";
 import { useUser } from "~/hooks/useUser";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
-
+import { Item } from "~/lib/db/schema";
 import { useTRPC } from "~/trpc/init/react";
 export const Route = createFileRoute("/case/$id")({
   component: RouteComponent,
@@ -20,8 +20,20 @@ function RouteComponent() {
   const [offset, setOffset] = useState(0);
   const queryClient = useQueryClient();
   const [isAnimationEnd, setIsAnimationEnd] = useState(false);
-  const [arrayWithWinningItem, setArrayWithWinningItem] = useState<any[]>([]);
-  const sellItem = useMutation(trpc.main.sellItem.mutationOptions());
+  const [arrayWithWinningItem, setArrayWithWinningItem] = useState<Item[]>([]);
+  const sellItem = useMutation(
+    trpc.main.sellItem.mutationOptions({
+      onSuccess: () => {
+        setIsAnimationEnd(false);
+        setArrayWithWinningItem([]);
+        setOffset(0);
+        setIsOpening(false);
+      },
+      onError: () => {
+        toast.error("Не удалось продать предмет.");
+      },
+    }),
+  );
   const caseItem = CASES_CONFIG.find((caseItem) => caseItem.id === Number(id));
   const [isOpening, setIsOpening] = useState(false);
   const numericId = Number(id);
@@ -61,7 +73,7 @@ function RouteComponent() {
       onSuccess: (data) => {
         console.log(data, "[FJDSKFKLJDSJKFDKLJS]");
         setIsOpening(true);
-        setArrayWithWinningItem(data);
+        setArrayWithWinningItem(data as Item[]);
       },
       onError: (error) => {
         if (error.message === "Not enough balance") {
@@ -74,15 +86,6 @@ function RouteComponent() {
     }),
   );
 
-  const handleBuyCase = () => {
-    if (items) {
-      buyCase.mutate({ caseId: numericId });
-    } else {
-      toast.error("Кейс не найден!");
-      navigate({ to: "/cases" });
-    }
-  };
-
   if (!user) {
     return;
   }
@@ -90,6 +93,21 @@ function RouteComponent() {
   if (!caseItem) {
     return;
   }
+
+  const handleBuyCase = () => {
+    if (user?.crystalBalance < caseItem?.price) {
+      toast.error("Не удалось купить кейс. У вас недостаточно DOTA COINS");
+      setIsOpening(false);
+    } else {
+      buyCase.mutate({ caseId: numericId });
+    }
+  };
+
+  const handleSellItem = (item: Item) => {
+    sellItem.mutate({ id: item.id });
+    toast.success(`Предмет ${item.name} продан за ${item.price}!`);
+    navigate({ to: "/cases" });
+  };
 
   return (
     <>
@@ -146,25 +164,7 @@ function RouteComponent() {
                   <div className="absolute bottom-4 flex w-full flex-col gap-2 p-4">
                     <button
                       onClick={() => {
-                        sellItem.mutate(
-                          { id: winningItem.id },
-                          {
-                            onSuccess: () => {
-                              setIsAnimationEnd(false);
-                              setArrayWithWinningItem([]);
-                              setOffset(0);
-                              setIsOpening(false);
-                            },
-                            onError: () => {
-                              toast.error("Не удалось продать предмет.");
-                            },
-                          },
-                        );
-                        toast.success(
-                          `Предмет ${winningItem.name} продан за ${winningItem.price}!`,
-                        );
-
-                        navigate({ to: "/cases" });
+                        handleSellItem(winningItem);
                       }}
                       className="w-auto rounded-2xl bg-neutral-500 p-4 text-center text-white"
                       disabled={sellItem.isPending}
