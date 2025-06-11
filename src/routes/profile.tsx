@@ -136,7 +136,7 @@ function RouteComponent() {
   console.log(gotItems);
 
   return (
-    <div className="flex flex-col items-center gap-2 p-4 pt-14 pb-32">
+    <div className="flex flex-col items-center gap-2 overflow-y-auto p-4 pt-14 pb-32">
       <div className="flex flex-col items-center gap-2">
         <div className="aspect-square w-32 rounded-full bg-neutral-800">
           <img
@@ -185,8 +185,8 @@ function RouteComponent() {
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
                   <div className="text-sm">
-                    {item.name.length > 20
-                      ? item.name.substring(0, 20) + "..."
+                    {item.name.length > 15
+                      ? item.name.substring(0, 15) + "..."
                       : item.name}
                   </div>
                   {item.isSold || item.isWithdrawn ? (
@@ -239,8 +239,8 @@ function RouteComponent() {
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
                   <div className="text-xs">
-                    {item.name.length > 20
-                      ? item.name.substring(0, 20) + "..."
+                    {item.name.length > 15
+                      ? item.name.substring(0, 15) + "..."
                       : item.name}
                   </div>
                   <VaulDrawer
@@ -281,8 +281,8 @@ function RouteComponent() {
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
                   <div className="text-xs">
-                    {item.name.length > 20
-                      ? item.name.substring(0, 20) + "..."
+                    {item.name.length > 15
+                      ? item.name.substring(0, 15) + "..."
                       : item.name}
                   </div>
                   <button
@@ -318,8 +318,8 @@ function RouteComponent() {
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
                   <div className="text-xs">
-                    {item.name.length > 20
-                      ? item.name.substring(0, 20) + "..."
+                    {item.name.length > 15
+                      ? item.name.substring(0, 15) + "..."
                       : item.name}
                   </div>
                   <button

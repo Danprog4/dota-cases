@@ -21,7 +21,7 @@ function RouteComponent() {
   }, [user?.items]);
 
   return (
-    <div className="flex w-full flex-col p-4 pt-14">
+    <div className="flex w-full flex-col overflow-y-auto p-4 pt-14">
       <div className="mx-auto h-[150px] w-[150px]">
         <Lottie animationData={presentData} loop={true} />
       </div>
