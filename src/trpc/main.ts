@@ -4,7 +4,7 @@ import { z } from "zod";
 import { CASE_IMAGES } from "~/case-images";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
 import { db } from "~/lib/db";
-import { tapBatches, usersTable } from "~/lib/db/schema";
+import { tapBatches, usersTable, withDrawalsTable } from "~/lib/db/schema";
 import { getItem } from "~/lib/utils/getItem";
 import { procedure, publicProcedure } from "./init";
 
@@ -182,7 +182,13 @@ export const router = {
 
       const newUserItems = [
         ...(user.items || []),
-        { name: item.name, price: item.price, id: item.id, isSold: false },
+        {
+          name: item.name,
+          price: item.price,
+          id: item.id,
+          isSold: false,
+          isWithdrawn: false,
+        },
       ];
 
       if (!newUserItems) {
@@ -201,7 +207,13 @@ export const router = {
 
       const newCaseItems = [
         ...caseItem.items,
-        { name: item.name, price: item.price, id: item.id, isSold: false },
+        {
+          name: item.name,
+          price: item.price,
+          id: item.id,
+          isSold: false,
+          isWithdrawn: false,
+        },
       ];
 
       const newCaseWithImages = newCaseItems.map((item) => {
@@ -262,6 +274,64 @@ export const router = {
         crystalBalance: userCrystalBalance + item.price,
         items: newUserItems,
       };
+    }),
+
+  withdrawItem: procedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.userId;
+      const itemId = input.id;
+
+      const user = await db.query.usersTable.findFirst({
+        where: eq(usersTable.id, userId),
+      });
+
+      if (!user) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Пользователь не найден",
+        });
+      }
+
+      const tradeLink = user.tradeLink;
+
+      if (!tradeLink) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "У вас отсутствует ссылка обмена",
+        });
+      }
+
+      const item = user.items?.find((item) => item.id === itemId);
+
+      if (!item) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Предмет не найден",
+        });
+      }
+
+      if (item.isSold) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Предмет уже продан",
+        });
+      }
+
+      await db.insert(withDrawalsTable).values({
+        userId,
+        tradeLink,
+        itemName: item.name,
+      });
+
+      await db
+        .update(usersTable)
+        .set({
+          items: user.items?.map((item) =>
+            item.id === itemId ? { ...item, isWithdrawn: true } : item,
+          ),
+        })
+        .where(eq(usersTable.id, userId));
     }),
 } satisfies TRPCRouterRecord;
 

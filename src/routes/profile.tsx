@@ -5,6 +5,7 @@ import { ChevronRight } from "lucide-react";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { CASE_IMAGES } from "~/case-images";
+import VaulDrawer from "~/components/Drawer";
 import { useUser } from "~/hooks/useUser";
 import { User } from "~/lib/db/schema";
 import { useTRPC } from "~/trpc/init/react";
@@ -19,6 +20,13 @@ function RouteComponent() {
   const { user } = useUser();
   const queryClient = useQueryClient();
   const sellItem = useMutation(trpc.main.sellItem.mutationOptions({}));
+  const withdrawItem = useMutation(
+    trpc.main.withdrawItem.mutationOptions({
+      onError: (error) => {
+        toast.error("Ошибка при выводе предмета");
+      },
+    }),
+  );
 
   const handleOpenTelegramLink = (link: string) => {
     if (openTelegramLink.isAvailable()) {
@@ -58,6 +66,49 @@ function RouteComponent() {
     });
   };
 
+  const handleWithdrawItem = (itemId: number) => {
+    const item = user?.items?.find((item) => item.id === itemId);
+
+    if (!item) {
+      toast.error("Предмет не найден");
+      return;
+    }
+
+    if (item.isWithdrawn) {
+      toast.error("Предмет уже выведен");
+      return;
+    }
+
+    if (item.isSold) {
+      toast.error("Предмет уже продан");
+      return;
+    }
+
+    if (!user?.tradeLink) {
+      toast.error("У вас отсутствует ссылка обмена");
+      return;
+    }
+
+    withdrawItem.mutate({
+      id: itemId,
+    });
+
+    toast.success("Предмет выведен");
+
+    queryClient.setQueryData(trpc.main.getUser.queryKey(), (user: User | undefined) => {
+      if (!user || !user.items) {
+        return;
+      }
+
+      return {
+        ...user,
+        items: user.items?.map((item) =>
+          item.id === itemId ? { ...item, isWithdrawn: true } : item,
+        ),
+      };
+    });
+  };
+
   const userItemsWithImages = useMemo(() => {
     return user?.items?.map((item) => {
       const caseImage = CASE_IMAGES.find((image) => image.markethashname === item.name);
@@ -70,11 +121,15 @@ function RouteComponent() {
   }, [user?.items]);
 
   const gotItems = useMemo(() => {
-    return userItemsWithImages?.filter((item) => !item.isSold);
+    return userItemsWithImages?.filter((item) => !item.isSold && !item.isWithdrawn);
   }, [user?.items]);
 
   const soldItems = useMemo(() => {
     return userItemsWithImages?.filter((item) => item.isSold);
+  }, [user?.items]);
+
+  const withdrawnItems = useMemo(() => {
+    return userItemsWithImages?.filter((item) => item.isWithdrawn);
   }, [user?.items]);
 
   console.log(gotItems?.length !== 0);
@@ -130,19 +185,31 @@ function RouteComponent() {
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
                   <div className="text-sm">
-                    {item.name.length > 25
-                      ? item.name.substring(0, 25) + "..."
+                    {item.name.length > 20
+                      ? item.name.substring(0, 20) + "..."
                       : item.name}
                   </div>
-                  <button
-                    disabled={sellItem.isPending}
-                    onClick={() => handleSellItem(item.id)}
-                    className={`rounded-full border border-neutral-700 p-2 text-sm ${
-                      item.isSold ? "text-neutral-500" : ""
-                    }`}
-                  >
-                    {item.price}
-                  </button>
+                  {item.isSold || item.isWithdrawn ? (
+                    <button
+                      disabled
+                      className="rounded-full border border-neutral-700 p-2 text-sm text-neutral-500"
+                    >
+                      {item.price}
+                    </button>
+                  ) : (
+                    <VaulDrawer
+                      price={item.price}
+                      image={item.image}
+                      name={item.name}
+                      id={item.id}
+                      sellItem={handleSellItem}
+                      withdrawItem={handleWithdrawItem}
+                    >
+                      <button className="rounded-full border border-neutral-700 p-2 text-sm">
+                        {item.price}
+                      </button>
+                    </VaulDrawer>
+                  )}
                 </div>
               </div>
             ))
@@ -172,17 +239,22 @@ function RouteComponent() {
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
                   <div className="text-xs">
-                    {item.name.length > 25
-                      ? item.name.substring(0, 25) + "..."
+                    {item.name.length > 20
+                      ? item.name.substring(0, 20) + "..."
                       : item.name}
                   </div>
-                  <button
-                    disabled={sellItem.isPending}
-                    onClick={() => handleSellItem(item.id)}
-                    className="rounded-full border border-neutral-700 p-2 text-sm"
+                  <VaulDrawer
+                    price={item.price}
+                    image={item.image}
+                    name={item.name}
+                    id={item.id}
+                    sellItem={handleSellItem}
+                    withdrawItem={handleWithdrawItem}
                   >
-                    {item.price}
-                  </button>
+                    <button className="rounded-full border border-neutral-700 p-2 text-sm">
+                      {item.price}
+                    </button>
+                  </VaulDrawer>
                 </div>
               </div>
             ))
@@ -209,8 +281,45 @@ function RouteComponent() {
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
                   <div className="text-xs">
-                    {item.name.length > 25
-                      ? item.name.substring(0, 25) + "..."
+                    {item.name.length > 20
+                      ? item.name.substring(0, 20) + "..."
+                      : item.name}
+                  </div>
+                  <button
+                    disabled={sellItem.isPending}
+                    onClick={() => handleSellItem(item.id)}
+                    className="rounded-full border border-neutral-700 p-2 text-sm text-neutral-500"
+                  >
+                    {item.price}
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex w-full justify-start text-center text-sm text-neutral-500">
+              Нет предметов
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="mt-6 flex w-full flex-col items-start gap-2">
+        <div className="text-md text-left text-neutral-300">ВЫВЕДЕННЫЕ ПРЕДМЕТЫ</div>
+        <div className="grid w-full grid-cols-3 gap-2">
+          {withdrawnItems && withdrawnItems?.length !== 0 ? (
+            withdrawnItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex h-[210px] flex-col items-center justify-between rounded-md border-2 border-neutral-700 p-2 text-center"
+              >
+                <img
+                  className="min-h-[100px] w-full rounded-md object-cover"
+                  src={item.image}
+                  alt={item.name}
+                />
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <div className="text-xs">
+                    {item.name.length > 20
+                      ? item.name.substring(0, 20) + "..."
                       : item.name}
                   </div>
                   <button

@@ -91,8 +91,17 @@ export type Item = {
   name: string;
   price: number;
   isSold: boolean;
+  isWithdrawn: boolean;
   imageUrl?: string;
 };
+
+export const withDrawalsTable = pgTable("withdrawals", {
+  id: serial("id").primaryKey(),
+  userId: bigint("user_id", { mode: "number" }).notNull(),
+  tradeLink: varchar("trade_link", { length: 255 }).notNull(),
+  itemName: varchar("item_name", { length: 255 }).notNull(),
+  date: timestamp("date", { withTimezone: true }).notNull().defaultNow(),
+});
 
 export type UserTask = typeof userTasksTable.$inferSelect;
 
