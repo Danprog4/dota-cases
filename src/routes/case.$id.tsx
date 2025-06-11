@@ -241,26 +241,24 @@ function RouteComponent() {
             ))}
           </div>
           <div className="fixed right-0 bottom-0 left-0 h-[14vh] w-full bg-neutral-800"></div>
-          <div className="fixed right-0 bottom-10 left-0 z-10 mx-4 rounded-2xl bg-red-500 p-4">
+          <button
+            className="fixed right-0 bottom-10 left-0 z-10 mx-4 rounded-2xl bg-red-500 p-4 disabled:opacity-50"
+            onClick={handleBuyCase}
+            disabled={buyCase.isPending}
+          >
             <div className="flex items-center justify-center gap-2">
-              <div
-                onClick={() => {
-                  handleBuyCase();
-                }}
-              >
-                <div>
-                  {buyCase.isPending ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    "Открыть кейс"
-                  )}
-                </div>
+              <div>
+                {buyCase.isPending ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  "Открыть кейс"
+                )}
               </div>
               <div className="flex items-center gap-1">
                 <div>{!buyCase.isPending && caseItem?.price}</div>
               </div>
             </div>
-          </div>
+          </button>
         </div>
       )}
     </>
