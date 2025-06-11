@@ -110,7 +110,6 @@ function RouteComponent() {
   const handleBuyCase = () => {
     if (user?.crystalBalance < caseItem?.price) {
       toast.error("Не удалось купить кейс. У вас недостаточно DOTA COINS");
-      setIsOpening(false);
     } else {
       buyCase.mutate({ caseId: numericId });
     }
@@ -246,11 +245,7 @@ function RouteComponent() {
             <div className="flex items-center justify-center gap-2">
               <div
                 onClick={() => {
-                  if (user?.crystalBalance < caseItem?.price) {
-                    toast.error("Не удалось купить кейс. У вас недостаточно DOTA COINS");
-                  } else {
-                    handleBuyCase();
-                  }
+                  handleBuyCase();
                 }}
               >
                 <div>
