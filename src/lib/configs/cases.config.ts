@@ -19,7 +19,7 @@ export const CASES_CONFIG = [
     id: 1,
     name: "Стартовый",
     description: "Стартовый кейс",
-    price: 5000,
+    price: 10,
     img: Case1,
     items: [
       { name: "Taunt: Victory Jig", price: 2600 },

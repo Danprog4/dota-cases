@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import Lottie from "lottie-react";
+import { useMemo } from "react";
+import { CASE_IMAGES } from "~/case-images";
 import { Logo } from "~/components/icons/logo";
 import { useUser } from "~/hooks/useUser";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
@@ -10,6 +12,14 @@ export const Route = createFileRoute("/cases")({
 
 function RouteComponent() {
   const { user } = useUser();
+
+  const userItemsWithImages = useMemo(() => {
+    return user?.items?.map((item) => {
+      const caseImage = CASE_IMAGES.find((image) => image.markethashname === item.name);
+      return { ...item, image: caseImage?.itemimage ?? "/fallback.png" };
+    });
+  }, [user?.items]);
+
   return (
     <div className="flex w-full flex-col p-4 pt-14">
       <div className="mx-auto h-[150px] w-[150px]">
@@ -41,12 +51,19 @@ function RouteComponent() {
         <div className="mt-4 flex w-full flex-col gap-2">
           <div className="opacity-50">ПОЛУЧЕННЫЕ ПРЕДМЕТЫ</div>
           <div className="grid w-full grid-cols-3 gap-3">
-            {user.items.map((item) => (
+            {userItemsWithImages?.map((item) => (
               <div
                 key={item.id}
-                className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
+                className="flex h-[160px] flex-col items-center justify-start gap-2 rounded-md border-2 border-neutral-700 p-2 text-center"
               >
-                <div className="text-sm">{item.name}</div>
+                <img
+                  className="min-h-[100px] w-full rounded-md object-cover"
+                  src={item.image}
+                  alt={item.name}
+                />
+                <div className="text-xs">
+                  {item.name.length > 25 ? item.name.substring(0, 25) + "..." : item.name}
+                </div>
               </div>
             ))}
           </div>

@@ -121,10 +121,10 @@ function RouteComponent() {
             topItems.map((item) => (
               <div
                 key={item.id}
-                className="flex h-[190px] flex-col items-center justify-between gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
+                className="flex h-[210px] flex-col items-center justify-between gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
               >
                 <img
-                  className="min-h-[80px] w-full rounded-md object-cover"
+                  className="min-h-[100px] w-full rounded-md object-cover"
                   src={item.image}
                   alt={item.name}
                 />
@@ -137,7 +137,9 @@ function RouteComponent() {
                   <button
                     disabled={sellItem.isPending}
                     onClick={() => handleSellItem(item.id)}
-                    className="rounded-full border border-neutral-700 p-2 text-sm"
+                    className={`rounded-full border border-neutral-700 p-2 text-sm ${
+                      item.isSold ? "text-neutral-500" : ""
+                    }`}
                   >
                     {item.price}
                   </button>
@@ -161,10 +163,10 @@ function RouteComponent() {
             gotItems.map((item) => (
               <div
                 key={item.id}
-                className="flex h-[190px] flex-col items-center justify-between rounded-md border-2 border-neutral-700 p-2 text-center"
+                className="flex h-[210px] flex-col items-center justify-between rounded-md border-2 border-neutral-700 p-2 text-center"
               >
                 <img
-                  className="min-h-[80px] w-full rounded-md object-cover"
+                  className="min-h-[100px] w-full rounded-md object-cover"
                   src={item.image}
                   alt={item.name}
                 />
@@ -198,10 +200,10 @@ function RouteComponent() {
             soldItems.map((item) => (
               <div
                 key={item.id}
-                className="flex h-[190px] flex-col items-center justify-between rounded-md border-2 border-neutral-700 p-2 text-center"
+                className="flex h-[210px] flex-col items-center justify-between rounded-md border-2 border-neutral-700 p-2 text-center"
               >
                 <img
-                  className="min-h-[80px] w-full rounded-md object-cover"
+                  className="min-h-[100px] w-full rounded-md object-cover"
                   src={item.image}
                   alt={item.name}
                 />
@@ -214,7 +216,7 @@ function RouteComponent() {
                   <button
                     disabled={sellItem.isPending}
                     onClick={() => handleSellItem(item.id)}
-                    className="rounded-full border border-neutral-700 p-2 text-sm"
+                    className="rounded-full border border-neutral-700 p-2 text-sm text-neutral-500"
                   >
                     {item.price}
                   </button>
