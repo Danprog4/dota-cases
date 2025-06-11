@@ -5,6 +5,15 @@ import Case4 from "../../../public/cases/4.png";
 import Case5 from "../../../public/cases/5.png";
 import Case6 from "../../../public/cases/6.png";
 
+export interface CaseConfig {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  img: string;
+  items: { name: string; price: number; image: string }[];
+}
+
 export const CASES_CONFIG = [
   {
     id: 1,

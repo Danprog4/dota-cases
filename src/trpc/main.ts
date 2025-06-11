@@ -1,6 +1,7 @@
 import { TRPCError, TRPCRouterRecord } from "@trpc/server";
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
+import { CASE_IMAGES } from "~/case-images";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
 import { db } from "~/lib/db";
 import { tapBatches, usersTable } from "~/lib/db/schema";
@@ -203,7 +204,16 @@ export const router = {
         { name: item.name, price: item.price, id: item.id, isSold: false },
       ];
 
-      return newCaseItems;
+      const newCaseWithImages = newCaseItems.map((item) => {
+        const caseImage = CASE_IMAGES.find((image) => image.markethashname === item.name);
+
+        return {
+          ...item,
+          image: caseImage?.itemimage ?? "/fallback.png",
+        };
+      });
+
+      return newCaseWithImages;
     }),
 
   sellItem: procedure

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import Lottie from "lottie-react";
 import { Logo } from "~/components/icons/logo";
+import { useUser } from "~/hooks/useUser";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
 import presentData from "../assets/present.json";
 export const Route = createFileRoute("/cases")({
@@ -8,6 +9,7 @@ export const Route = createFileRoute("/cases")({
 });
 
 function RouteComponent() {
+  const { user } = useUser();
   return (
     <div className="flex w-full flex-col p-4 pt-14">
       <div className="mx-auto h-[150px] w-[150px]">
@@ -35,12 +37,25 @@ function RouteComponent() {
           </Link>
         ))}
       </div>
-      <div className="mt-4 flex w-full flex-wrap gap-3">
-        <div className="opacity-50">ПОЛУЧЕННЫЕ ПРЕДМЕТЫ</div>
-        <div className="flex h-14 w-full items-center justify-start rounded-xl bg-neutral-800 p-4">
+      {user?.items && user.items.length > 0 ? (
+        <div className="mt-4 flex w-full flex-col gap-2">
+          <div className="opacity-50">ПОЛУЧЕННЫЕ ПРЕДМЕТЫ</div>
+          <div className="grid w-full grid-cols-3 gap-3">
+            {user.items.map((item) => (
+              <div
+                key={item.id}
+                className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
+              >
+                <div className="text-sm">{item.name}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="mt-4 flex w-full flex-wrap gap-3">
           <div className="opacity-50">К сожалению, предметов пока нет</div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

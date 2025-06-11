@@ -7,7 +7,9 @@ import { BackButton } from "~/components/BackButton";
 import { useUser } from "~/hooks/useUser";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
 import { Item } from "~/lib/db/schema";
+import { getCasesWithImages } from "~/lib/utils/getItemsImages";
 import { useTRPC } from "~/trpc/init/react";
+
 export const Route = createFileRoute("/case/$id")({
   component: RouteComponent,
 });
@@ -20,7 +22,9 @@ function RouteComponent() {
   const [offset, setOffset] = useState(0);
   const queryClient = useQueryClient();
   const [isAnimationEnd, setIsAnimationEnd] = useState(false);
-  const [arrayWithWinningItem, setArrayWithWinningItem] = useState<Item[]>([]);
+  const [arrayWithWinningItem, setArrayWithWinningItem] = useState<any[]>([]);
+  const [caseWithImages, setCaseWithImages] = useState<any>(null);
+
   const sellItem = useMutation(
     trpc.main.sellItem.mutationOptions({
       onSuccess: () => {
@@ -35,6 +39,7 @@ function RouteComponent() {
     }),
   );
   const caseItem = CASES_CONFIG.find((caseItem) => caseItem.id === Number(id));
+  const caseId = CASES_CONFIG.findIndex((caseItem) => caseItem.id === Number(id));
   const [isOpening, setIsOpening] = useState(false);
   const numericId = Number(id);
   const items = caseItem?.items;
@@ -68,12 +73,20 @@ function RouteComponent() {
     }
   }, [offset]);
 
+  useEffect(() => {
+    getCasesWithImages().then((casesWithImages) => {
+      const caseWithImagesData = casesWithImages[caseId];
+      setCaseWithImages(caseWithImagesData);
+      console.log(caseWithImagesData, "[caseWithImages]");
+    });
+  }, [caseId]);
+
   const buyCase = useMutation(
     trpc.main.buyCase.mutationOptions({
       onSuccess: (data) => {
         console.log(data, "[FJDSKFKLJDSJKFDKLJS]");
         setIsOpening(true);
-        setArrayWithWinningItem(data as Item[]);
+        setArrayWithWinningItem(data);
       },
       onError: (error) => {
         if (error.message === "Not enough balance") {
@@ -133,12 +146,17 @@ function RouteComponent() {
                 {arrayWithWinningItem?.map((item, index) => (
                   <div
                     key={index}
-                    className="flex h-[50vh] w-full items-center justify-center border"
+                    className="flex h-[50vh] w-full flex-col items-center justify-center gap-2 border"
                     style={{
                       minHeight: "50vh",
                     }}
                   >
-                    {item.name}
+                    <img
+                      className="h-full w-full rounded-md object-cover"
+                      alt={item.name}
+                      src={item.image}
+                    />
+                    <div className="text-2xl">{item.name}</div>
                   </div>
                 ))}
                 {items?.map((item, index) => (
@@ -158,6 +176,11 @@ function RouteComponent() {
             {isAnimationEnd && winningItem && (
               <div className="bg-opacity-70 absolute top-0 right-0 bottom-0 left-0 z-10 flex w-full items-center justify-center bg-black">
                 <div className="flex w-full flex-col items-center justify-center gap-4">
+                  <img
+                    className="h-full w-full rounded-md object-cover"
+                    src={winningItem.image}
+                    alt={winningItem.name}
+                  />
                   <div className="text-center text-4xl font-bold text-white">
                     {winningItem.name}
                   </div>
@@ -202,13 +225,19 @@ function RouteComponent() {
             <div className="text-lg">{caseItem?.description}</div>
           </div>
           <div className="flex w-full flex-wrap justify-between gap-3">
-            {caseItem?.items.map((item, index) => (
+            {caseWithImages?.items.map((item: any, index: number) => (
               <div
                 key={index}
-                className="flex h-[172px] max-w-[30%] flex-col items-center justify-end rounded-lg bg-neutral-800 p-3"
+                className="flex h-[182px] max-w-[30%] flex-col items-center justify-start gap-2 rounded-lg bg-neutral-800 p-3"
               >
-                {/* <img alt={item.name} /> */}
-                <div className="text-center text-sm">{item.name}</div>
+                <img
+                  alt={item.name}
+                  src={item.image}
+                  className="min-h-[100px] w-full rounded-md object-cover"
+                />
+                <div className="text-center text-xs">
+                  {item.name.length > 25 ? item.name.substring(0, 25) + "..." : item.name}
+                </div>
               </div>
             ))}
           </div>

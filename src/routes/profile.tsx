@@ -4,6 +4,7 @@ import { openTelegramLink } from "@telegram-apps/sdk-react";
 import { ChevronRight } from "lucide-react";
 import { useMemo } from "react";
 import { toast } from "sonner";
+import { CASE_IMAGES } from "~/case-images";
 import { useUser } from "~/hooks/useUser";
 import { User } from "~/lib/db/schema";
 import { useTRPC } from "~/trpc/init/react";
@@ -57,16 +58,23 @@ function RouteComponent() {
     });
   };
 
+  const userItemsWithImages = useMemo(() => {
+    return user?.items?.map((item) => {
+      const caseImage = CASE_IMAGES.find((image) => image.markethashname === item.name);
+      return { ...item, image: caseImage?.itemimage ?? "/fallback.png" };
+    });
+  }, [user?.items]);
+
   const topItems = useMemo(() => {
-    return user?.items?.sort((a, b) => b.price - a.price).slice(0, 3);
+    return userItemsWithImages?.sort((a, b) => b.price - a.price).slice(0, 3);
   }, [user?.items]);
 
   const gotItems = useMemo(() => {
-    return user?.items?.filter((item) => !item.isSold);
+    return userItemsWithImages?.filter((item) => !item.isSold);
   }, [user?.items]);
 
   const soldItems = useMemo(() => {
-    return user?.items?.filter((item) => item.isSold);
+    return userItemsWithImages?.filter((item) => item.isSold);
   }, [user?.items]);
 
   console.log(gotItems?.length !== 0);
@@ -113,16 +121,27 @@ function RouteComponent() {
             topItems.map((item) => (
               <div
                 key={item.id}
-                className="flex h-[180px] flex-col items-center justify-end gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
+                className="flex h-[190px] flex-col items-center justify-between gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
               >
-                <div className="text-sm">{item.name}</div>
-                <button
-                  disabled={sellItem.isPending}
-                  onClick={() => handleSellItem(item.id)}
-                  className="rounded-full border border-neutral-700 p-2 text-sm"
-                >
-                  {item.price}
-                </button>
+                <img
+                  className="min-h-[80px] w-full rounded-md object-cover"
+                  src={item.image}
+                  alt={item.name}
+                />
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <div className="text-sm">
+                    {item.name.length > 25
+                      ? item.name.substring(0, 25) + "..."
+                      : item.name}
+                  </div>
+                  <button
+                    disabled={sellItem.isPending}
+                    onClick={() => handleSellItem(item.id)}
+                    className="rounded-full border border-neutral-700 p-2 text-sm"
+                  >
+                    {item.price}
+                  </button>
+                </div>
               </div>
             ))
           ) : (
@@ -134,7 +153,7 @@ function RouteComponent() {
       </div>
       <div className="mt-6 flex w-full flex-col items-start gap-2">
         <div className="text-md flex items-start text-left text-neutral-300">
-          ПОЛУЧЕННЫЕ ПРЕДМЕТЫ
+          ДОСТУПНЫЕ ПРЕДМЕТЫ
         </div>
 
         <div className="grid w-full grid-cols-3 gap-2">
@@ -142,16 +161,27 @@ function RouteComponent() {
             gotItems.map((item) => (
               <div
                 key={item.id}
-                className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
+                className="flex h-[190px] flex-col items-center justify-between rounded-md border-2 border-neutral-700 p-2 text-center"
               >
-                <div className="text-sm">{item.name}</div>
-                <button
-                  disabled={sellItem.isPending}
-                  onClick={() => handleSellItem(item.id)}
-                  className="rounded-full border border-neutral-700 p-2 text-sm"
-                >
-                  {item.price}
-                </button>
+                <img
+                  className="min-h-[80px] w-full rounded-md object-cover"
+                  src={item.image}
+                  alt={item.name}
+                />
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <div className="text-xs">
+                    {item.name.length > 25
+                      ? item.name.substring(0, 25) + "..."
+                      : item.name}
+                  </div>
+                  <button
+                    disabled={sellItem.isPending}
+                    onClick={() => handleSellItem(item.id)}
+                    className="rounded-full border border-neutral-700 p-2 text-sm"
+                  >
+                    {item.price}
+                  </button>
+                </div>
               </div>
             ))
           ) : (
@@ -168,16 +198,27 @@ function RouteComponent() {
             soldItems.map((item) => (
               <div
                 key={item.id}
-                className="flex h-[180px] flex-col items-center justify-end rounded-md border-2 border-neutral-700 p-2 text-center"
+                className="flex h-[190px] flex-col items-center justify-between rounded-md border-2 border-neutral-700 p-2 text-center"
               >
-                <div className="text-sm">{item.name}</div>
-                <button
-                  disabled={sellItem.isPending}
-                  onClick={() => handleSellItem(item.id)}
-                  className="rounded-full border border-neutral-700 p-2 text-sm"
-                >
-                  {item.price}
-                </button>
+                <img
+                  className="min-h-[80px] w-full rounded-md object-cover"
+                  src={item.image}
+                  alt={item.name}
+                />
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <div className="text-xs">
+                    {item.name.length > 25
+                      ? item.name.substring(0, 25) + "..."
+                      : item.name}
+                  </div>
+                  <button
+                    disabled={sellItem.isPending}
+                    onClick={() => handleSellItem(item.id)}
+                    className="rounded-full border border-neutral-700 p-2 text-sm"
+                  >
+                    {item.price}
+                  </button>
+                </div>
               </div>
             ))
           ) : (

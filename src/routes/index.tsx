@@ -1,12 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { shareURL } from "@telegram-apps/sdk";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { ClickMe } from "~/components/ClickMe";
 import { CompletedTasks } from "~/components/CompletedTasks";
 import { Logo } from "~/components/icons/logo";
 import { TapButton } from "~/components/TapButton";
 import { TasksList } from "~/components/Tasks";
 import { useUser } from "~/hooks/useUser";
+import { getCasesWithImages } from "~/lib/utils/getItemsImages";
+import { useTRPC } from "~/trpc/init/react";
 export const Route = createFileRoute("/")({
   component: Home,
 });
@@ -14,10 +16,15 @@ export const Route = createFileRoute("/")({
 function Home() {
   const navigate = useNavigate();
   const { user } = useUser();
+  const trpc = useTRPC();
   const text = "Приглашаю тебя в игру Dota Cases!";
   const link = useMemo((): string => {
     return `https://t.me/DotaCases_bot?startapp=ref_${user?.id || ""}`;
   }, [user?.id]);
+
+  useEffect(() => {
+    getCasesWithImages();
+  }, []);
 
   return (
     <div className="flex w-full flex-col items-center overflow-x-hidden overflow-y-auto p-4 pt-24 pb-24">
