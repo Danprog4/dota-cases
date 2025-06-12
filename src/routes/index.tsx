@@ -9,6 +9,7 @@ import { Logo } from "~/components/icons/logo";
 import { TapButton } from "~/components/TapButton";
 import { TasksList } from "~/components/Tasks";
 import { useUser } from "~/hooks/useUser";
+import { User } from "~/lib/db/schema";
 import { getCasesWithImages } from "~/lib/utils/getItemsImages";
 import { useTRPC } from "~/trpc/init/react";
 export const Route = createFileRoute("/")({
@@ -44,7 +45,8 @@ function Home() {
   const onFinish = () => {
     setIsOnboarded(true);
     setOnboarded.mutate();
-    queryClient.setQueryData(["user"], (old: any) => {
+    queryClient.setQueryData(trpc.main.getUser.queryKey(), (old: User | undefined) => {
+      if (!old) return undefined;
       return {
         ...old,
         isOnboarded: true,
