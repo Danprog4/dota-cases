@@ -14,6 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import { FullPageSpinner } from "./Spinner";
 
 export const Carousel = ({ onFinish }: { onFinish: () => void }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -73,7 +74,7 @@ export const Carousel = ({ onFinish }: { onFinish: () => void }) => {
   }, [activeIndex, totalSlides, showSpinner]);
 
   if (showSpinner) {
-    return;
+    return <FullPageSpinner />;
   }
 
   return (
@@ -126,7 +127,7 @@ export const Carousel = ({ onFinish }: { onFinish: () => void }) => {
       </Swiper>
 
       {/* Progress bar */}
-      <div className="absolute top-8 right-4 left-4 z-10">
+      <div className="absolute top-12 right-4 left-4 z-10">
         <div className="flex gap-2">
           {Array.from({ length: totalSlides }).map((_, index) => (
             <div key={index} className="h-1 flex-1 rounded-full bg-white/30">
