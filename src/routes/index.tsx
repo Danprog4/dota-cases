@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { shareURL } from "@telegram-apps/sdk";
 import { useEffect, useMemo, useState } from "react";
@@ -19,6 +19,7 @@ function Home() {
   const navigate = useNavigate();
   const { user } = useUser();
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const text = "Приглашаю тебя в игру Dota Cases!";
   const [isOnboarded, setIsOnboarded] = useState(false);
   const link = useMemo((): string => {
@@ -43,6 +44,7 @@ function Home() {
   const onFinish = () => {
     setIsOnboarded(true);
     setOnboarded.mutate();
+    queryClient.invalidateQueries({ queryKey: ["user"] });
   };
 
   if (!user?.isOnboarded && !isOnboarded) {
