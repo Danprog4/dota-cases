@@ -62,7 +62,7 @@ function RouteComponent() {
                   alt={item.name}
                 />
                 <div className="text-xs">
-                  {item.name.length > 20 ? item.name.substring(0, 20) + "..." : item.name}
+                  {item.name.length > 18 ? item.name.substring(0, 18) + "..." : item.name}
                 </div>
               </div>
             ))}

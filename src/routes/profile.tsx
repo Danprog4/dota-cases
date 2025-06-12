@@ -225,7 +225,7 @@ function RouteComponent() {
             gotItems.map((item) => (
               <div
                 key={item.id}
-                className="flex h-[210px] flex-col items-center justify-between rounded-md border-2 border-neutral-700 p-2 text-center"
+                className="flex h-[210px] flex-col items-center justify-between gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
               >
                 <img
                   className="min-h-[100px] w-full rounded-md object-cover"
@@ -233,7 +233,7 @@ function RouteComponent() {
                   alt={item.name}
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
-                  <div className="text-xs">
+                  <div className="text-sm">
                     {item.name.length > 15
                       ? item.name.substring(0, 15) + "..."
                       : item.name}
@@ -275,7 +275,7 @@ function RouteComponent() {
                   alt={item.name}
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
-                  <div className="text-xs">
+                  <div className="text-sm">
                     {item.name.length > 15
                       ? item.name.substring(0, 15) + "..."
                       : item.name}
@@ -312,14 +312,13 @@ function RouteComponent() {
                   alt={item.name}
                 />
                 <div className="flex flex-col items-center justify-center gap-1">
-                  <div className="text-xs">
+                  <div className="text-sm">
                     {item.name.length > 15
                       ? item.name.substring(0, 15) + "..."
                       : item.name}
                   </div>
                   <button
-                    disabled={sellItem.isPending}
-                    onClick={() => handleSellItem(item.id)}
+                    disabled
                     className="rounded-full border border-neutral-700 p-2 text-sm text-neutral-500"
                   >
                     {item.price}

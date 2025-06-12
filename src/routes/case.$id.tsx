@@ -236,16 +236,16 @@ function RouteComponent() {
           <div className="flex w-full flex-wrap justify-between gap-3">
             {caseWithImages?.items.map((item: any, index: number) => (
               <div
-                key={index}
-                className="flex h-[182px] max-w-[30%] flex-col items-center justify-start gap-2 rounded-lg bg-neutral-800 p-3"
+                key={item.id}
+                className="flex h-[160px] max-w-[30%] flex-col items-center justify-start gap-2 rounded-md border-2 border-neutral-700 p-2 text-center"
               >
                 <img
-                  alt={item.name}
-                  src={item.image}
                   className="min-h-[100px] w-full rounded-md object-cover"
+                  src={item.image}
+                  alt={item.name}
                 />
-                <div className="text-center text-xs">
-                  {item.name.length > 25 ? item.name.substring(0, 25) + "..." : item.name}
+                <div className="text-xs">
+                  {item.name.length > 18 ? item.name.substring(0, 18) + "..." : item.name}
                 </div>
               </div>
             ))}
