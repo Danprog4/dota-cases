@@ -13,7 +13,6 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as TradeImport } from './routes/trade'
 import { Route as ProfileImport } from './routes/profile'
-import { Route as OnBoardingImport } from './routes/onBoarding'
 import { Route as FriendsImport } from './routes/friends'
 import { Route as CrystalsImport } from './routes/crystals'
 import { Route as CasesImport } from './routes/cases'
@@ -32,12 +31,6 @@ const TradeRoute = TradeImport.update({
 const ProfileRoute = ProfileImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const OnBoardingRoute = OnBoardingImport.update({
-  id: '/onBoarding',
-  path: '/onBoarding',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,13 +102,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FriendsImport
       parentRoute: typeof rootRoute
     }
-    '/onBoarding': {
-      id: '/onBoarding'
-      path: '/onBoarding'
-      fullPath: '/onBoarding'
-      preLoaderRoute: typeof OnBoardingImport
-      parentRoute: typeof rootRoute
-    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -154,7 +140,6 @@ export interface FileRoutesByFullPath {
   '/cases': typeof CasesRoute
   '/crystals': typeof CrystalsRoute
   '/friends': typeof FriendsRoute
-  '/onBoarding': typeof OnBoardingRoute
   '/profile': typeof ProfileRoute
   '/trade': typeof TradeRoute
   '/case/$id': typeof CaseIdRoute
@@ -166,7 +151,6 @@ export interface FileRoutesByTo {
   '/cases': typeof CasesRoute
   '/crystals': typeof CrystalsRoute
   '/friends': typeof FriendsRoute
-  '/onBoarding': typeof OnBoardingRoute
   '/profile': typeof ProfileRoute
   '/trade': typeof TradeRoute
   '/case/$id': typeof CaseIdRoute
@@ -179,7 +163,6 @@ export interface FileRoutesById {
   '/cases': typeof CasesRoute
   '/crystals': typeof CrystalsRoute
   '/friends': typeof FriendsRoute
-  '/onBoarding': typeof OnBoardingRoute
   '/profile': typeof ProfileRoute
   '/trade': typeof TradeRoute
   '/case/$id': typeof CaseIdRoute
@@ -193,7 +176,6 @@ export interface FileRouteTypes {
     | '/cases'
     | '/crystals'
     | '/friends'
-    | '/onBoarding'
     | '/profile'
     | '/trade'
     | '/case/$id'
@@ -204,7 +186,6 @@ export interface FileRouteTypes {
     | '/cases'
     | '/crystals'
     | '/friends'
-    | '/onBoarding'
     | '/profile'
     | '/trade'
     | '/case/$id'
@@ -215,7 +196,6 @@ export interface FileRouteTypes {
     | '/cases'
     | '/crystals'
     | '/friends'
-    | '/onBoarding'
     | '/profile'
     | '/trade'
     | '/case/$id'
@@ -228,7 +208,6 @@ export interface RootRouteChildren {
   CasesRoute: typeof CasesRoute
   CrystalsRoute: typeof CrystalsRoute
   FriendsRoute: typeof FriendsRoute
-  OnBoardingRoute: typeof OnBoardingRoute
   ProfileRoute: typeof ProfileRoute
   TradeRoute: typeof TradeRoute
   CaseIdRoute: typeof CaseIdRoute
@@ -240,7 +219,6 @@ const rootRouteChildren: RootRouteChildren = {
   CasesRoute: CasesRoute,
   CrystalsRoute: CrystalsRoute,
   FriendsRoute: FriendsRoute,
-  OnBoardingRoute: OnBoardingRoute,
   ProfileRoute: ProfileRoute,
   TradeRoute: TradeRoute,
   CaseIdRoute: CaseIdRoute,
@@ -261,7 +239,6 @@ export const routeTree = rootRoute
         "/cases",
         "/crystals",
         "/friends",
-        "/onBoarding",
         "/profile",
         "/trade",
         "/case/$id",
@@ -279,9 +256,6 @@ export const routeTree = rootRoute
     },
     "/friends": {
       "filePath": "friends.tsx"
-    },
-    "/onBoarding": {
-      "filePath": "onBoarding.tsx"
     },
     "/profile": {
       "filePath": "profile.tsx"
