@@ -25,6 +25,7 @@ export const Carousel = ({ onFinish }: { onFinish: () => void }) => {
   const totalSlides = 3;
   const slideInterval = 3000; // 3 seconds
 
+  //for smooth transition
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSpinner(false);
