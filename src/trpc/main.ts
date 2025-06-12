@@ -340,6 +340,14 @@ export const router = {
         })
         .where(eq(usersTable.id, userId));
     }),
+
+  setOnboarded: procedure.mutation(async ({ ctx }) => {
+    const userId = ctx.userId;
+    await db
+      .update(usersTable)
+      .set({ isOnboarded: true })
+      .where(eq(usersTable.id, userId));
+  }),
 } satisfies TRPCRouterRecord;
 
 export type Router = typeof router;

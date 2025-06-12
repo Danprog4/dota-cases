@@ -1,6 +1,8 @@
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { shareURL } from "@telegram-apps/sdk";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Carousel } from "~/components/Carousel";
 import { ClickMe } from "~/components/ClickMe";
 import { CompletedTasks } from "~/components/CompletedTasks";
 import { Logo } from "~/components/icons/logo";
@@ -18,13 +20,34 @@ function Home() {
   const { user } = useUser();
   const trpc = useTRPC();
   const text = "Приглашаю тебя в игру Dota Cases!";
+  const [isOnboarded, setIsOnboarded] = useState(false);
   const link = useMemo((): string => {
     return `https://t.me/DotaCases_bot?startapp=ref_${user?.id || ""}`;
   }, [user?.id]);
+  const setOnboarded = useMutation(trpc.main.setOnboarded.mutationOptions({}));
 
   useEffect(() => {
     getCasesWithImages();
   }, []);
+
+  useEffect(() => {
+    if (!user?.isOnboarded) {
+      setIsOnboarded(false);
+    } else {
+      setIsOnboarded(true);
+    }
+  }, [user?.isOnboarded]);
+
+  console.log(user?.isOnboarded, isOnboarded);
+
+  const onFinish = () => {
+    setIsOnboarded(true);
+    setOnboarded.mutate();
+  };
+
+  if (!user?.isOnboarded && !isOnboarded) {
+    return <Carousel onFinish={onFinish} />;
+  }
 
   return (
     <div className="flex w-full flex-col items-center overflow-x-hidden overflow-y-auto p-4 pt-24 pb-24">

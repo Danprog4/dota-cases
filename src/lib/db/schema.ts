@@ -21,6 +21,7 @@ export const usersTable = pgTable("users", {
   tradeLink: varchar("tradeLink", { length: 255 }),
   isSub: boolean("isSub").notNull().default(false),
   items: jsonb("items").$type<Item[]>().default([]),
+  isOnboarded: boolean("isOnboarded").notNull().default(false),
 });
 
 export const tapBatches = pgTable("tap_batches", {

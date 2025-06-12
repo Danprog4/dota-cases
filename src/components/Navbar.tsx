@@ -7,6 +7,7 @@ export const Navbar = () => {
   const { user } = useUser();
   const { pathname } = useLocation();
   const [activeButton, setActiveButton] = useState("balance");
+
   const userBalance = user?.crystalBalance;
 
   if (
@@ -15,6 +16,10 @@ export const Navbar = () => {
     pathname !== "/friends" &&
     pathname !== "/cases"
   ) {
+    return null;
+  }
+
+  if (!user?.isOnboarded) {
     return null;
   }
 

@@ -3,7 +3,7 @@ import { useTRPC } from "~/trpc/init/react";
 
 export const useUser = () => {
   const trpc = useTRPC();
-  const { data: user } = useQuery(trpc.main.getUser.queryOptions());
+  const { data: user, isLoading } = useQuery(trpc.main.getUser.queryOptions());
 
-  return { user };
+  return { user, isLoading };
 };
