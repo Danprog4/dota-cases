@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import Lottie from "lottie-react";
 import { useState } from "react";
@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import duckAnimation from "~/assets/duck-think.json";
 import { BackButton } from "~/components/BackButton";
 import { useUser } from "~/hooks/useUser";
+import { User } from "~/lib/db/schema";
 import { useTRPC } from "~/trpc/init/react";
 export const Route = createFileRoute("/trade")({
   component: RouteComponent,
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/trade")({
 function RouteComponent() {
   const trpc = useTRPC();
   const { user } = useUser();
+  const queryClient = useQueryClient();
   const [link, setLink] = useState("");
   const navigate = useNavigate();
   const { mutate: setTradeLink } = useMutation(trpc.main.setTradeLink.mutationOptions());
@@ -25,6 +27,13 @@ function RouteComponent() {
       return;
     }
     setTradeLink({ link });
+    queryClient.setQueryData(trpc.main.getUser.queryKey(), (old: User | undefined) => {
+      if (!old) return undefined;
+      return {
+        ...old,
+        tradeLink: link,
+      };
+    });
     toast.success("Ссылка обмена сохранена");
     setLink("");
   };
