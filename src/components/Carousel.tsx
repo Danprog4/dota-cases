@@ -14,7 +14,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { FullPageSpinner } from "./Spinner";
 
 export const Carousel = ({ onFinish }: { onFinish: () => void }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -74,7 +73,7 @@ export const Carousel = ({ onFinish }: { onFinish: () => void }) => {
   }, [activeIndex, totalSlides, showSpinner]);
 
   if (showSpinner) {
-    return <FullPageSpinner />;
+    return;
   }
 
   return (
