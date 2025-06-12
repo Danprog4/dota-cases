@@ -9,10 +9,14 @@ if (!token) throw new Error("ADMIN_BOT_TOKEN is unset");
 const bot = new Bot(token);
 
 bot.command("start", async (ctx) => {
+  await ctx.api.sendChatAction(ctx.chat.id, "typing");
+
   await ctx.reply("Hello, Admin!");
 });
 
 bot.command("get_withdrawals", async (ctx) => {
+  await ctx.api.sendChatAction(ctx.chat.id, "typing");
+
   if (!ctx.from?.id) {
     await ctx.reply("You are not authorized to use this command");
     return;
