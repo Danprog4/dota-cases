@@ -41,6 +41,11 @@ function RouteComponent() {
       return;
     }
 
+    if (item.isWithdrawn) {
+      toast.error("Предмет уже выведен или ожидает вывода");
+      return;
+    }
+
     if (item.isSold) {
       toast.error("Предмет уже продан");
       return;
@@ -71,16 +76,6 @@ function RouteComponent() {
 
     if (!item) {
       toast.error("Предмет не найден");
-      return;
-    }
-
-    if (item.isWithdrawn) {
-      toast.error("Предмет уже выведен");
-      return;
-    }
-
-    if (item.isSold) {
-      toast.error("Предмет уже продан");
       return;
     }
 

@@ -318,6 +318,13 @@ export const router = {
         });
       }
 
+      if (item.isWithdrawn) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Предмет уже выведен или ожидает вывода",
+        });
+      }
+
       await db.insert(withDrawalsTable).values({
         userId,
         tradeLink,

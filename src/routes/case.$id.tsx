@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { CASE_IMAGES } from "~/case-images";
 import { BackButton } from "~/components/BackButton";
 import { useUser } from "~/hooks/useUser";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
@@ -43,6 +44,10 @@ function RouteComponent() {
   const [isOpening, setIsOpening] = useState(false);
   const numericId = Number(id);
   const items = caseItem?.items;
+  const itemsWithImages = items?.map((item) => {
+    const itemImage = CASE_IMAGES.find((image) => image.markethashname === item.name);
+    return { ...item, image: itemImage?.itemimage ?? "/fallback.png" };
+  });
   const winningItem = arrayWithWinningItem[arrayWithWinningItem.length - 1];
 
   useEffect(() => {
@@ -158,7 +163,7 @@ function RouteComponent() {
                     <div className="text-2xl">{item.name}</div>
                   </div>
                 ))}
-                {items?.map((item, index) => (
+                {itemsWithImages?.map((item, index) => (
                   <div
                     key={index + arrayWithWinningItem.length}
                     className="flex h-[50vh] w-full items-center justify-center border"
@@ -166,7 +171,12 @@ function RouteComponent() {
                       minHeight: "50vh",
                     }}
                   >
-                    {item.name}
+                    <img
+                      className="h-full w-full rounded-md object-cover"
+                      alt={item.name}
+                      src={item.image}
+                    />
+                    <div className="text-2xl">{item.name}</div>
                   </div>
                 ))}
               </div>
