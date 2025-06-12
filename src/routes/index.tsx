@@ -44,7 +44,12 @@ function Home() {
   const onFinish = () => {
     setIsOnboarded(true);
     setOnboarded.mutate();
-    queryClient.invalidateQueries({ queryKey: ["user"] });
+    queryClient.setQueryData(["user"], (old: any) => {
+      return {
+        ...old,
+        isOnboarded: true,
+      };
+    });
   };
 
   if (!user?.isOnboarded && !isOnboarded) {
