@@ -1,12 +1,17 @@
 import { createAPIFileRoute } from "@tanstack/react-start/api";
 import { eq } from "drizzle-orm";
-import { Bot, webhookCallback } from "grammy";
+import { Bot, InlineKeyboard, webhookCallback } from "grammy";
 import { db } from "~/lib/db";
 import { updateCrystalBalance } from "~/lib/utils/updateCrys";
 const token = process.env.BOT_TOKEN;
 if (!token) throw new Error("BOT_TOKEN is unset");
 
 const bot = new Bot(token);
+
+const inlineKeyboard = new InlineKeyboard().webApp(
+  "Начать играть!",
+  "https://champtracker-backend.vercel.app/",
+);
 
 bot.on("message:successful_payment", async (ctx) => {
   console.log("message:successful_payment", ctx);
@@ -30,7 +35,18 @@ bot.on("message:successful_payment", async (ctx) => {
 });
 
 bot.command("start", async (ctx) => {
-  await ctx.reply("Hello");
+  await ctx.replyWithPhoto("https://champtracker-backend.vercel.app/images/champ.jpg", {
+    caption: `*🏆 Ваш личный помощник в формировании привычек! 🏆*
+
+С Champtracker вы сможете:
+✅ Создавать и настраивать задания для укрепления дисциплины
+🎯 Следить за прогрессом и достигать своих целей
+💰 Зарабатывать токены за ежедневную активность и выполнение заданий
+
+Нажми кнопку ниже, чтобы начать прокачивать свою дисциплину! 💪`,
+    reply_markup: inlineKeyboard,
+    parse_mode: "Markdown",
+  });
 });
 
 bot.on("pre_checkout_query", async (ctx) => {

@@ -11,7 +11,7 @@ const bot = new Bot(token);
 bot.command("start", async (ctx) => {
   await ctx.api.sendChatAction(ctx.chat.id, "typing");
 
-  await ctx.reply("Hello, Admin!");
+  await ctx.reply("Привет, Админ!");
 });
 
 bot.command("get_withdrawals", async (ctx) => {
@@ -33,11 +33,11 @@ bot.command("get_withdrawals", async (ctx) => {
   const withdrawalInfo = withdrawals
     .map(
       (w) =>
-        `User ID: ${w.userId}\nSkin: ${w.itemName}\nTrade Link: ${w.tradeLink}\nDate: ${w.date}\n---`,
+        `Юзер ID: ${w.userId}\nСкин: ${w.itemName}\nСсылка Обмена: ${w.tradeLink}\nДата: ${w.date}\n---`,
     )
     .join("\n");
 
-  await ctx.reply(withdrawalInfo || "No withdrawals found");
+  await ctx.reply(withdrawalInfo || "Нет выводов");
 });
 
 const update = webhookCallback(bot, "std/http");
