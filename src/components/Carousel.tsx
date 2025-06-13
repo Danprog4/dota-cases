@@ -28,7 +28,7 @@ export const Carousel = ({ onFinish }: { onFinish: () => void }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSpinner(false);
-    }, 1000);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, []);

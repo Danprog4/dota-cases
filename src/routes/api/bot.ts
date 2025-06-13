@@ -10,7 +10,7 @@ const bot = new Bot(token);
 
 const inlineKeyboard = new InlineKeyboard().webApp(
   "Начать играть!",
-  "https://champtracker-backend.vercel.app/",
+  "https://dota-cases-v4c4.vercel.app/",
 );
 
 bot.on("message:successful_payment", async (ctx) => {
@@ -35,18 +35,19 @@ bot.on("message:successful_payment", async (ctx) => {
 });
 
 bot.command("start", async (ctx) => {
-  await ctx.replyWithPhoto("https://champtracker-backend.vercel.app/images/champ.jpg", {
-    caption: `*🏆 Ваш личный помощник в формировании привычек! 🏆*
+  await ctx.reply(
+    `*🎮 Добро пожаловать в DOTA 2 CASES! 🎮*
+С DOTA CASES вы сможете:
+🎁 Открывать кейсы с предметами DOTA 2
+⚡ Выводить предметы в Steam
+💎 Тапать и зарабатывать DOTA COINS
 
-С Champtracker вы сможете:
-✅ Создавать и настраивать задания для укрепления дисциплины
-🎯 Следить за прогрессом и достигать своих целей
-💰 Зарабатывать токены за ежедневную активность и выполнение заданий
-
-Нажми кнопку ниже, чтобы начать прокачивать свою дисциплину! 💪`,
-    reply_markup: inlineKeyboard,
-    parse_mode: "Markdown",
-  });
+Нажми кнопку ниже, чтобы начать открывать кейсы! 🔥`,
+    {
+      reply_markup: inlineKeyboard,
+      parse_mode: "Markdown",
+    },
+  );
 });
 
 bot.on("pre_checkout_query", async (ctx) => {
