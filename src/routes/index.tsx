@@ -2,14 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { shareURL } from "@telegram-apps/sdk";
 import { useEffect, useMemo, useState } from "react";
-import { Carousel } from "~/components/Carousel";
 import { ClickMe } from "~/components/ClickMe";
 import { CompletedTasks } from "~/components/CompletedTasks";
 import { Logo } from "~/components/icons/logo";
 import { TapButton } from "~/components/TapButton";
 import { TasksList } from "~/components/Tasks";
 import { useUser } from "~/hooks/useUser";
-import { User } from "~/lib/db/schema";
 import { getCasesWithImages } from "~/lib/utils/getItemsImages";
 import { useTRPC } from "~/trpc/init/react";
 export const Route = createFileRoute("/")({
@@ -32,31 +30,31 @@ function Home() {
     getCasesWithImages();
   }, []);
 
-  useEffect(() => {
-    if (!user?.isOnboarded) {
-      setIsOnboarded(false);
-    } else {
-      setIsOnboarded(true);
-    }
-  }, [user?.isOnboarded]);
+  // useEffect(() => {
+  //   if (!user?.isOnboarded) {
+  //     setIsOnboarded(false);
+  //   } else {
+  //     setIsOnboarded(true);
+  //   }
+  // }, [user?.isOnboarded]);
 
-  console.log(user?.isOnboarded, isOnboarded);
+  // console.log(user?.isOnboarded, isOnboarded);
 
-  const onFinish = () => {
-    setIsOnboarded(true);
-    setOnboarded.mutate();
-    queryClient.setQueryData(trpc.main.getUser.queryKey(), (old: User | undefined) => {
-      if (!old) return undefined;
-      return {
-        ...old,
-        isOnboarded: true,
-      };
-    });
-  };
+  // const onFinish = () => {
+  //   setIsOnboarded(true);
+  //   setOnboarded.mutate();
+  //   queryClient.setQueryData(trpc.main.getUser.queryKey(), (old: User | undefined) => {
+  //     if (!old) return undefined;
+  //     return {
+  //       ...old,
+  //       isOnboarded: true,
+  //     };
+  //   });
+  // };
 
-  if (!user?.isOnboarded && !isOnboarded) {
-    return <Carousel onFinish={onFinish} />;
-  }
+  // if (!user?.isOnboarded && !isOnboarded) {
+  //   return <Carousel onFinish={onFinish} />;
+  // }
 
   return (
     <div className="flex w-full flex-col items-center overflow-x-hidden overflow-y-auto p-4 pt-24 pb-24">
