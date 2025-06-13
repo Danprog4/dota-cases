@@ -36,11 +36,6 @@ export function createRouter() {
       httpBatchLink({
         transformer: superjson,
         url: getUrl(),
-        fetch: (input, init) =>
-          fetch(input as string, {
-            ...(init as RequestInit),
-            credentials: "include",
-          }),
       }),
     ],
   });

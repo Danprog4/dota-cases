@@ -50,15 +50,14 @@ export const authRouter = {
 
       const event = getEvent();
 
-      console.log(event, "event auth");
-
       setCookie(event, "auth", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
         maxAge: 60 * 60 * 24 * 365,
         path: "/",
       });
+
+      console.log(event, "event auth");
 
       const existingUser = await db.query.usersTable.findFirst({
         where: eq(usersTable.id, telegramUser.id),
