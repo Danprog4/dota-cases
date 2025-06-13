@@ -19,9 +19,9 @@ export const Navbar = () => {
     return null;
   }
 
-  if (!user?.isOnboarded) {
-    return null;
-  }
+  // if (!user?.isOnboarded) {
+  //   return null;
+  // }
 
   return (
     <div className="fixed right-0 bottom-0 left-0 flex w-full justify-around bg-neutral-900/80 py-5 backdrop-blur-lg">
