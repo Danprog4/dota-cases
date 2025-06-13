@@ -4,16 +4,9 @@ body {
   background-color: #000000;
   overflow-x: hidden;
   overflow-y: auto; /* Prevent vertical scrolling in Telegram */
-  position: fixed;
   width: 100%;
   height: 100%;
-  touch-action: none;
   color: white; /* Disable browser handling of all touch gestures */
-}
-
-html {
-  overflow: hidden;
-  height: 100%;
 }
 
 @keyframes scroll {
