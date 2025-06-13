@@ -18,6 +18,8 @@ export const authRouter = {
     )
     .mutation(async ({ input }) => {
       try {
+        console.log(input.initData, "input.initData");
+        console.log(process.env.BOT_TOKEN, "process.env.BOT_TOKEN");
         validate(input.initData, process.env.BOT_TOKEN!, {
           expiresIn: 0,
         });
@@ -28,6 +30,8 @@ export const authRouter = {
         });
       }
       const parsedData = parse(input.initData);
+
+      console.log(parsedData, "parsedData");
 
       const telegramUser = parsedData.user;
       const referrerId = input.startParam?.split("_")[1];
