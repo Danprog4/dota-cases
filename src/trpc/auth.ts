@@ -46,11 +46,16 @@ export const authRouter = {
         .setExpirationTime("1y")
         .sign(new TextEncoder().encode(process.env.JWT_SECRET!));
 
+      console.log(token, "token auth");
+
       const event = getEvent();
+
+      console.log(event, "event auth");
 
       setCookie(event, "auth", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
         maxAge: 60 * 60 * 24 * 365,
         path: "/",
       });

@@ -1,9 +1,7 @@
 import { getCookie, getEvent } from "@tanstack/react-start/server";
-import { initTRPC } from "@trpc/server";
-import superjson from "superjson";
-
-import { TRPCError } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { jwtVerify } from "jose";
+import superjson from "superjson";
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -18,6 +16,9 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
 const authMiddleware = middleware(async ({ ctx, next }) => {
   const event = getEvent();
   const authToken = getCookie(event, "auth");
+
+  console.log(authToken, "authToken");
+  console.log(event, "event");
 
   if (!authToken) {
     throw new TRPCError({
