@@ -5,7 +5,14 @@ import {
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
-import { backButton, init, mockTelegramEnv, swipeBehavior } from "@telegram-apps/sdk";
+import {
+  backButton,
+  init,
+  mockTelegramEnv,
+  requestFullscreen,
+  swipeBehavior,
+  viewport,
+} from "@telegram-apps/sdk";
 import { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
@@ -101,11 +108,11 @@ function RootComponent() {
     //   viewport.expand();
     // }
 
-    // if (requestFullscreen.isAvailable()) {
-    //   requestFullscreen();
-    // }
+    if (requestFullscreen.isAvailable()) {
+      requestFullscreen();
+    }
 
-    // viewport.mount().then(() => viewport.requestFullscreen());
+    viewport.mount().then(() => viewport.requestFullscreen());
   }, []);
 
   useTaskStatusPolling();
