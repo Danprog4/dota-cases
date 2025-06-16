@@ -73,7 +73,7 @@ function RouteComponent() {
       const timer = setTimeout(() => {
         setIsAnimationEnd(true);
         console.log("Animation end reached.");
-      }, 4000);
+      }, 4500);
       return () => clearTimeout(timer);
     }
   }, [offset]);
@@ -150,7 +150,7 @@ function RouteComponent() {
                 {arrayWithWinningItem?.map((item, index) => (
                   <div
                     key={index}
-                    className="flex h-[50vh] w-full flex-col items-center justify-center gap-2 border"
+                    className="flex h-[50vh] w-full flex-col items-center justify-center gap-4 p-8"
                     style={{
                       minHeight: "50vh",
                     }}
@@ -160,23 +160,25 @@ function RouteComponent() {
                       alt={item.name}
                       src={item.image}
                     />
-                    <div className="text-2xl">{item.name}</div>
+                    <div className="text-center text-2xl">{item.name}</div>
                   </div>
                 ))}
                 {itemsWithImages?.map((item, index) => (
-                  <div
-                    key={index + arrayWithWinningItem.length}
-                    className="flex h-[50vh] w-full items-center justify-center border"
-                    style={{
-                      minHeight: "50vh",
-                    }}
-                  >
-                    <img
-                      className="h-full w-full rounded-md object-cover"
-                      alt={item.name}
-                      src={item.image}
-                    />
-                    <div className="text-2xl">{item.name}</div>
+                  <div className="flex flex-col items-center justify-center">
+                    <div
+                      key={index + arrayWithWinningItem.length}
+                      className="flex h-[50vh] w-full flex-col items-center justify-center gap-4 p-8"
+                      style={{
+                        minHeight: "50vh",
+                      }}
+                    >
+                      <img
+                        className="h-full w-full rounded-md object-cover"
+                        alt={item.name}
+                        src={item.image}
+                      />
+                      <div className="text-center text-2xl">{item.name}</div>
+                    </div>
                   </div>
                 ))}
               </div>
