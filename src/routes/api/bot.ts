@@ -10,7 +10,7 @@ const bot = new Bot(token);
 
 const inlineKeyboard = new InlineKeyboard().webApp(
   "Начать играть!",
-  "https://dota-cases-v4c4.vercel.app/",
+  "https://dota-cases-production.up.railway.app/",
 );
 
 bot.on("message:successful_payment", async (ctx) => {
