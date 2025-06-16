@@ -7,12 +7,14 @@ import {
 } from "@tanstack/react-router";
 import {
   backButton,
+  hapticFeedback,
   init,
   mockTelegramEnv,
   requestFullscreen,
   swipeBehavior,
   viewport,
 } from "@telegram-apps/sdk";
+
 import { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
@@ -113,6 +115,8 @@ function RootComponent() {
     }
 
     viewport.mount().then(() => viewport.requestFullscreen());
+
+    console.log(hapticFeedback.isSupported(), "hapticFeedback");
   }, []);
 
   useTaskStatusPolling();
@@ -134,11 +138,7 @@ const isErudaEnabled = import.meta.env.VITE_ERUDA_ENABLED === "true";
 function RootDocument({ children }: { readonly children: React.ReactNode }) {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
-  const prefetch = async () => {
-    await queryClient.prefetchQuery(trpc.main.getUser.queryOptions());
-    await queryClient.prefetchQuery(trpc.main.getRemaining.queryOptions());
-    await queryClient.prefetchQuery(trpc.tasks.getTasks.queryOptions());
-  };
+
   useEffect(() => {
     if (isDev && isErudaEnabled) {
       import("eruda").then((eruda) => {
@@ -146,14 +146,6 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
       });
     }
   }, []);
-
-  useEffect(() => {
-    prefetch();
-  }, [
-    trpc.main.getUser.queryOptions(),
-    trpc.main.getRemaining.queryOptions(),
-    trpc.tasks.getTasks.queryOptions(),
-  ]);
 
   return (
     // suppress since we're updating the "dark" class in a custom script below

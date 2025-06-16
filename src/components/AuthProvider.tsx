@@ -23,10 +23,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    prefetch();
-  }, []);
-
-  useEffect(() => {
     const loadTelegramSDK = async () => {
       const { retrieveRawInitData, retrieveLaunchParams } = await import(
         "@telegram-apps/sdk"
@@ -51,6 +47,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       startParam,
     });
   }, [initData, startParam]);
+
+  useEffect(() => {
+    prefetch();
+  }, []);
 
   if (!loggedIn) {
     return <FullPageSpinner />;

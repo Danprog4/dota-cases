@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { hapticFeedback } from "@telegram-apps/sdk";
 
 import Lottie from "lottie-react";
 import { useRef, useState } from "react";
@@ -47,6 +48,7 @@ export const TapButton = () => {
   };
 
   const handlePressStart = () => {
+    hapticFeedback.impactOccurred("medium");
     isPressed.current = true;
     if (buttonRef.current) {
       buttonRef.current.style.transform = "scale(0.95)";
@@ -59,6 +61,8 @@ export const TapButton = () => {
       buttonRef.current.style.transform = "scale(1)";
     }
   };
+
+  console.log(hapticFeedback.isSupported(), "hapticFeedback");
 
   return (
     <button
