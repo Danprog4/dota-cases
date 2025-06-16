@@ -15,10 +15,14 @@ export const useBuyCrystals = () => {
       onSuccess: (data) => {
         if (invoice.open.isAvailable()) {
           invoice.open(data.invoiceUrl, "url").then((status) => {
+            console.log(status, "status1");
             if (status === "paid") {
               toast.success("Оплата прошла успешно");
-              queryClient.invalidateQueries({ queryKey: trpc.main.getUser.queryKey() });
+              queryClient.invalidateQueries({
+                queryKey: trpc.main.getUser.queryKey(),
+              });
             } else if (status === "cancelled" || status === "failed") {
+              console.log(status, "status2");
               toast.error("Платеж не был завершен");
             }
           });
