@@ -7,7 +7,7 @@ import { Bot } from "grammy";
 export const handleCreateInvoice = async (userId: number, amount: number) => {
   const bot = new Bot(process.env.BOT_TOKEN!);
 
-  const title = "25 000";
+  const title = "DOTA COINS";
   const description = "Dota cases balance";
   const payload = JSON.stringify({ userId });
   const currency = "XTR";

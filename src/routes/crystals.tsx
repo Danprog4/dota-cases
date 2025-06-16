@@ -29,19 +29,19 @@ function RouteComponent() {
         {CRYSTAL_PRICE.map((crystal) => (
           <div
             onClick={() => buyCrystals.mutate(crystal.stars)}
-            key={crystal.stars}
+            key={crystal.price}
             className="flex cursor-pointer items-center justify-between rounded-xl bg-neutral-800 p-4"
           >
             <div className="flex items-center gap-2">
               <div className="text-blue-400">
                 <Logo width="24px" height="24px" />
               </div>
-              <div className="text-xl font-medium">{crystal.stars}</div>
+              <div className="text-lg font-medium">{crystal.crystals}</div>
             </div>
-            <div className="flex items-center gap-10">
+            <div className="flex items-center gap-8">
               <div className="text-neutral-400">≈ {crystal.price} ₽</div>
-              <div className="flex items-center justify-center gap-2">
-                <div className="px- flex items-center justify-center rounded-lg font-medium">
+              <div className="flex w-[73px] items-center justify-end gap-1">
+                <div className="flexitems-center justify-center rounded-lg font-medium">
                   {crystal.stars}
                 </div>
                 <TelegramStar />
