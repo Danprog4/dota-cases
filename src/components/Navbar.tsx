@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Diamond, ShoppingBag, User, Users } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../hooks/useUser";
+
 export const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useUser();
@@ -9,6 +10,26 @@ export const Navbar = () => {
   const [activeButton, setActiveButton] = useState("balance");
 
   const userBalance = user?.crystalBalance;
+
+  // Синхронизируем activeButton с текущим маршрутом
+  useEffect(() => {
+    switch (pathname) {
+      case "/":
+        setActiveButton("balance");
+        break;
+      case "/cases":
+        setActiveButton("cases");
+        break;
+      case "/friends":
+        setActiveButton("friends");
+        break;
+      case "/profile":
+        setActiveButton("profile");
+        break;
+      default:
+        setActiveButton("balance");
+    }
+  }, [pathname]);
 
   if (
     pathname !== "/" &&
@@ -30,7 +51,6 @@ export const Navbar = () => {
         label={`${userBalance}`}
         onClick={() => {
           navigate({ to: "/" });
-          setActiveButton("balance");
         }}
         isActive={activeButton === "balance"}
       />
@@ -39,7 +59,6 @@ export const Navbar = () => {
         label="Кейсы"
         onClick={() => {
           navigate({ to: "/cases" });
-          setActiveButton("cases");
         }}
         isActive={activeButton === "cases"}
       />
@@ -48,7 +67,6 @@ export const Navbar = () => {
         label="Друзья"
         onClick={() => {
           navigate({ to: "/friends" });
-          setActiveButton("friends");
         }}
         isActive={activeButton === "friends"}
       />
@@ -57,7 +75,6 @@ export const Navbar = () => {
         label="Профиль"
         onClick={() => {
           navigate({ to: "/profile" });
-          setActiveButton("profile");
         }}
         isActive={activeButton === "profile"}
       />

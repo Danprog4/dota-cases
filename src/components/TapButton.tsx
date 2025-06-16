@@ -48,7 +48,9 @@ export const TapButton = () => {
   };
 
   const handlePressStart = () => {
-    hapticFeedback.impactOccurred("medium");
+    if (hapticFeedback.isSupported()) {
+      hapticFeedback.impactOccurred("medium");
+    }
     isPressed.current = true;
     if (buttonRef.current) {
       buttonRef.current.style.transform = "scale(0.95)";
