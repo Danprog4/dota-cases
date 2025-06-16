@@ -1,5 +1,5 @@
 export const CRYSTAL_PRICE = [
-  { stars: 100, crystals: 25000, price: 200 },
+  { stars: 1, crystals: 25000, price: 200 },
   { stars: 250, crystals: 62500, price: 500 },
   { stars: 500, crystals: 125000, price: 1000 },
   { stars: 1250, crystals: 312500, price: 2500 },
