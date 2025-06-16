@@ -14,7 +14,7 @@ export const useBuyCrystals = () => {
     trpc.tgTx.createInvoice.mutationOptions({
       onSuccess: (data) => {
         if (invoice.open.isAvailable()) {
-          const promise = invoice.open(data.invoiceUrl, "url").then((status) => {
+          invoice.open(data.invoiceUrl, "url").then((status) => {
             if (status === "paid") {
               toast.success("Оплата прошла успешно");
               queryClient.invalidateQueries({ queryKey: trpc.main.getUser.queryKey() });
