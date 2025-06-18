@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { openTelegramLink } from "@telegram-apps/sdk-react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Link2, UsersRound } from "lucide-react";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { CASE_IMAGES } from "~/case-images";
 import VaulDrawer from "~/components/Drawer";
+import { Logo } from "~/components/icons/logo";
 import { useUser } from "~/hooks/useUser";
 import { User } from "~/lib/db/schema";
 import { useTRPC } from "~/trpc/init/react";
@@ -147,7 +148,13 @@ function RouteComponent() {
         className="mt-8 flex w-full flex-col items-start rounded-xl bg-neutral-800"
       >
         <div className="flex w-full items-center justify-between p-4">
-          <div>Ссылка обмена</div>
+          <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center rounded-md bg-green-500 p-2">
+              <Link2 className="h-4 w-4" />
+            </div>
+            <div>Ссылка обмена</div>
+          </div>
+
           <div>
             <ChevronRight />
           </div>
@@ -158,7 +165,12 @@ function RouteComponent() {
         className="flex w-full flex-col items-start rounded-xl bg-neutral-800"
       >
         <div className="flex w-full items-center justify-between p-4">
-          <div>Сообщество DOTA CASES</div>
+          <div className="flex items-center justify-center gap-2">
+            <div className="rounded-md bg-purple-500 p-2">
+              <UsersRound className="h-4 w-4" />
+            </div>
+            <div>Сообщество DOTA CASES</div>
+          </div>
           <div>
             <ChevronRight />
           </div>
@@ -173,39 +185,57 @@ function RouteComponent() {
                 key={item.id}
                 className="flex h-[210px] flex-col items-center justify-between gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
               >
-                <img
-                  className="min-h-[100px] w-full rounded-md object-cover"
-                  src={item.image}
-                  alt={item.name}
-                />
-                <div className="flex flex-col items-center justify-center gap-1">
-                  <div className="text-sm">
-                    {item.name.length > 15
-                      ? item.name.substring(0, 15) + "..."
-                      : item.name}
-                  </div>
-                  {item.isSold || item.isWithdrawn ? (
-                    <button
-                      disabled
-                      className="rounded-full border border-neutral-700 p-2 text-sm text-neutral-500"
-                    >
-                      {item.price}
-                    </button>
-                  ) : (
-                    <VaulDrawer
-                      price={item.price}
-                      image={item.image}
-                      name={item.name}
-                      id={item.id}
-                      sellItem={handleSellItem}
-                      withdrawItem={handleWithdrawItem}
-                    >
-                      <button className="rounded-full border border-neutral-700 p-2 text-sm">
+                {item.isSold || item.isWithdrawn ? (
+                  <>
+                    <img
+                      className="min-h-[100px] w-full rounded-md object-cover"
+                      src={item.image}
+                      alt={item.name}
+                    />
+                    <div className="flex flex-col items-center justify-center gap-1">
+                      <div className="text-sm">
+                        {item.name.length > 15
+                          ? item.name.substring(0, 15) + "..."
+                          : item.name}
+                      </div>
+                      <button
+                        disabled
+                        className="flex items-center justify-center gap-1 rounded-full border border-neutral-700 bg-neutral-700 p-2 text-sm text-neutral-500"
+                      >
+                        <Logo width="20px" height="20px" />
                         {item.price}
                       </button>
-                    </VaulDrawer>
-                  )}
-                </div>
+                    </div>
+                  </>
+                ) : (
+                  <VaulDrawer
+                    price={item.price}
+                    image={item.image}
+                    name={item.name}
+                    id={item.id}
+                    sellItem={handleSellItem}
+                    withdrawItem={handleWithdrawItem}
+                  >
+                    <div className="flex h-full w-full flex-col items-center justify-between gap-1">
+                      <img
+                        className="min-h-[100px] w-full rounded-md object-cover"
+                        src={item.image}
+                        alt={item.name}
+                      />
+                      <div className="flex flex-col items-center justify-center gap-1">
+                        <div className="text-sm">
+                          {item.name.length > 15
+                            ? item.name.substring(0, 15) + "..."
+                            : item.name}
+                        </div>
+                        <button className="flex items-center justify-center gap-1 rounded-full border border-neutral-700 bg-neutral-700 p-2 text-sm text-white">
+                          <Logo width="20px" height="20px" />
+                          {item.price}
+                        </button>
+                      </div>
+                    </div>
+                  </VaulDrawer>
+                )}
               </div>
             ))
           ) : (
@@ -227,30 +257,33 @@ function RouteComponent() {
                 key={item.id}
                 className="flex h-[210px] flex-col items-center justify-between gap-1 rounded-md border-2 border-neutral-700 p-2 text-center"
               >
-                <img
-                  className="min-h-[100px] w-full rounded-md object-cover"
-                  src={item.image}
-                  alt={item.name}
-                />
-                <div className="flex flex-col items-center justify-center gap-1">
-                  <div className="text-sm">
-                    {item.name.length > 15
-                      ? item.name.substring(0, 15) + "..."
-                      : item.name}
+                <VaulDrawer
+                  price={item.price}
+                  image={item.image}
+                  name={item.name}
+                  id={item.id}
+                  sellItem={handleSellItem}
+                  withdrawItem={handleWithdrawItem}
+                >
+                  <div className="flex h-full w-full flex-col items-center justify-between gap-1">
+                    <img
+                      className="min-h-[100px] w-full rounded-md object-cover"
+                      src={item.image}
+                      alt={item.name}
+                    />
+                    <div className="flex flex-col items-center justify-center gap-1">
+                      <div className="text-sm">
+                        {item.name.length > 15
+                          ? item.name.substring(0, 15) + "..."
+                          : item.name}
+                      </div>
+                      <button className="flex items-center justify-center gap-1 rounded-full border border-neutral-700 bg-neutral-700 p-2 text-sm text-white">
+                        <Logo width="20px" height="20px" />
+                        {item.price}
+                      </button>
+                    </div>
                   </div>
-                  <VaulDrawer
-                    price={item.price}
-                    image={item.image}
-                    name={item.name}
-                    id={item.id}
-                    sellItem={handleSellItem}
-                    withdrawItem={handleWithdrawItem}
-                  >
-                    <button className="rounded-full border border-neutral-700 p-2 text-sm">
-                      {item.price}
-                    </button>
-                  </VaulDrawer>
-                </div>
+                </VaulDrawer>
               </div>
             ))
           ) : (
@@ -280,11 +313,8 @@ function RouteComponent() {
                       ? item.name.substring(0, 15) + "..."
                       : item.name}
                   </div>
-                  <button
-                    disabled={sellItem.isPending}
-                    onClick={() => handleSellItem(item.id)}
-                    className="rounded-full border border-neutral-700 p-2 text-sm text-neutral-500"
-                  >
+                  <button className="flex items-center justify-center gap-1 rounded-full border border-neutral-700 bg-neutral-700 p-2 text-sm text-neutral-500">
+                    <Logo width="20px" height="20px" />
                     {item.price}
                   </button>
                 </div>
@@ -319,8 +349,9 @@ function RouteComponent() {
                   </div>
                   <button
                     disabled
-                    className="rounded-full border border-neutral-700 p-2 text-sm text-neutral-500"
+                    className="flex items-center justify-center gap-1 rounded-full border border-neutral-700 bg-neutral-700 p-2 text-sm text-neutral-500"
                   >
+                    <Logo width="20px" height="20px" />
                     {item.price}
                   </button>
                 </div>

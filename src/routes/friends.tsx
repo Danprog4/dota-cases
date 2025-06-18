@@ -59,8 +59,7 @@ function RouteComponent() {
                     <div className="flex gap-2 text-xs text-neutral-500">
                       <div>{friend.crystalBalance} DOTA COINS,</div>
                       <div>
-                        {friend.items?.length || 0}{" "}
-                        {pluralItems(friend.items?.length || 0)}
+                        {friend.items?.length} {pluralItems(friend.items?.length || 0)}
                       </div>
                     </div>
                   </div>
