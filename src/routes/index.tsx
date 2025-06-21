@@ -68,7 +68,8 @@ function Home() {
         <h1 className="text-4xl font-bold">DOTA COINS</h1>
 
         <p className="text-md w-[68vw] text-center">
-          Зарабатывай DOTA COINS и меняй их на кейсы, стикеры и скины для Dota 2
+          Зарабатывай <Logo width={"20"} height={"20"} /> и меняй их на кейсы, стикеры и
+          скины для Dota 2
         </p>
       </div>
       <div className="mb-2 flex w-full flex-col items-center justify-center rounded-2xl bg-neutral-800 p-4">

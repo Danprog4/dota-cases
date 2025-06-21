@@ -32,7 +32,9 @@ export default function VaulDrawer({
               <Drawer.Title className="text-center text-xl font-medium text-white">
                 {name.length > 30 ? name.substring(0, 30) + "..." : name}
               </Drawer.Title>
-              <div className="text-2xl font-bold text-white">{price} DOTA COINS</div>
+              <div className="flex items-center justify-center gap-1 text-2xl font-bold text-white">
+                {price} <Logo width={"24"} height={"24"} />
+              </div>
             </div>
 
             <div className="mt-8 flex flex-col gap-3">

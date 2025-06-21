@@ -55,8 +55,11 @@ function RouteComponent() {
     sellItem.mutate({
       id: itemId,
     });
-
-    toast.success("Предмет продан за " + item.price + " DOTA COINS");
+    toast.success(
+      <div className="flex items-center justify-center gap-1">
+        Предмет продан за {item.price} <Logo width="20" height="20" />
+      </div>,
+    );
     queryClient.setQueryData(trpc.main.getUser.queryKey(), (user: User | undefined) => {
       if (!user || !user.items) {
         toast.error("Ошибка при продаже предмета");
