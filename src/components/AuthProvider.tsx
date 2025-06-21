@@ -5,6 +5,7 @@ import { useUser } from "../hooks/useUser";
 import { FullPageSpinner } from "./Spinner";
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const trpc = useTRPC();
   const [initData, setInitData] = useState<string | null>(null);
   const [startParam, setStartParam] = useState<string | undefined>(undefined);
@@ -50,9 +51,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     prefetch();
+    setIsLoading(false);
   }, []);
 
-  if (!loggedIn) {
+  if (!loggedIn && isLoading) {
     return <FullPageSpinner />;
   }
 
