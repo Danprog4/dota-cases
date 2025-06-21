@@ -261,7 +261,7 @@ function RouteComponent() {
           </div>
           <div className="fixed right-0 bottom-0 left-0 h-[14vh] w-full bg-neutral-800"></div>
           <button
-            className="fixed right-0 bottom-10 left-0 z-10 mx-4 rounded-2xl bg-red-500 p-4 disabled:opacity-50"
+            className="fixed right-0 bottom-10 left-0 z-10 mx-4 rounded-2xl border border-red-500 bg-black p-4 disabled:opacity-50"
             onClick={handleBuyCase}
             disabled={buyCase.isPending}
           >
@@ -274,7 +274,8 @@ function RouteComponent() {
                 )}
               </div>
               <div className="flex items-center gap-1">
-                <div>{!buyCase.isPending && caseItem?.price}</div>
+                <div>{!buyCase.isPending && caseItem?.price} </div>
+                <Logo width={"20"} height={"20"} />
               </div>
             </div>
           </button>
