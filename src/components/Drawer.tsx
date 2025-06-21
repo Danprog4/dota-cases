@@ -40,7 +40,7 @@ export default function VaulDrawer({
             <div className="mt-8 flex flex-col gap-3">
               <button
                 onClick={() => sellItem(id)}
-                className="flex h-12 w-full items-center justify-center gap-1 rounded-lg border border-neutral-500 bg-black font-medium text-white transition-colors hover:bg-red-600"
+                className="flex h-12 w-full items-center justify-center gap-1 rounded-lg border border-red-500 bg-black font-medium text-white transition-colors hover:bg-red-600"
               >
                 Продать за {price} <Logo width={"20"} height={"20"} />
               </button>

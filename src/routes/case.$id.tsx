@@ -219,7 +219,7 @@ function RouteComponent() {
                         setIsOpening(false);
                         handleBuyCase();
                       }}
-                      className="flex w-auto items-center justify-center gap-1 rounded-2xl border border-neutral-500 bg-black p-4 text-center text-white"
+                      className="flex w-auto items-center justify-center gap-1 rounded-2xl border border-red-500 bg-black p-4 text-center text-white"
                     >
                       Крутить еще раз за {caseItem?.price}{" "}
                       <Logo width={"20"} height={"20"} />
