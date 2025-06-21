@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import Lottie from "lottie-react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { CASE_IMAGES } from "~/case-images";
 import { Logo } from "~/components/icons/logo";
 import { useUser } from "~/hooks/useUser";
@@ -19,6 +19,12 @@ function RouteComponent() {
       return { ...item, image: caseImage?.itemimage ?? "/fallback.png" };
     });
   }, [user?.items]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
 
   return (
     <div className="flex w-full flex-col overflow-y-auto p-4 pt-14 pb-30">

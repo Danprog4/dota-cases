@@ -49,6 +49,7 @@
     "swiper": "^11.2.8",
     "tailwind-merge": "^3.2.0",
     "tw-animate-css": "^1.2.9",
+    "use-sound": "^5.0.0",
     "vaul": "^1.1.2",
     "vinxi": "^0.5.3",
     "zod": "^3.24.2"

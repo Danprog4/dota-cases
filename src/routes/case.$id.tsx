@@ -3,13 +3,16 @@ import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import useSound from "use-sound";
 import { CASE_IMAGES } from "~/case-images";
 import { BackButton } from "~/components/BackButton";
+import { Logo } from "~/components/icons/logo";
 import { useUser } from "~/hooks/useUser";
 import { CASES_CONFIG } from "~/lib/configs/cases.config";
 import { Item } from "~/lib/db/schema";
 import { getCasesWithImages } from "~/lib/utils/getItemsImages";
 import { useTRPC } from "~/trpc/init/react";
+import gamble from "/gamble.mp3";
 
 export const Route = createFileRoute("/case/$id")({
   component: RouteComponent,
@@ -18,6 +21,7 @@ export const Route = createFileRoute("/case/$id")({
 function RouteComponent() {
   const { id } = useParams({ from: "/case/$id" });
   const navigate = useNavigate();
+  const [play] = useSound(gamble);
   const trpc = useTRPC();
   const { user } = useUser();
   const [offset, setOffset] = useState(0);
@@ -25,6 +29,7 @@ function RouteComponent() {
   const [isAnimationEnd, setIsAnimationEnd] = useState(false);
   const [arrayWithWinningItem, setArrayWithWinningItem] = useState<any[]>([]);
   const [caseWithImages, setCaseWithImages] = useState<any>(null);
+  const [isOpening, setIsOpening] = useState(false);
 
   const sellItem = useMutation(
     trpc.main.sellItem.mutationOptions({
@@ -41,7 +46,7 @@ function RouteComponent() {
   );
   const caseItem = CASES_CONFIG.find((caseItem) => caseItem.id === Number(id));
   const caseId = CASES_CONFIG.findIndex((caseItem) => caseItem.id === Number(id));
-  const [isOpening, setIsOpening] = useState(false);
+
   const numericId = Number(id);
   const items = caseItem?.items;
   const itemsWithImages = items?.map((item) => {
@@ -91,6 +96,7 @@ function RouteComponent() {
       onSuccess: (data) => {
         console.log(data, "[FJDSKFKLJDSJKFDKLJS]");
         setIsOpening(true);
+        play();
         setArrayWithWinningItem(data);
       },
       onError: (error) => {
@@ -200,10 +206,10 @@ function RouteComponent() {
                       onClick={() => {
                         handleSellItem(winningItem);
                       }}
-                      className="w-auto rounded-2xl bg-neutral-500 p-4 text-center text-white"
+                      className="flex w-auto items-center justify-center gap-1 rounded-2xl bg-neutral-500 p-4 text-center text-white"
                       disabled={sellItem.isPending}
                     >
-                      Продать за {winningItem.price}
+                      Продать за {winningItem.price} <Logo width={"20"} height={"20"} />
                     </button>
                     <button
                       onClick={() => {
@@ -213,9 +219,10 @@ function RouteComponent() {
                         setIsOpening(false);
                         handleBuyCase();
                       }}
-                      className="w-auto rounded-2xl bg-red-500 p-4 text-center text-white"
+                      className="flex w-auto items-center justify-center gap-1 rounded-2xl border border-neutral-500 bg-black p-4 text-center text-white"
                     >
-                      Крутить еще раз за {caseItem?.price}
+                      Крутить еще раз за {caseItem?.price}{" "}
+                      <Logo width={"20"} height={"20"} />
                     </button>
                   </div>
                 </div>

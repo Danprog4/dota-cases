@@ -1,5 +1,5 @@
 import { Drawer } from "vaul";
-
+import { Logo } from "./icons/logo";
 type DrawerProps = {
   price: number;
   image: string;
@@ -38,13 +38,13 @@ export default function VaulDrawer({
             <div className="mt-8 flex flex-col gap-3">
               <button
                 onClick={() => sellItem(id)}
-                className="flex h-12 w-full items-center justify-center rounded-lg bg-red-500 font-medium text-white transition-colors hover:bg-red-600"
+                className="flex h-12 w-full items-center justify-center gap-1 rounded-lg border border-neutral-500 bg-black font-medium text-white transition-colors hover:bg-red-600"
               >
-                Продать за {price} DOTA COINS
+                Продать за {price} <Logo width={"20"} height={"20"} />
               </button>
               <button
                 onClick={() => withdrawItem(id)}
-                className="flex h-12 w-full items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 font-medium text-white transition-colors hover:bg-neutral-700"
+                className="flex h-12 w-full items-center justify-center rounded-lg border border-neutral-700 bg-red-500 font-medium text-white transition-colors hover:bg-neutral-700"
               >
                 Вывести предмет
               </button>

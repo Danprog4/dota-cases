@@ -129,7 +129,6 @@ export const CASES_CONFIG = [
       { name: "Focal Resonance", price: 46000 }, // Дороже
       { name: "Jagged Honor Blade", price: 79400 }, // Дороже
       { name: "Mulctant Pall", price: 101600 }, // Дороже
-      { name: "Blade of the Demonic Vessel", price: 67300 }, // Дороже
       { name: "Flourishing Lodestar", price: 39800 }, // Дешевле
       { name: "Thirst of Eztzhok Blade", price: 45200 }, // Дороже
       { name: "Cape of the Impossible Realm", price: 49500 }, // Дороже
@@ -198,7 +197,6 @@ export const CASES_CONFIG = [
       { name: "Mask of the Demon Trickster", price: 28100 }, // Дешевле
       { name: "Alluvion Prophecy", price: 27600 }, // Дешевле
       { name: "Desert Burn Saddle", price: 157900 }, // Дороже
-      { name: "Trust of the Benefactor 2019", price: 18500 }, // Дешевле
       { name: "Inscribed Sullen Hollow", price: 91100 }, // Дороже
       { name: "Provocation of Ruin Bracers", price: 45300 }, // Дешевле
       { name: "Guardian Snow Angel", price: 77400 }, // Дешевле
