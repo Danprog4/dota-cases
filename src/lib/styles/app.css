@@ -9,6 +9,114 @@ body {
   color: white; /* Disable browser handling of all touch gestures */
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overscroll-behavior: none;
+  background-color: black;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  touch-action: pan-y;
+  -webkit-touch-callout: none;
+  padding-bottom: 0;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  background-color: black;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+}
+
+/* App root container styles */
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  background-color: black;
+}
+
+/* Custom height-fix class for Telegram WebApp */
+@supports (-webkit-touch-callout: none) {
+  .height-fix {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    height: calc(var(--vh, 1vh) * 100);
+    background-color: black;
+  }
+}
+
+/* Override any potential white backgrounds */
+html,
+body,
+#root,
+.height-fix,
+[data-rk] {
+  background-color: black !important;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .height-fix {
+    height: 100vh; /* Fallback for browsers that do not support custom properties */
+    height: calc(var(--vh, 1vh) * 100);
+    min-height: -webkit-fill-available; /* For iOS Safari */
+  }
+}
+
+/* Ensure all scrollable containers work properly */
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  overscroll-behavior-y: contain; /* Prevent scroll chaining */
+}
+
+/* Fix for specific challenge view scrolling */
+.challenge-container {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+/* Ensure the app container fills the viewport and allows scrolling */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  height: 100%;
+  overflow-y: auto;
+  background-color: black;
+}
+
+/* Override Telegram WebApp specific behaviors if needed */
+@media (max-width: 768px) {
+  body,
+  html {
+    position: fixed;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #root {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
