@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import useSound from "use-sound";
 import { CASE_IMAGES } from "~/case-images";
@@ -12,7 +12,6 @@ import { CASES_CONFIG } from "~/lib/configs/cases.config";
 import { Item } from "~/lib/db/schema";
 import { getCasesWithImages } from "~/lib/utils/getItemsImages";
 import { useTRPC } from "~/trpc/init/react";
-import gamble from "/gamble.mp3";
 
 export const Route = createFileRoute("/case/$id")({
   component: RouteComponent,
@@ -21,6 +20,7 @@ export const Route = createFileRoute("/case/$id")({
 function RouteComponent() {
   const { id } = useParams({ from: "/case/$id" });
   const navigate = useNavigate();
+  const gamble = useMemo(() => "/gamble.mp3", []);
   const [play] = useSound(gamble);
   const trpc = useTRPC();
   const { user } = useUser();
