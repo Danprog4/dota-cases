@@ -194,6 +194,15 @@ const ALL_ITEMS = [
 
 // Цены кейсов
 const CASE_PRICES = [500, 3000, 5000, 10000, 15000, 25000];
+// Названия кейсов
+const CASE_NAMES = [
+  "Обычный",
+  "Стартовый",
+  "Редкий",
+  "Эпический",
+  "Мифический",
+  "Легендарный",
+];
 // Количество дешёвых и дорогих предметов в каждом кейсе
 const CHEAP_COUNT = 12;
 const EXPENSIVE_COUNT = 3;
@@ -222,8 +231,8 @@ export const CASES_CONFIG: CaseConfig[] = CASE_PRICES.map((casePrice, idx) => {
 
   return {
     id: idx + 1,
-    name: `Кейс за ${casePrice}`,
-    description: `Кейс ${idx + 1}`,
+    name: `${CASE_NAMES[idx]} `,
+    description: `${CASE_NAMES[idx]} кейс`,
     price: casePrice,
     img: CASE_IMAGES[idx],
     items,
