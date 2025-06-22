@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       initData,
       startParam,
     });
-  }, [initData, startParam, loggedIn, loginMutation.isPending]);
+  }, [initData, startParam, loggedIn]);
 
   if (!loggedIn && isLoading) {
     return <FullPageSpinner />;
