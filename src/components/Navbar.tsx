@@ -45,7 +45,7 @@ export const Navbar = () => {
   // }
 
   return (
-    <div className="fixed right-0 bottom-0 left-0 flex w-full justify-around bg-neutral-900/80 py-5 backdrop-blur-lg">
+    <div className="fixed right-0 bottom-0 left-0 flex w-full flex-1 justify-around bg-neutral-900/80 py-5 backdrop-blur-lg">
       <NavButton
         icon={<Diamond className="h-6 w-6" />}
         label={`${userBalance}`}
