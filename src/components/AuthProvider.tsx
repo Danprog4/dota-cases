@@ -13,7 +13,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = useQueryClient();
   const loginMutation = useMutation(
     trpc.auth.login.mutationOptions({
-      onSuccess: () => setLoggedIn(true),
+      onSuccess: async () => {
+        setLoggedIn(true);
+        await prefetch();
+        setIsLoading(false);
+      },
+      onError: () => {
+        setIsLoading(false);
+      },
     }),
   );
 
@@ -47,12 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       initData,
       startParam,
     });
-  }, [initData, startParam]);
-
-  useEffect(() => {
-    prefetch();
-    setIsLoading(false);
-  }, []);
+  }, [initData, startParam, loggedIn, loginMutation.isPending]);
 
   if (!loggedIn && isLoading) {
     return <FullPageSpinner />;
