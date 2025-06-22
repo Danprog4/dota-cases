@@ -86,7 +86,7 @@ export function useTaskStatusPolling() {
         queryClient.setQueryData(trpc.main.getUser.queryKey(), (oldUser) => {
           if (!oldUser) return oldUser;
 
-          return { ...oldUser, crystalBalance: oldUser.crystalBalance + 100 };
+          return { ...oldUser, crystalBalance: oldUser.crystalBalance + 300 };
         });
         toast.success(`Задание выполнено`, { id: `task-completed-${taskId}` });
       } else if (status === "failed") {

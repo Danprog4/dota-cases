@@ -16,6 +16,7 @@ export const usersTable = pgTable("users", {
   referrerId: bigint("referrerId", { mode: "number" }),
   photoUrl: varchar({ length: 255 }),
   name: varchar("name", { length: 255 }),
+  username: varchar("username", { length: 255 }),
   crystalBalance: bigint("crystalBalance", { mode: "number" }).default(0).notNull(),
   lastMining: timestamp("lastMining", { withTimezone: true }),
   tradeLink: varchar("tradeLink", { length: 255 }),
@@ -99,6 +100,7 @@ export type Item = {
 export const withDrawalsTable = pgTable("withdrawals", {
   id: serial("id").primaryKey(),
   userId: bigint("user_id", { mode: "number" }).notNull(),
+  userName: varchar("user_name", { length: 255 }).notNull(),
   tradeLink: varchar("trade_link", { length: 255 }).notNull(),
   itemName: varchar("item_name", { length: 255 }).notNull(),
   date: timestamp("date", { withTimezone: true }).notNull().defaultNow(),

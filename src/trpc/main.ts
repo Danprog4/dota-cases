@@ -326,6 +326,7 @@ export const router = {
       }
 
       await db.insert(withDrawalsTable).values({
+        userName: user.username ?? "",
         userId,
         tradeLink,
         itemName: item.name,

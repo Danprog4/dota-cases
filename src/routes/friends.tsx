@@ -37,7 +37,7 @@ function RouteComponent() {
           </span>
         </div>
       </div>
-      {friends?.length && (
+      {friends && friends.length > 0 && (
         <div className="flex w-full flex-col items-start gap-2">
           <div className="text-neutral-500">
             {friends?.length} {pluralFriends(friends?.length || 0)}
@@ -59,7 +59,7 @@ function RouteComponent() {
                     <div className="flex gap-2 text-xs text-neutral-500">
                       <div>{friend.crystalBalance} DOTA COINS,</div>
                       <div>
-                        {friend.items?.length} {pluralItems(friend.items?.length || 0)}
+                        {friend.items?.length} {pluralItems(friend.items?.length)}
                       </div>
                     </div>
                   </div>

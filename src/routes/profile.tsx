@@ -92,7 +92,7 @@ function RouteComponent() {
       id: itemId,
     });
 
-    toast.success("Предмет выведен");
+    toast.success("Предмет выведен. Это может занять до нескольких часов");
 
     queryClient.setQueryData(trpc.main.getUser.queryKey(), (user: User | undefined) => {
       if (!user || !user.items) {

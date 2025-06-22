@@ -33,7 +33,7 @@ bot.command("get_withdrawals", async (ctx) => {
   const withdrawalInfo = withdrawals
     .map(
       (w) =>
-        `Юзер ID: ${w.userId}\nСкин: ${w.itemName}\nСсылка Обмена: ${w.tradeLink}\nДата: ${w.date}\n---`,
+        `ТГ Юзер ID: @${w.userName}\nСкин: ${w.itemName}\nСсылка Обмена: ${w.tradeLink}\nДата: ${w.date}\n---`,
     )
     .join("\n");
 

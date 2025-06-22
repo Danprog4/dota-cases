@@ -1,4 +1,7 @@
-export const pluralItems = (count: number): string => {
+export const pluralItems = (count: number | undefined): string => {
+  if (!count) {
+    return "";
+  }
   if (count === 0) {
     return "предметов";
   }

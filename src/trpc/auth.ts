@@ -77,6 +77,7 @@ export const authRouter = {
             id: telegramUser.id,
             referrerId: referrerId ? Number(referrerId) : null,
             name,
+            username: telegramUser.username || null,
             photoUrl: telegramUser.photo_url || null,
             crystalBalance: 100,
           })
