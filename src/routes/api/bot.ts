@@ -15,6 +15,7 @@ const inlineKeyboard = new InlineKeyboard().webApp(
 
 bot.on("message:successful_payment", async (ctx) => {
   console.log("message:successful_payment", ctx);
+
   const payment = ctx.update.message.successful_payment;
 
   console.log("message:successful_payment", JSON.stringify(payment, null, 2));
@@ -31,7 +32,9 @@ bot.on("message:successful_payment", async (ctx) => {
     throw new Error("User not found");
   }
 
-  updateCrystalBalance(user.id, payment.total_amount);
+  const crystals = await updateCrystalBalance(user.id, payment.total_amount);
+
+  await ctx.reply(`Куплено ${crystals} 💎`);
 });
 
 bot.command("start", async (ctx) => {

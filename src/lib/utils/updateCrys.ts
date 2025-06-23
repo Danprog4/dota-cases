@@ -21,4 +21,6 @@ export const updateCrystalBalance = async (userId: number, amount: number) => {
     .update(usersTable)
     .set({ crystalBalance: user.crystalBalance + price.crystals })
     .where(eq(usersTable.id, userId));
+
+  return price.crystals;
 };
