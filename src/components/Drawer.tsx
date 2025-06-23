@@ -1,4 +1,5 @@
 import { Drawer } from "vaul";
+import { AlertDialogDemo } from "./Alert";
 import { Logo } from "./icons/logo";
 type DrawerProps = {
   price: number;
@@ -38,12 +39,11 @@ export default function VaulDrawer({
             </div>
 
             <div className="mt-8 flex flex-col gap-3">
-              <button
-                onClick={() => sellItem(id)}
-                className="flex h-12 w-full items-center justify-center gap-1 rounded-lg border border-red-500 bg-black font-medium text-white transition-colors hover:bg-red-600"
-              >
-                Продать за {price} <Logo width={"20"} height={"20"} />
-              </button>
+              <AlertDialogDemo price={price} sellItem={() => sellItem(id)}>
+                <button className="flex h-12 w-full items-center justify-center gap-1 rounded-lg border border-red-500 bg-black font-medium text-white transition-colors hover:bg-red-600">
+                  Продать за {price} <Logo width={"20"} height={"20"} />
+                </button>
+              </AlertDialogDemo>
               <button
                 onClick={() => withdrawItem(id)}
                 className="flex h-12 w-full items-center justify-center rounded-lg border border-neutral-700 bg-red-500 font-medium text-white transition-colors hover:bg-neutral-700"
